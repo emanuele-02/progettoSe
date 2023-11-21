@@ -2,7 +2,7 @@ import java.lang.Thread.State;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Rule {
+public class Rule extends RuleSubject{
     
     private String ruleName;
     private Trigger trigger;
@@ -43,11 +43,12 @@ public class Rule {
      /* */
     public void setTriggeredOnce(boolean isTriggeredOnce){
 
+
     }
 
     public void setTimeDelay(int timeDelay){
 
-        
+
 
     }
 
