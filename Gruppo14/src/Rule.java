@@ -3,6 +3,8 @@ import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
 
+import TriggerFolder.Trigger;
+
 public class Rule extends RuleSubject{
     
     private String ruleName;
