@@ -23,8 +23,10 @@ public class Rule extends RuleSubject{
 
     }
 
+    //Costruttore vuoto per i test
+    public Rule(){
 
-    
+    }
 
 
 

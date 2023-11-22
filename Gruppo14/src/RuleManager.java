@@ -19,6 +19,14 @@ public class RuleManager implements RuleObserver {
     public void addRule(Rule rule) {
         ruleList.add(rule);
     }
+    public void removeRule(Rule rule) {
+        ruleList.remove(rule);
+    }
+
+    //for testing might come in handy in the future
+    public List<Rule> getRuleList() {
+        return new ArrayList<>(ruleList); // Return a copy to prevent external modification
+    }
 
     @Override
     public void updateRule() {
