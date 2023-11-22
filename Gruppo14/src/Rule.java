@@ -49,9 +49,12 @@ public class Rule extends RuleSubject implements Runnable{
     
     @Override
     public void run() {
+    //Costruttore vuoto per i test
+    
 
         
         
     }
+
 
 }

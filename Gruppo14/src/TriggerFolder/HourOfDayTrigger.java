@@ -18,13 +18,4 @@ public class HourOfDayTrigger implements Trigger {
         return currentTime.isAfter(targetTime) || currentTime.equals(targetTime);
     }
 
-    // Metodo principale per testare l'esempio
-    public static void main(String[] args) {
-        // Esempio di utilizzo
-        HourOfDayTrigger trigger = new HourOfDayTrigger(12, 0);
-
-        // Chiamare checkTrigger quando vuoi verificare la condizione
-        boolean isTriggered = trigger.checkTrigger();
-        System.out.println("Is triggered: " + isTriggered);
-    }
 }
