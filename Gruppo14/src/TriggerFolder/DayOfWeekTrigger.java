@@ -12,10 +12,10 @@ public class DayOfWeekTrigger implements Trigger{
         this.targetDayOfWeek = targetDayOfWeek;
     }
 
-    /*verify if the trigger condition is true */
+    //verifico se la condizione del trigger è verificata
     public boolean checkTrigger(){
-
-        String currentDayOfWeek=LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);/*takes the current day of week in english */
+        //converte la data attuale in giorno della settimana (inglese)
+        String currentDayOfWeek=LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
         if(targetDayOfWeek.equalsIgnoreCase(currentDayOfWeek))
             return true;
 
@@ -23,8 +23,8 @@ public class DayOfWeekTrigger implements Trigger{
             return false;
     }
     
+    //Per i test
     public void setTargetdayOfWeek(String day){
-
         this.targetDayOfWeek=day;
     }
 
