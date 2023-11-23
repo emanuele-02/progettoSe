@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuleManager implements RuleObserver {
+public class RuleManager {
     private static RuleManager instance;
     private List<Rule> ruleList;
 
@@ -54,7 +54,6 @@ public class RuleManager implements RuleObserver {
         return new ArrayList<>(ruleList);
     }
 
-    @Override
     public void updateRule() {
         throw new UnsupportedOperationException("Unimplemented method 'updateRule'");
     }
