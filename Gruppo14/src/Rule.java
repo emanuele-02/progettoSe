@@ -59,6 +59,7 @@ public class Rule implements Runnable{
   
     }
 
+    
     public String getRuleName(){
 
         return this.ruleName;
@@ -68,12 +69,14 @@ public class Rule implements Runnable{
 
         this.ruleName=newName;
     }
-
+ 
+    /*run method to implement a thread for each rule */
     @Override
     public void run() {
         
         while(isActive){
             try {
+                /*sleep in order to check the trigger condition every five seconds */
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 
@@ -81,10 +84,11 @@ public class Rule implements Runnable{
                 e.printStackTrace();
             }
 
+            /*check of the trigger end execute of the action */
             if(trigger.checkTrigger()){
 
                 action.execute();
-
+                /*in case condition is verified and if previously specified, the thread shall sleep for the specified time */
                 try {
                     Thread.sleep(this.timeDelay.toMillis());
                 } catch (InterruptedException e) {
