@@ -33,10 +33,9 @@ public class RuleManagerTest {
     // Test method for adding a rule to the ruleManager
     @Test
     public void testAddRule() {
-        // Create trigger and action
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
-        // Create a new rule
+
         Rule rule = new Rule("pippo", trigger, action);
         // I do not add() because it is done automatically when the rule is created
         // Check if the ruleManager's ruleList contains the added rule
@@ -46,16 +45,14 @@ public class RuleManagerTest {
     // Test method for removing a rule from the ruleManager with confirmation (Yes)
     @Test
     public void testRemoveRuleWithConfirmationYes() {
-        // Create trigger and action
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
-        // Create a new rule
+
         Rule rule = new Rule("Pippo", trigger, action);
 
         // simulated user input for confirmation (response: Yes)
         simulatedUserInput("yes");
 
-        // Remove the rule from the ruleManager
         ruleManager.removeRule(rule);
 
         // Check if the ruleManager's ruleList no longer contains the removed rule
@@ -65,16 +62,14 @@ public class RuleManagerTest {
     // Test method for removing a rule from the ruleManager with cancellation (No)
     @Test
     public void testRemoveRuleWithCancellationNo() {
-        // Create trigger and action
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
-        // Create a new rule
+
         Rule rule = new Rule("Pippo", trigger, action);
 
         // simuleted user input for confirmation (response: No)
         simulatedUserInput("no");
 
-        // Remove the rule from the ruleManager
         ruleManager.removeRule(rule);
 
         // Check if the ruleManager's ruleList still contains the rule since removal is canceled
@@ -84,11 +79,36 @@ public class RuleManagerTest {
     // Test method for ensuring that getInstance returns the same instance
     @Test
     public void testGetInstance() {
-        // Get two instances using getInstance method
         RuleManager instance1 = RuleManager.getInstance();
         RuleManager instance2 = RuleManager.getInstance();
         // Check if the two instances are the same (i.e., pointing to the same object)
         assertSame("Instances should be the same", instance1, instance2);
+    }
+    
+    //Add null rule
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddNullRule() {
+        ruleManager.addRule(null);
+    }
+    //Remove null rule
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveNullRule() {
+        ruleManager.removeRule(null);
+    }
+
+    //Remove a rule from a list that does not contain such a rule
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveNonexistentRule() {
+        Trigger trigger = new HourOfDayTrigger(2, 3);
+        Action action = new DialogBoxAction("paperino");
+
+        Rule rule = new Rule("Pippo", trigger, action);
+
+        simulatedUserInput("yes");
+        // Try to remove the rule from the ruleManager OK
+        ruleManager.removeRule(rule);
+        // Try to remove again (remove a rule from a list that does not contain such a rule)
+        ruleManager.removeRule(rule);
     }
 
     // Helper method to simulate user input for confirmation
