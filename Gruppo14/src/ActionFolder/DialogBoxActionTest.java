@@ -11,12 +11,12 @@ class DialogBoxActionTest {
 
     @Test
     void testExecute() {
-        // Cattura l'output del sistema per il test
+        // Captures system output for testing
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         try {
-            // Esegui l'azione passando come parametro un messaggio
+            // Execute the action by passing a message as parameter
             DialogBoxAction dialogBoxAction = new DialogBoxAction("Hello, this is a message!");
             dialogBoxAction.execute();
         } finally {

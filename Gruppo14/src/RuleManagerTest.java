@@ -52,8 +52,8 @@ public class RuleManagerTest {
         // Create a new rule
         Rule rule = new Rule("Pippo", trigger, action);
 
-        // Mock user input for confirmation (response: Yes)
-        mockUserInput("yes");
+        // simulated user input for confirmation (response: Yes)
+        simulatedUserInput("yes");
 
         // Remove the rule from the ruleManager
         ruleManager.removeRule(rule);
@@ -71,8 +71,8 @@ public class RuleManagerTest {
         // Create a new rule
         Rule rule = new Rule("Pippo", trigger, action);
 
-        // Mock user input for confirmation (response: No)
-        mockUserInput("no");
+        // simuleted user input for confirmation (response: No)
+        simulatedUserInput("no");
 
         // Remove the rule from the ruleManager
         ruleManager.removeRule(rule);
@@ -91,8 +91,8 @@ public class RuleManagerTest {
         assertSame("Instances should be the same", instance1, instance2);
     }
 
-    // Helper method to mock user input for confirmation
-    private void mockUserInput(String input) {
+    // Helper method to simulate user input for confirmation
+    private void simulatedUserInput(String input) {
         InputStream in = new ByteArrayInputStream(input.getBytes());
         System.setIn(in);
     }
