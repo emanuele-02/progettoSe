@@ -2,7 +2,6 @@ package TriggerFolder;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalTime;
 
 public class HourOfDayTriggerTest {
@@ -48,5 +47,11 @@ public class HourOfDayTriggerTest {
         //targetTime is less than currentdate because of -1.
         HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, (currentMinute-1));
         assertTrue(trigger.checkTrigger(), "CheckTrigger should be true after target time");
+    }
+
+    //Invalid hour or minute
+    @Test
+    public void testIllegalTime() {
+        assertThrows(IllegalArgumentException.class, () -> new HourOfDayTrigger(24, 00), "Creating trigger with invalid values should throw IllegalArgumentException");
     }
 }
