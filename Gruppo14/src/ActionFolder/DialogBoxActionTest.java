@@ -1,30 +1,36 @@
 package ActionFolder;
 import org.junit.jupiter.api.Test;
-
-
-
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DialogBoxActionTest {
-
+   
     @Test
-    void testExecute() {
+    void testValidExecute() {
         // Captures system output for testing
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
+        
+        // Execute the action by passing a valid message as parameter
+        DialogBoxAction validDialogBoxAction = new DialogBoxAction("Hello!");
+        validDialogBoxAction.execute();
 
-        try {
-            // Execute the action by passing a message as parameter
-            DialogBoxAction dialogBoxAction = new DialogBoxAction("Hello, this is a message!");
-            dialogBoxAction.execute();
-        } finally {
-           
-            System.setOut(System.out);
-         
         }
+    
 
-      
+     @Test
+    void testStringToLongExecute() {
+        // Captures system output for testing
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+            
+            // Execute the action by passing a message exceeding the maximum length
+            String longMessage = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\r\n" + //
+                    "";
+            assertThrows(IllegalArgumentException.class, () -> new DialogBoxAction(longMessage));
+
+        } 
     }
-}
+
+
+    
+
