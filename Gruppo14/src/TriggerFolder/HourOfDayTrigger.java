@@ -8,7 +8,11 @@ public class HourOfDayTrigger implements Trigger {
 
 
     public HourOfDayTrigger(int hour, int minute) {
-        this.targetTime = LocalTime.of(hour, minute);
+        if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
+            this.targetTime = LocalTime.of(hour, minute);
+        } else {
+            throw new IllegalArgumentException("Invalid hour or minute.");
+        }
     }
 
 
