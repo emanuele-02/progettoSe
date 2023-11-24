@@ -1,12 +1,7 @@
 package TriggerFolder;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-
-import ActionFolder.DialogBoxAction;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalTime;
 
 public class HourOfDayTriggerTest {
