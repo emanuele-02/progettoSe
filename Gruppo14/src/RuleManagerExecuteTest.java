@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 
 
-public class RuleManagerExcecuteTest {
+public class RuleManagerExecuteTest {
 
     // Reference to the RuleManager instance to be tested
     private RuleManager ruleManager;
