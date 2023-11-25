@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AudioActionTest {
-    private static final String VALID_FILE_PATH = "C:\\Users\\simon\\Downloads\\TestAudioAction.wav";
-    private static final String NON_EXISTENT_FILE_PATH = "C:\\Users\\simon\\Downloads\\NonExistentAudio.wav";
-    private static final String INVALID_FORMAT_FILE_PATH = "C:\\Users\\simon\\Downloads\\InvalidFormatAudio.mp3";
+    private static final String VALID_FILE_PATH = "TestAudioAction.wav";
+    private static final String NON_EXISTENT_FILE_PATH = "NotExisting.wav";
+    private static final String INVALID_FORMAT_FILE_PATH = "TestAudioAction.mp3";
     private static final String EMPTY_FILE_PATH = "";
 
     @Test
