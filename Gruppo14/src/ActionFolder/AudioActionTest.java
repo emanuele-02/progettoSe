@@ -1,56 +1,36 @@
 package ActionFolder;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import java.io.FileNotFoundException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
-    public class AudioActionTest {
-        @Test
-        void testValidExecute() {
-            // Test with a valid .wav file
-            // Define the path of the audio file
-            String validFilePath = "C:\\Users\\simon\\Downloads\\TestAudioAction.wav";
-            
-            // Create on istance of AudioAction whit a valid path
-            AudioAction validAudioAction = new AudioAction(validFilePath);
-            // Assert that executing the validAudioAction does not throw any exception
-            assertDoesNotThrow(() -> validAudioAction.execute());
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-        }
-        @Test
-        void testFileNotExistExecute() {
-            // Test with a non-existent file
-            // Define the path of the audio file
-            String nonExistentFilePath = "C:\\Users\\simon\\Downloads\\NonExistentAudio.wav";
-            
-            // Create an instance of AudiiAction whit a not existing
-            AudioAction nonExistentAudioAction = new AudioAction(nonExistentFilePath);
-             // Assert that executing nonExistentAudioAction throws a FileNotFoundException
-            assertThrows(FileNotFoundException.class, nonExistentAudioAction::execute);
-        
-        }
+public class AudioActionTest {
+    private static final String VALID_FILE_PATH = "C:\\Users\\simon\\Downloads\\TestAudioAction.wav";
+    private static final String NON_EXISTENT_FILE_PATH = "C:\\Users\\simon\\Downloads\\NonExistentAudio.wav";
+    private static final String INVALID_FORMAT_FILE_PATH = "C:\\Users\\simon\\Downloads\\InvalidFormatAudio.mp3";
+    private static final String EMPTY_FILE_PATH = "";
 
-        @Test
-        void testInvalidFormatExecute() {
-            // Test with an invalid file format (not .wav)
-            // Define the path of the audio file
-            String invalidFormatFilePath = "C:\\Users\\simon\\Downloads\\InvalidFormatAudio.mp3";
+    @Test
+    void testValidExecute() {
+        AudioAction validAudioAction = new AudioAction(VALID_FILE_PATH);
+        assertDoesNotThrow(validAudioAction::execute);
+    }
 
-            // create an istance of AudioAction whit an invalid path
-            AudioAction invalidFormatAudioAction = new AudioAction(invalidFormatFilePath);
-             // Assert that executing invalidFormatAudioAction throws an UnsupportedAudioFileException
-            assertThrows(UnsupportedAudioFileException.class, invalidFormatAudioAction::execute);
-        }
+    @Test
+    void testFileNotExisting(){
+        AudioAction notExistingAudioAction = new AudioAction(NON_EXISTENT_FILE_PATH);
+        assertThrows(IllegalArgumentException.class, notExistingAudioAction::execute);
 
-         // Test for empty file path (should throw IllegalArgumentException)
+    }
+
+    @Test
+    void testInvalidFormatExecute() {
+        assertThrows(IllegalArgumentException.class,() -> new AudioAction (INVALID_FORMAT_FILE_PATH));
+    }
+
     @Test
     void testEmptyFilePath() {
-        // Define an empty file path
-        String emptyFilePath = "";
-
-        // Create an instance of AudioAction with an empty file path
-        // Assert that executing this action throws an IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> new AudioAction(emptyFilePath));
+        assertThrows(IllegalArgumentException.class, () -> new AudioAction(EMPTY_FILE_PATH));
     }
 }
-
