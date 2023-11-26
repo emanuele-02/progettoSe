@@ -1,6 +1,7 @@
 import ActionFolder.*;
 import TriggerFolder.*;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,21 +21,16 @@ public class App {
             System.out.println("3. Create an Action");
             System.out.println("4. View existing rules");
             System.out.println("5. Remove a Rule");
-            System.out.println("6. Exit");
-
+            System.out.println("6. Activate Rule");
+            System.out.println("7. Deactivate Rule");
+            System.out.println("8. Exit");
+            
             int choice = scanner.nextInt();
             scanner.nextLine();  
 
             switch (choice) {
                 case 1:
                     Rule rule = createRule(triggers, actions, scanner);
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    rule.deactivate();
                     break;
 
                 case 2:
@@ -54,11 +50,21 @@ public class App {
                     break;
 
                 case 6:
+                    activateRuleByName(rules, scanner);
+                    break;
+
+                case 7:
+                    deactivateRuleByName(rules, scanner);
+                    break;
+
+                case 8:
                     System.out.println("Bye!");
                     rules.getRuleList().clear();
                     rules.shutdown();
                     System.exit(0);
                     break;
+
+                
 
                 default:
                     System.out.println("Invalid choice, retry");
@@ -66,73 +72,94 @@ public class App {
         }
     }
 
-    private static Rule createRule(Map<String,Trigger> triggers, Map<String,Action> actions, Scanner scanner) {
-
+    private static Rule createRule(Map<String, Trigger> triggers, Map<String, Action> actions, Scanner scanner) {
         System.out.println("Enter rule's name");
-        String ruleName=scanner.nextLine();
-
+        String ruleName = scanner.nextLine();
+    
         System.out.println("Enter the name of the trigger you want to trigger the rule");
         String triggerName = scanner.nextLine();
-        Trigger t= triggers.get(triggerName);
-
+        Trigger t = triggers.get(triggerName);
+    
         System.out.println("Enter the name of the action you want to be performed");
         String actionName = scanner.nextLine();
-        Action a= actions.get(actionName);
+        Action a = actions.get(actionName);
     
-        return new Rule(ruleName, t, a);
+        Rule r = null;
+        try {
+            r = new Rule(ruleName, t, a);
+        } catch (Exception e) {
+            System.out.println(e.getMessage()+"Please insert again");
+            scanner.nextLine(); // Clear the buffer
+        }
+        return r;
     }
-
-    private static void createTrigger(Map<String, Trigger> triggers, Scanner scanner){
-
+    
+    private static void createTrigger(Map<String, Trigger> triggers, Scanner scanner) {
         System.out.println("Insert trigger's name");
-        String name= scanner.nextLine();
-
-        System.out.println("Insert trigger's hour");
-        int hour= scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.println("Insert trigger's minute");
-        int minute= scanner.nextInt();
-        scanner.nextLine();
-
-        Trigger t= new HourOfDayTrigger(hour, minute);
-
-        triggers.putIfAbsent(name, t);
-
+        String name = scanner.nextLine();
+    
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                System.out.println("Insert trigger's hour");
+                int hour = scanner.nextInt();
+    
+                System.out.println("Insert trigger's minute");
+                int minute = scanner.nextInt();
+    
+                scanner.nextLine(); // Consuma il carattere di nuova riga residuo
+    
+                Trigger t = new HourOfDayTrigger(hour, minute);
+                triggers.putIfAbsent(name, t);
+                validInput = true;
+            } catch (Exception e) {
+                System.out.println("Error creating trigger: " + e.getMessage()+"Press enter to try again.");
+                scanner.nextLine(); // Pulisce il buffer
+            }
+        }
     }
+    
 
-    private static void createAction (Map<String, Action> actions, Scanner scanner){
 
+    
+    private static void createAction(Map<String, Action> actions, Scanner scanner) {
         System.out.println("Insert action's name");
-        String name= scanner.nextLine();
-        System.out.println("Which type of action do you want create?");
+        String name = scanner.nextLine();
+    
+        System.out.println("Which type of action do you want to create?");
         System.out.println("1. AudioAction");
         System.out.println("2. DialogBoxAction");
-
-        int choice= scanner.nextInt();
-        scanner.nextLine();
-
-        switch(choice){
-
-            case 1:
-                System.out.println("Insert the audio's path");
-                String path= scanner.nextLine();
-                Action audioAction= new AudioAction(path);
-                actions.putIfAbsent(name, audioAction);
-                break;
-
-            case 2:
-                System.out.println("Insert the message");
-                String message= scanner.nextLine();
-                Action dialogAction= new DialogBoxAction(message);
-                actions.putIfAbsent(name, dialogAction);
-                break;
-
-            default:
-                System.out.println("Invalid choice, retry");
-
+    
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Clear the buffer
+    
+        Action createdAction = null;
+    
+        try {
+            switch (choice) {
+                case 1:
+                    System.out.println("Insert the audio's path");
+                    String path = scanner.nextLine();
+                    createdAction = new AudioAction(path);
+                    break;
+    
+                case 2:
+                    System.out.println("Insert the message");
+                    String message = scanner.nextLine();
+                    createdAction = new DialogBoxAction(message);
+                    break;
+    
+                default:
+                    System.out.println("Invalid choice, retry");
+            }
+    
+            if (createdAction != null) {
+                actions.putIfAbsent(name, createdAction);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage()+"Please insert again");
+            scanner.nextLine(); 
         }
-
     }
 
     private static void displayRules(RuleManager rules) {
@@ -165,4 +192,23 @@ public class App {
         }
 
     }
+
+    private static void activateRuleByName(RuleManager rules, Scanner scanner) {
+        System.out.println("Enter the name of the rule you want to activate:");
+        String name = scanner.nextLine();
+        for(Rule r : rules.getRuleList()){
+            if(name.equalsIgnoreCase(r.getRuleName()))
+                r.activate();      
+        }
+    }
+
+    private static void deactivateRuleByName(RuleManager rules, Scanner scanner) {
+        System.out.println("Enter the name of the rule you want to deactivate:");
+        String name = scanner.nextLine();
+        for(Rule r : rules.getRuleList()){
+            if(name.equalsIgnoreCase(r.getRuleName()))
+                r.deactivate();      
+        }
+    }
+
 }
