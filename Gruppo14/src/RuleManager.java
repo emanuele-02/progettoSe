@@ -31,7 +31,7 @@ public class RuleManager {
         ruleList.add(rule);
     }
 
-    public void removeRule(Rule rule) {
+    public void removeRule(Rule rule, Scanner scanner) {
         if (rule == null) {
             throw new IllegalArgumentException("Rule cannot be null");
         }
@@ -41,7 +41,7 @@ public class RuleManager {
         }
 
         // Ask for confirmation before removing the rule
-        if (confirmRemoval()) {
+        if (confirmRemoval(scanner)) {
             ruleList.remove(rule);
             System.out.println("Rule removed successfully.");
         } else {
@@ -49,12 +49,12 @@ public class RuleManager {
         }
     }
 
-    private boolean confirmRemoval() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print("Are you sure you want to remove the rule? (Yes/No): ");
-            String response = scanner.nextLine().trim().toLowerCase();
-            return response.equals("yes") || response.equals("y");
-        }
+    private boolean confirmRemoval(Scanner scanner) {
+        
+        System.out.print("Are you sure you want to remove the rule? (Yes/No): ");
+        String response = scanner.nextLine().trim().toLowerCase();
+        return response.equals("yes") || response.equals("y");
+        
     }
 
     public List<Rule> getRuleList() {
