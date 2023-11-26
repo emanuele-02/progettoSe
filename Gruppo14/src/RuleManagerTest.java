@@ -6,6 +6,7 @@ import ActionFolder.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Scanner;
 
 import static org.junit.Assert.*;
 import org.junit.After;
@@ -14,7 +15,7 @@ public class RuleManagerTest {
 
     // Reference to the RuleManager instance to be tested
     private RuleManager ruleManager;
-
+    private Scanner scanner = new Scanner(System.in);
     // run before each test method
     @Before
     public void setUp() {
@@ -53,7 +54,7 @@ public class RuleManagerTest {
         // simulated user input for confirmation (response: Yes)
         simulatedUserInput("yes");
 
-        ruleManager.removeRule(rule);
+        ruleManager.removeRule(rule,scanner);
 
         // Check if the ruleManager's ruleList no longer contains the removed rule
         assertFalse(ruleManager.getRuleList().contains(rule));
@@ -70,7 +71,7 @@ public class RuleManagerTest {
         // simuleted user input for confirmation (response: No)
         simulatedUserInput("no");
 
-        ruleManager.removeRule(rule);
+        ruleManager.removeRule(rule,scanner);
 
         // Check if the ruleManager's ruleList still contains the rule since removal is canceled
         assertTrue(ruleManager.getRuleList().contains(rule));
@@ -93,7 +94,7 @@ public class RuleManagerTest {
     //Remove null rule
     @Test(expected = IllegalArgumentException.class)
     public void testRemoveNullRule() {
-        ruleManager.removeRule(null);
+        ruleManager.removeRule(null,scanner);
     }
 
     //Remove a rule from a list that does not contain such a rule
@@ -106,9 +107,9 @@ public class RuleManagerTest {
 
         simulatedUserInput("yes");
         // Try to remove the rule from the ruleManager OK
-        ruleManager.removeRule(rule);
+        ruleManager.removeRule(rule,scanner);
         // Try to remove again (remove a rule from a list that does not contain such a rule)
-        ruleManager.removeRule(rule);
+        ruleManager.removeRule(rule,scanner);
     }
 
     // Helper method to simulate user input for confirmation
