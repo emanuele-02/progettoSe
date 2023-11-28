@@ -48,7 +48,7 @@ public class AudioAction implements Action {
             // Add a LineListener to the Clip to detect when the audio playback stops
             clip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
-                    System.out.println("Audio playback stopped.");
+                    //System.out.println("Audio playback stopped.");
                     // Count down the latch when the playback stops
                     latch.countDown();
                 }
