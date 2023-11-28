@@ -64,11 +64,30 @@ public class RuleManager {
     //logic of evaluation and execution of rules
     private void evaluateRules() {
         for (Rule rule : ruleList) {
-            if(rule.getTrigger().checkTrigger() && rule.isActive()){
-                rule.getAction().execute();
+            // check trigger condition and whether the rule is active
+            if (rule.getTrigger().checkTrigger() && rule.isActive()) {
+                //I do not enter only if the rule is triggeredOnce and already activated
+                if (!(rule.isTriggeredOnce() && rule.isAlreadyTriggered())) {
+                    //if there is no period to wait I will execute directly
+                    if (rule.getDelay() != null) {
+                        if (rule.isAlreadyTriggered()) {
+                            // Schedule the rule for re-evaluation after the specified period
+                            scheduler.schedule(() -> {
+                                rule.getAction().execute();
+                            }, rule.getDelay().toMillis(), TimeUnit.MILLISECONDS);
+                        } else {
+                            rule.getAction().execute();
+                            rule.setAlreadyTriggered(true);
+                        }
+                    } else {
+                        rule.getAction().execute();
+                        rule.setAlreadyTriggered(true);
+                    }
+                }
             }
         }
     }
+    
 
     //scheduleAtFixedRate schedules the periodic execution of a task
     private void scheduleRuleEvaluation() {
