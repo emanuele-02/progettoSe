@@ -13,9 +13,9 @@ public class Rule {
     private boolean alreadyTriggered;
     
 
-    private int day;
-    private int hour;
-    private int minute;
+    private int days;
+    private int hours;
+    private int minutes;
     private Duration period;
    
 
@@ -30,16 +30,16 @@ public class Rule {
         ruleManager.addRule(this);
     }
 
-    public Rule(String ruleName, Trigger trigger, Action action, int day, int hour, int minute) {
+    public Rule(String ruleName, Trigger trigger, Action action, int days, int hours, int minutes) {
         this.ruleName = ruleName;
         this.trigger = trigger;
         this.action = action;
         this.isActive = true;
         this.triggeredOnce = false; 
         this.alreadyTriggered = false;
-        this.day = day;
-        this.hour = hour;
-        this.minute = minute;
+        this.days = days;
+        this.hours = hours;
+        this.minutes = minutes;
         updatePeriod();
         RuleManager ruleManager = RuleManager.getInstance();
         ruleManager.addRule(this);
@@ -91,20 +91,20 @@ public class Rule {
 
     // Calculating and setting the duration
     private void updatePeriod() {
-        long totalMinutes = day * 24 * 60 + hour * 60 + minute;
-        this.period = Duration.ofMinutes(totalMinutes);
+        long totalminutes = days * 24 * 60 + hours * 60 + minutes;
+        this.period = Duration.ofMinutes(totalminutes);
     }
     
 
-    public Duration getDelay() {
+    public Duration getPeriod() {
         return period;
     }
     
-    // Set new delay time
-    public void setDelay(int newDay, int newHour, int newMinute) {
-        this.day = newDay;
-        this.hour = newHour;
-        this.minute = newMinute;
+    // Set new period time
+    public void setPeriod(int newDays, int newHours, int newMinutes) {
+        this.days = newDays;
+        this.hours = newHours;
+        this.minutes = newMinutes;
         updatePeriod();
     }
 }
