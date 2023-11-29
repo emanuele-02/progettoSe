@@ -113,7 +113,7 @@ public class RuleManagerExecuteTest {
         Rule rule = new Rule("TestRule", trigger, action, 0,0,1);
 
         //2 message Pippo
-        simulateTimePassing(72);
+        simulateTimePassing(500);
     }
 
     // Helper method to simulate the passage of time

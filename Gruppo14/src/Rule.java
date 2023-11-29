@@ -1,9 +1,11 @@
+import java.io.Serializable;
 import java.time.Duration;
+import java.util.Objects;
 
 import ActionFolder.Action;
 import TriggerFolder.Trigger;
 
-public class Rule {
+public class Rule implements Serializable{
 
     private String ruleName;
     private Trigger trigger;
@@ -107,4 +109,66 @@ public class Rule {
         this.minutes = newMinutes;
         updatePeriod();
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((ruleName == null) ? 0 : ruleName.hashCode());
+        result = prime * result + ((trigger == null) ? 0 : trigger.hashCode());
+        result = prime * result + ((action == null) ? 0 : action.hashCode());
+        result = prime * result + (isActive ? 1231 : 1237);
+        result = prime * result + (triggeredOnce ? 1231 : 1237);
+        result = prime * result + (alreadyTriggered ? 1231 : 1237);
+        result = prime * result + days;
+        result = prime * result + hours;
+        result = prime * result + minutes;
+        result = prime * result + ((period == null) ? 0 : period.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Rule other = (Rule) obj;
+        if (ruleName == null) {
+            if (other.ruleName != null)
+                return false;
+        } else if (!ruleName.equals(other.ruleName))
+            return false;
+        if (trigger == null) {
+            if (other.trigger != null)
+                return false;
+        } else if (!trigger.equals(other.trigger))
+            return false;
+        if (action == null) {
+            if (other.action != null)
+                return false;
+        } else if (!action.equals(other.action))
+            return false;
+        if (isActive != other.isActive)
+            return false;
+        if (triggeredOnce != other.triggeredOnce)
+            return false;
+        if (alreadyTriggered != other.alreadyTriggered)
+            return false;
+        if (days != other.days)
+            return false;
+        if (hours != other.hours)
+            return false;
+        if (minutes != other.minutes)
+            return false;
+        if (period == null) {
+            if (other.period != null)
+                return false;
+        } else if (!period.equals(other.period))
+            return false;
+        return true;
+    }
+
 }

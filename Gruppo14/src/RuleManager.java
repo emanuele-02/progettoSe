@@ -2,18 +2,22 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuleManager {
+public class RuleManager implements Serializable{
     private static RuleManager instance;
     private List<Rule> ruleList;
     private ScheduledExecutorService scheduler;
+    private RuleFileManager ruleFileManager;
 
     private RuleManager() {
         ruleList = new ArrayList<>();
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduleRuleEvaluation();
+        ruleFileManager = new RuleFileManager("rules.ser");
+        ruleFileManager.loadRulesFromFile();
     }
 
     public static synchronized RuleManager getInstance() {
@@ -78,30 +82,37 @@ public class RuleManager {
             !(rule.isTriggeredOnce() && rule.isAlreadyTriggered());
     }
 
-    // Execute the rule and handle scheduling if there is a Period
     private void executeRule(Rule rule) {
         if (rule.getPeriod() != null) {
-            if (rule.isAlreadyTriggered()) {
-                // Schedule the rule for re-evaluation after the specified period
-                scheduleRuleExecution(rule);
-            } else {
-                // Execute the rule directly and set as already triggered
+            if (!rule.isAlreadyTriggered()) {
+                // Execute the rule immediately if not triggered yet
                 rule.getAction().execute();
                 rule.setAlreadyTriggered(true);
             }
+    
+            // Schedule future executions based on the period
+            scheduleRuleExecution(rule);
         } else {
             // Execute the rule directly without Period
             rule.getAction().execute();
             rule.setAlreadyTriggered(true);
         }
     }
-
+    
     // Schedule the rule for re-evaluation after the specified period
     private void scheduleRuleExecution(Rule rule) {
         scheduler.schedule(() -> {
-            rule.getAction().execute();
+            if (shouldExecuteRule(rule)) {
+                // Execute the rule only if the trigger condition is true and the rule is active
+                rule.getAction().execute();
+                rule.setTriggeredOnce(true);
+            }
+            // Schedule the next execution
+            scheduleRuleExecution(rule);
         }, rule.getPeriod().toMillis(), TimeUnit.MILLISECONDS);
     }
+    
+    
 
     //scheduleAtFixedRate schedules the periodic execution of a task
     private void scheduleRuleEvaluation() {
@@ -113,5 +124,18 @@ public class RuleManager {
     //close scheduler
     public void shutdown() {
         scheduler.shutdown();
+    }
+
+    // saves the rule set in a file
+    public void saveRulesToFile() {
+        ruleFileManager.saveRulesToFile(ruleList);
+    }
+
+    // loads the rule set from file and inserts it in the list
+    public void loadRulesFromFile() {
+        List<Rule> loadedRules = ruleFileManager.loadRulesFromFile();
+        if (loadedRules != null) {
+            ruleList = loadedRules;
+        }
     }
 }
