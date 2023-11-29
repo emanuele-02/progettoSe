@@ -61,19 +61,52 @@ public class RuleManager {
         return new ArrayList<>(ruleList);
     }
 
-    //logic of evaluation and execution of rules
+
+    // Logic for evaluating and executing rules
     private void evaluateRules() {
         for (Rule rule : ruleList) {
-            if(rule.getTrigger().checkTrigger() && rule.isActive()){
-                rule.getAction().execute();
+            // Check trigger condition and rule activation status
+            if (shouldExecuteRule(rule)) {
+                executeRule(rule);
             }
         }
+    }
+
+    // Check if the rule should be executed based on trigger and activation status
+    private boolean shouldExecuteRule(Rule rule) {
+        return rule.getTrigger().checkTrigger() && rule.isActive() && 
+            !(rule.isTriggeredOnce() && rule.isAlreadyTriggered());
+    }
+
+    // Execute the rule and handle scheduling if there is a Period
+    private void executeRule(Rule rule) {
+        if (rule.getPeriod() != null) {
+            if (rule.isAlreadyTriggered()) {
+                // Schedule the rule for re-evaluation after the specified period
+                scheduleRuleExecution(rule);
+            } else {
+                // Execute the rule directly and set as already triggered
+                rule.getAction().execute();
+                rule.setAlreadyTriggered(true);
+            }
+        } else {
+            // Execute the rule directly without Period
+            rule.getAction().execute();
+            rule.setAlreadyTriggered(true);
+        }
+    }
+
+    // Schedule the rule for re-evaluation after the specified period
+    private void scheduleRuleExecution(Rule rule) {
+        scheduler.schedule(() -> {
+            rule.getAction().execute();
+        }, rule.getPeriod().toMillis(), TimeUnit.MILLISECONDS);
     }
 
     //scheduleAtFixedRate schedules the periodic execution of a task
     private void scheduleRuleEvaluation() {
         //this::evaluateRules is a lambda expression representing the task to be executed
-        //param 0: initial delay time param 1: time interval between executions
+        //param 0: initial Period time param 1: time interval between executions
         scheduler.scheduleAtFixedRate(this::evaluateRules, 0, 5, TimeUnit.SECONDS);
     }
 

@@ -37,7 +37,7 @@ public class RuleManagerTest {
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
 
-        Rule rule = new Rule("pippo", trigger, action);
+        Rule rule = new Rule("pippo", trigger, action,false);
         // I do not add() because it is done automatically when the rule is created
         // Check if the ruleManager's ruleList contains the added rule
         assertTrue(ruleManager.getRuleList().contains(rule));
@@ -49,7 +49,7 @@ public class RuleManagerTest {
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
 
-        Rule rule = new Rule("Pippo", trigger, action);
+        Rule rule = new Rule("Pippo", trigger, action,false);
 
         // simulated user input for confirmation (response: Yes)
         simulatedUserInput("yes");
@@ -66,7 +66,7 @@ public class RuleManagerTest {
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
 
-        Rule rule = new Rule("Pippo", trigger, action);
+        Rule rule = new Rule("Pippo", trigger, action,false);
 
         // simuleted user input for confirmation (response: No)
         simulatedUserInput("no");
@@ -103,7 +103,7 @@ public class RuleManagerTest {
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
 
-        Rule rule = new Rule("Pippo", trigger, action);
+        Rule rule = new Rule("Pippo", trigger, action,false);
 
         simulatedUserInput("yes");
         // Try to remove the rule from the ruleManager OK
