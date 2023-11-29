@@ -47,12 +47,14 @@ public class RuleManagerExecuteTest {
         Action action = new DialogBoxAction("Pippo");
         HourOfDayTrigger trigger2 = new HourOfDayTrigger(currentHour, currentMinute);
         Action action2 = new DialogBoxAction("Pluto");
-        Rule rule = new Rule("TestRule", trigger, action);
-        Rule rule2 = new Rule("TestRule2", trigger2, action2);
+        Rule rule = new Rule("TestRule", trigger, action,false);
+        Rule rule2 = new Rule("TestRule2", trigger2, action2,false);
         // Simulate the passage of time to allow scheduled evaluation
         simulateTimePassing(20);
 
     }
+
+    // Test for deactivation
 
      @Test
     public void testScheduledRuleEvaluationActivationDeactivation() {
@@ -66,7 +68,7 @@ public class RuleManagerExecuteTest {
         //rule creation that is always activated
         HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
         Action action = new DialogBoxAction("Pippo");
-        Rule rule = new Rule("TestRule", trigger, action);
+        Rule rule = new Rule("TestRule", trigger, action, false);
         //2 message Pippo
         simulateTimePassing(10);
         //no message for 10 seconds
@@ -78,6 +80,41 @@ public class RuleManagerExecuteTest {
     }
 
 
+    @Test
+    public void testTriggerOnce(){
+
+        LocalTime currentTime = LocalTime.now();
+
+        int currentHour = currentTime.getHour();
+        int currentMinute = currentTime.getMinute();
+
+        HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
+        Action action = new DialogBoxAction("Pippo");
+        Rule rule = new Rule("TestRule", trigger, action, true);
+
+        // only one message Pippo
+        simulateTimePassing(13);
+
+        rule.setTriggeredOnce(false);
+        // 2 messagge Pippo
+        simulateTimePassing(11);
+    }
+
+    @Test
+    public void testTriggerPeriod(){
+
+        LocalTime currentTime = LocalTime.now();
+
+        int currentHour = currentTime.getHour();
+        int currentMinute = currentTime.getMinute();
+
+        HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
+        Action action = new DialogBoxAction("Pippo");
+        Rule rule = new Rule("TestRule", trigger, action, 0,0,1);
+
+        //2 message Pippo
+        simulateTimePassing(72);
+    }
 
     // Helper method to simulate the passage of time
     private void simulateTimePassing(int seconds) {

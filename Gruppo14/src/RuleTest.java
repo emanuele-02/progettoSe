@@ -8,7 +8,7 @@ public class RuleTest {
 
     private Trigger t= new HourOfDayTrigger(3, 4);
     private Action a= new DialogBoxAction("Hello, World");
-    private Rule r= new Rule("Prova", t, a);
+    private Rule r= new Rule("Prova", t, a,false);
 
 
     @Test
