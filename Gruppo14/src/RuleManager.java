@@ -82,30 +82,37 @@ public class RuleManager implements Serializable{
             !(rule.isTriggeredOnce() && rule.isAlreadyTriggered());
     }
 
-    // Execute the rule and handle scheduling if there is a Period
     private void executeRule(Rule rule) {
         if (rule.getPeriod() != null) {
-            if (rule.isAlreadyTriggered()) {
-                // Schedule the rule for re-evaluation after the specified period
-                scheduleRuleExecution(rule);
-            } else {
-                // Execute the rule directly and set as already triggered
+            if (!rule.isAlreadyTriggered()) {
+                // Execute the rule immediately if not triggered yet
                 rule.getAction().execute();
                 rule.setAlreadyTriggered(true);
             }
+    
+            // Schedule future executions based on the period
+            scheduleRuleExecution(rule);
         } else {
             // Execute the rule directly without Period
             rule.getAction().execute();
             rule.setAlreadyTriggered(true);
         }
     }
-
+    
     // Schedule the rule for re-evaluation after the specified period
     private void scheduleRuleExecution(Rule rule) {
         scheduler.schedule(() -> {
-            rule.getAction().execute();
+            if (shouldExecuteRule(rule)) {
+                // Execute the rule only if the trigger condition is true and the rule is active
+                rule.getAction().execute();
+                rule.setTriggeredOnce(true);
+            }
+            // Schedule the next execution
+            scheduleRuleExecution(rule);
         }, rule.getPeriod().toMillis(), TimeUnit.MILLISECONDS);
     }
+    
+    
 
     //scheduleAtFixedRate schedules the periodic execution of a task
     private void scheduleRuleEvaluation() {
