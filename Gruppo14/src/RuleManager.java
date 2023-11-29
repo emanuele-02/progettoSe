@@ -2,18 +2,22 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuleManager {
+public class RuleManager implements Serializable{
     private static RuleManager instance;
     private List<Rule> ruleList;
     private ScheduledExecutorService scheduler;
+    private RuleFileManager ruleFileManager;
 
     private RuleManager() {
         ruleList = new ArrayList<>();
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduleRuleEvaluation();
+        ruleFileManager = new RuleFileManager("rules.ser");
+        ruleFileManager.loadRulesFromFile();
     }
 
     public static synchronized RuleManager getInstance() {
@@ -113,5 +117,18 @@ public class RuleManager {
     //close scheduler
     public void shutdown() {
         scheduler.shutdown();
+    }
+
+    // saves the rule set in a file
+    public void saveRulesToFile() {
+        ruleFileManager.saveRulesToFile(ruleList);
+    }
+
+    // loads the rule set from file and inserts it in the list
+    public void loadRulesFromFile() {
+        List<Rule> loadedRules = ruleFileManager.loadRulesFromFile();
+        if (loadedRules != null) {
+            ruleList = loadedRules;
+        }
     }
 }

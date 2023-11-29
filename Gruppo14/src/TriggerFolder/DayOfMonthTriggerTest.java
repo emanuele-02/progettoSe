@@ -37,4 +37,5 @@ public class DayOfMonthTriggerTest {
             new DayOfMonthTrigger(0);
         });
     }
+    
 }

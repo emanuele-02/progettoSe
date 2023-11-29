@@ -1,6 +1,8 @@
 package ActionFolder;
 
-public interface Action {
+import java.io.Serializable;
+
+public interface Action extends Serializable{
 
     public void execute();
     

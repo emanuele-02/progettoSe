@@ -32,4 +32,30 @@ public class DayOfWeekTrigger implements Trigger {
         // Compare the current day with the target day
         return currentDayOfWeek.equals(targetDayOfWeek);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((targetDayOfWeek == null) ? 0 : targetDayOfWeek.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DayOfWeekTrigger other = (DayOfWeekTrigger) obj;
+        if (targetDayOfWeek == null) {
+            if (other.targetDayOfWeek != null)
+                return false;
+        } else if (!targetDayOfWeek.equals(other.targetDayOfWeek))
+            return false;
+        return true;
+    }
+    
 }

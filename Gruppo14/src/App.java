@@ -16,13 +16,15 @@ public class App {
         
         while (true) {
             System.out.println("1. Create a Rule (remember that you have to create a trigger and an action for this rule before creating it)");
-            System.out.println("2. Create a Trigger");
-            System.out.println("3. Create an Action");
-            System.out.println("4. View existing rules");
-            System.out.println("5. Remove a Rule");
-            System.out.println("6. Activate Rule");
-            System.out.println("7. Deactivate Rule");
-            System.out.println("8. Exit");
+            System.out.println("2. Create a Periodical Rule (remember that you have to create a trigger and an action for this rule before creating it)");
+            System.out.println("3. Create a Trigger");
+            System.out.println("4. Create an Action");
+            System.out.println("5. View existing rules");
+            System.out.println("6. Remove a Rule");
+            System.out.println("7. Activate Rule");
+            System.out.println("8. Deactivate Rule");
+            System.out.println("9. Save set of Rule");
+            System.out.println("10. Exit");
             
             int choice = scanner.nextInt();
             scanner.nextLine();  
@@ -31,32 +33,36 @@ public class App {
                 case 1:
                     Rule rule = createRule(triggers, actions, scanner);
                     break;
-
                 case 2:
+                    Rule rule2 = createPeriodicRule(triggers, actions, scanner);
+                    break;
+                case 3:
                     createTrigger(triggers, scanner);
                     break;
 
-                case 3:
+                case 4:
                     createAction(actions, scanner);
                     break;
 
-                case 4:
+                case 5:
                     displayRules(rules);
                     break;
 
-                case 5:
+                case 6:
                     removeRule(rules, scanner);
                     break;
 
-                case 6:
+                case 7:
                     activateRuleByName(rules, scanner);
                     break;
 
-                case 7:
+                case 8:
                     deactivateRuleByName(rules, scanner);
                     break;
-
-                case 8:
+                case 9:
+                    rules.saveRulesToFile();
+                    break;
+                case 10:
                     System.out.println("Bye!");
                     rules.getRuleList().clear();
                     rules.shutdown();
@@ -82,16 +88,52 @@ public class App {
         System.out.println("Enter the name of the action you want to be performed");
         String actionName = scanner.nextLine();
         Action a = actions.get(actionName);
+
+        System.out.println("Should the rule be executed only once? (y/n)");
+        String response = scanner.nextLine().toLowerCase();
+        boolean triggeredOnce = response.equals("y") || response.equals("yes");
     
         Rule r = null;
         try {
-            r = new Rule(ruleName, t, a);
+            r = new Rule(ruleName, t, a,triggeredOnce);
         } catch (Exception e) {
             System.out.println(e.getMessage()+"Please insert again");
             scanner.nextLine(); // Clear the buffer
         }
         return r;
     }
+
+    private static Rule createPeriodicRule(Map<String, Trigger> triggers, Map<String, Action> actions, Scanner scanner) {
+        System.out.println("Enter rule's name");
+        String ruleName = scanner.nextLine();
+    
+        System.out.println("Enter the name of the trigger you want to trigger the rule");
+        String triggerName = scanner.nextLine();
+        Trigger t = triggers.get(triggerName);
+    
+        System.out.println("Enter the name of the action you want to be performed");
+        String actionName = scanner.nextLine();
+        Action a = actions.get(actionName);
+    
+        System.out.println("Enter the delay in days:");
+        int days = scanner.nextInt();
+    
+        System.out.println("Enter the delay in hours:");
+        int hours = scanner.nextInt();
+    
+        System.out.println("Enter the delay in minutes:");
+        int minutes = scanner.nextInt();
+    
+        Rule r = null;
+        try {
+            r = new Rule(ruleName, t, a, days, hours, minutes);
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " Please insert again");
+            scanner.nextLine(); // Clear the buffer
+        }
+        return r;
+    }
+    
     
     private static void createTrigger(Map<String, Trigger> triggers, Scanner scanner) {
         System.out.println("Insert trigger's name");
