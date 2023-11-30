@@ -1,24 +1,46 @@
 package TriggerFolder;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.LocalDateTime;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 
 public class DayOfWeekTriggerTest {
 
     @Test
-    void testCheckTriggerWithValidDay() {
-        // Test when the current day is equal to the target day
-        DayOfWeekTrigger triggerSameDay = new DayOfWeekTrigger("Tuesday");
-        assertTrue(triggerSameDay.checkTrigger());
+void testCheckTriggerWithSameDay() {
+    // Define the desired format for "day month year"
+    
+    // Get the current date in the specified format
+    String currentDayFormatted = LocalDateTime.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase();
 
-        // Test when the current day is different from the target day
-        DayOfWeekTrigger triggerDifferentDay = new DayOfWeekTrigger("monday");
-        assertFalse(triggerDifferentDay.checkTrigger());
-    }
+    // Pass the formatted date as an argument to the DayOfWeekTrigger constructor
+    DayOfWeekTrigger triggerSameDay = new DayOfWeekTrigger(currentDayFormatted);
+
+    // Perform the assertion
+    assertTrue(triggerSameDay.checkTrigger());
+}
+
+@Test
+void testCheckTriggerWithDifferentDay() {
+    // Define the desired format for "day month year"
+    
+    // Get the current date minus one day in the specified format
+    String currentDayFormatted = LocalDateTime.now().minusDays(1).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase();
+
+    // Pass the formatted date as an argument to the DayOfWeekTrigger constructor
+    DayOfWeekTrigger triggerDifferentDay = new DayOfWeekTrigger(currentDayFormatted);
+
+    // Perform the assertion
+    assertFalse(triggerDifferentDay.checkTrigger());
+}
+
+
 
     @Test
     void testCheckTriggerWithInvalidDay() {
@@ -36,27 +58,9 @@ public class DayOfWeekTriggerTest {
         });
     }
 
-    @Test
-    void testCheckTriggerWithValidDayDoesNotThrow() {
-        // Test that the constructor does not throw an exception for a valid day
-        DayOfWeekTrigger triggerValidDay = new DayOfWeekTrigger("Monday");
-        assertDoesNotThrow(triggerValidDay::checkTrigger);
-        }
+  
 
-
-    @Test
-    void testCheckTriggerWithSunday() {
-        // Test when the current day is Sunday
-        DayOfWeekTrigger triggerSunday = new DayOfWeekTrigger("Sunday");
-        assertFalse(triggerSunday.checkTrigger());
-    }
-
-    @Test
-    void testCheckTriggerWithThursday() {
-        // Test when the current day is Thursday
-        DayOfWeekTrigger triggerThursday = new DayOfWeekTrigger("Tuesday");
-        assertTrue(triggerThursday.checkTrigger());
-    }
+   
 }
 
 
