@@ -2,7 +2,9 @@ package TriggerFolder;
 import java.time.LocalDate;
 
 // DayOfMonthTrigger class
-public class DayOfMonthTrigger {
+
+public class DayOfMonthTrigger implements Trigger{
+
     private int targetDayOfMonth;
 
     // Constructor
@@ -16,6 +18,7 @@ public class DayOfMonthTrigger {
     }
 
     // Method to check whether the rule should be activated
+    @Override
     public boolean checkTrigger() {
         // Get the current day of the month
         int currentDayOfMonth = LocalDate.now().getDayOfMonth();
