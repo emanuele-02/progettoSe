@@ -1,6 +1,6 @@
 import java.io.Serializable;
 import java.time.Duration;
-import java.util.Objects;
+
 
 import ActionFolder.Action;
 import TriggerFolder.Trigger;
@@ -15,10 +15,12 @@ public class Rule implements Serializable{
     private boolean alreadyTriggered;
     
 
+
     private int days;
     private int hours;
     private int minutes;
     private Duration period;
+    private long lastExecutionTime;
    
 
     public Rule(String ruleName, Trigger trigger, Action action, Boolean triggeredOnce) {
@@ -33,16 +35,13 @@ public class Rule implements Serializable{
     }
 
     public Rule(String ruleName, Trigger trigger, Action action, int days, int hours, int minutes) {
-        this.ruleName = ruleName;
-        this.trigger = trigger;
-        this.action = action;
-        this.isActive = true;
-        this.triggeredOnce = false; 
-        this.alreadyTriggered = false;
+        this(ruleName, trigger, action, false);
+
         this.days = days;
         this.hours = hours;
         this.minutes = minutes;
         updatePeriod();
+        this.lastExecutionTime=0;
         RuleManager ruleManager = RuleManager.getInstance();
         ruleManager.addRule(this);
     }
@@ -108,6 +107,14 @@ public class Rule implements Serializable{
         this.hours = newHours;
         this.minutes = newMinutes;
         updatePeriod();
+    }
+
+    public long getLastExecutionTime() {
+        return lastExecutionTime;
+    }
+
+    public void setLastExecutionTime(long lastExecutionTime) {
+        this.lastExecutionTime = lastExecutionTime;
     }
 
     @Override

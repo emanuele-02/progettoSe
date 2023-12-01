@@ -1,6 +1,6 @@
 import ActionFolder.Action;
-import ActionFolder.DialogBoxAction;
-import TriggerFolder.HourOfDayTrigger;
+import ActionFolder.*;
+import TriggerFolder.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class RuleManagerExecuteTest {
         HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
         Action action = new DialogBoxAction("Pippo");
         HourOfDayTrigger trigger2 = new HourOfDayTrigger(currentHour, currentMinute);
-        Action action2 = new DialogBoxAction("Pluto");
+        Action action2 = new AudioAction("TestAudioAction.wav");
         Rule rule = new Rule("TestRule", trigger, action,false);
         Rule rule2 = new Rule("TestRule2", trigger2, action2,false);
         // Simulate the passage of time to allow scheduled evaluation
