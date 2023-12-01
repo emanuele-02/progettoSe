@@ -10,9 +10,15 @@ public class WriteStringOnFileAction implements Action {
 
     // Constructor
     public WriteStringOnFileAction(String targetFilePath, String stringToWrite) {
-        this.targetFilePath = targetFilePath;
-        this.stringToWrite = stringToWrite;
+        if (!targetFilePath.toLowerCase().endsWith(".txt") && !targetFilePath.toLowerCase().endsWith(".text") ) {
+            throw new IllegalArgumentException("Error: Unsupported file format. Please provide a .txt file.");
+        
+       
     }
+    else {
+         this.targetFilePath = targetFilePath;
+        this.stringToWrite = stringToWrite;
+    }}
 
     @Override
     public void execute() {

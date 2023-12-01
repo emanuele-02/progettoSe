@@ -21,12 +21,13 @@ public class WriteStringOnFileActionTest {
     @Test
     void testExecuteNonValid()  {
         // Define the file path and content to write
-        String targetFilePath = "FileNotExisting.txt";
+        String targetFilePath = "FileNotExisting.ret";
         String stringToWrite = "useless";
 
-        // Action creation and execution
-        WriteStringOnFileAction writeAction = new WriteStringOnFileAction(targetFilePath, stringToWrite);
-        // Ensure that an IllegalArgumentException is thrown during execution
-        assertThrows(IllegalArgumentException.class, writeAction::execute);
+        // // Ensure that an IllegalArgumentException is thrown 
+        assertThrows(IllegalArgumentException.class,() -> new WriteStringOnFileAction (targetFilePath, stringToWrite));
+       
+        
+        
     }
 }
