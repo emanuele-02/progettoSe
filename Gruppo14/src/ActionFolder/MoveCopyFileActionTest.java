@@ -8,28 +8,28 @@ public class MoveCopyFileActionTest {
     @Test
     void testCopyExecute() {
         // Copy test: verify that execution does not throw exceptions
-        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "provaCopyMove.txt", "C:\\Users\\giolu\\Desktop\\ProvaMove1", "C:\\Users\\giolu\\Desktop\\ProvaMove2");
+        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "provaCopyMove.txt", "DirectoryProvaMove1", "DirectoryProvaMove2");
         assertDoesNotThrow(copyAction::execute);
     }
  
     @Test
     void testMoveExecute() {
         // Move test: verify that execution does not throw exceptions
-        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.MOVE,"provaCopyMove.txt", "C:\\Users\\giolu\\Desktop\\ProvaMove1", "C:\\Users\\giolu\\Desktop\\ProvaMove2");
+        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.MOVE,"provaCopyMove.txt", "DirectoryProvaMove1", "DirectoryProvaMove2");
         assertDoesNotThrow(copyAction::execute);
     }
 
     @Test
     void testInvalidSourceFile() {
         // Test with invalid source file
-        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "fileNotFound.txt", "C:\\Users\\giolu\\Desktop\\ProvaMove1", "C:\\Users\\giolu\\Desktop\\ProvaMove2");
+        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "fileNotFound.txt", "DirectoryProvaMove1", "DirectoryProvaMove2");
         assertThrows(IllegalArgumentException.class, copyAction::execute);
     }
 
     @Test
     void testInvalidDirectorySourceFile() {
         // Test with invalid source directory
-        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "ProvaMove.txt", "C:\\Users\\giolu\\Desktop\\ProvaMove3", "C:\\Users\\giolu\\Desktop\\ProvaMove2");
+        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "ProvaMove.txt", "DirectoryProvaMove3", "DirectoryProvaMove2");
         assertThrows(IllegalArgumentException.class, copyAction::execute);
     }
 
