@@ -10,7 +10,6 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         RuleManager rules= RuleManager.getInstance();
-        rules.loadRulesFromFile();
         Map<String,Trigger> triggers= new HashMap<>();
         Map<String,Action> actions= new HashMap<>();
         

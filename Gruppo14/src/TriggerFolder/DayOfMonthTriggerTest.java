@@ -4,21 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 public class DayOfMonthTriggerTest {
-    
+
     @Test
     void testCheckTrigger() {
-        // Test with a single day as the target
-        DayOfMonthTrigger triggerSingleDay = new DayOfMonthTrigger(27);
+        // Test with the current day as the target +1
+        DayOfMonthTrigger triggerSingleDay = new DayOfMonthTrigger(LocalDate.now().getDayOfMonth() + 1);
         assertFalse(triggerSingleDay.checkTrigger());
     }
 
     @Test
     void testCheckTrigger2() {
-        // Test with a single day as the target
-        DayOfMonthTrigger triggerSingleDay = new DayOfMonthTrigger(28);
+        // Test with the current day as the target
+        DayOfMonthTrigger triggerSingleDay = new DayOfMonthTrigger(LocalDate.now().getDayOfMonth());
         assertTrue(triggerSingleDay.checkTrigger());
     }
 
@@ -37,5 +39,4 @@ public class DayOfMonthTriggerTest {
             new DayOfMonthTrigger(0);
         });
     }
-    
 }

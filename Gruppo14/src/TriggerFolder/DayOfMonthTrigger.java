@@ -2,7 +2,9 @@ package TriggerFolder;
 import java.time.LocalDate;
 
 // DayOfMonthTrigger class
+
 public class DayOfMonthTrigger implements Trigger{
+
     private int targetDayOfMonth;
 
     // Constructor

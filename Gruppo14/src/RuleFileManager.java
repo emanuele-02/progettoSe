@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RuleFileManager {
@@ -17,13 +18,16 @@ public class RuleFileManager {
         }
     }
 
-    // suppress unchecked warnings
-    @SuppressWarnings("unchecked")
     public List<Rule> loadRulesFromFile() {
-        List<Rule> loadedRules = null;
+        List<Rule> loadedRules = new ArrayList<>();
+      
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(ruleFilePath))) {
             loadedRules = (List<Rule>) in.readObject();
             System.out.println("Rules successfully loaded.");
+        } catch (FileNotFoundException e) {
+            // When the program is launched for the first time having no existing save file
+            System.out.println("Creating a file for saving");
+            saveRulesToFile(loadedRules);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
