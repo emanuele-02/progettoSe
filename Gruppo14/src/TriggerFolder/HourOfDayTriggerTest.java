@@ -39,15 +39,23 @@ public class HourOfDayTriggerTest {
     public void testCheckTriggerAfterTargetTime() {
         // Get the current time.
         LocalTime currentTime = LocalTime.now();
-
+    
         // Extract the hour and minutes.
         int currentHour = currentTime.getHour();
         int currentMinute = currentTime.getMinute();
-
-        //targetTime is less than currentdate because of -1.
-        HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, (currentMinute-1));
+    
+        // Ensure currentMinute is not negative
+        if (currentMinute == 0) {
+            currentMinute = 59;
+        } else {
+            currentMinute--;
+        }
+    
+        // targetTime is less than current date because of -1.
+        HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
         assertTrue(trigger.checkTrigger(), "CheckTrigger should be true after target time");
     }
+    
 
     //Invalid hour or minute
     @Test
