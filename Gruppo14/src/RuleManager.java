@@ -20,7 +20,7 @@ public class RuleManager implements Serializable{
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduleRuleEvaluation();
         ruleFileManager = new RuleFileManager("rules.ser");
-        ruleFileManager.loadRulesFromFile();
+        ruleList=ruleFileManager.loadRulesFromFile();
         executorService = Executors.newFixedThreadPool(10);
     }
 
