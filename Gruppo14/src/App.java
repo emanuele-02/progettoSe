@@ -412,6 +412,7 @@ public class App {
         System.out.println("3. ExternalProgramAction");
         System.out.println("4. WriteStringOnFileAction");
         System.out.println("5. MoveCopyFileAction");
+        System.out.println("6. DeleteFileAction");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Clear the buffer
     
@@ -507,6 +508,17 @@ public class App {
                     System.out.println("Action  successfully created");
                     break;
 
+                        case 6:
+                        System.out.println("Insert the path of the source directory");
+                        String targetDirectoryForDelete = scanner.nextLine();
+                        System.out.println("Insert the name of the file you want to delete");
+                        String targetFileNameToDelete = scanner.nextLine();
+                        createdAction = new DeleteFileAction( targetDirectoryForDelete, targetFileNameToDelete);
+                        
+                        validInput=true;
+                        System.out.println("Action  successfully created");
+                        break;
+                        
                     default:
                         System.out.println("Invalid choice, retry");
                 }

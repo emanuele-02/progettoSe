@@ -21,7 +21,7 @@ public class ExternalProgramActionTest {
 
         System.setOut(System.out);
 
-        String attendedOutput = "['Hello, World']\n"+ "External program exited with \n code: " + "0";// Sostituisci con l'output atteso
+        String attendedOutput = "['Hello, World']\n"+ "External program exited with code: " + "0";// Sostituisci con l'output atteso
         assertEquals(attendedOutput, outputStreamCatched.toString());
     }
 
