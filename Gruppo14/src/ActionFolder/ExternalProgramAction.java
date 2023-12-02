@@ -12,12 +12,12 @@ public class ExternalProgramAction implements Action{
     private ProcessBuilder processBuilder;
    
 
-    public ExternalProgramAction( String command, String programPath, String ... args){
+    public ExternalProgramAction( String command, String programPath, String ... commandLineArgs ){
 
         this.command=command;
         this.programPath=programPath;
-        this.commandLineArgs= new String[args.length];
-        System.arraycopy(args, 0, this.commandLineArgs, 0, args.length);
+        this.commandLineArgs= new String[commandLineArgs.length];
+        System.arraycopy(commandLineArgs, 0, this.commandLineArgs, 0, commandLineArgs.length);
 
         this.processBuilder= new ProcessBuilder(command, programPath);
         this.processBuilder.command().addAll(Arrays.asList(commandLineArgs));

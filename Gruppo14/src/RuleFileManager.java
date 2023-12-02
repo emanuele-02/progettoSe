@@ -25,8 +25,8 @@ public class RuleFileManager {
             loadedRules = (List<Rule>) in.readObject();
             System.out.println("Rules successfully loaded.");
         } catch (FileNotFoundException e) {
-            // Il file non esiste, crea una nuova lista vuota
-            System.out.println("File non trovato. Creazione di un nuovo file.");
+            // When the program is launched for the first time having no existing save file
+            System.out.println("Creating a file for saving");
             saveRulesToFile(loadedRules);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
