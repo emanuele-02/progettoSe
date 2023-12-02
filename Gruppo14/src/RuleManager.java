@@ -20,7 +20,7 @@ public class RuleManager implements Serializable{
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduleRuleEvaluation();
         ruleFileManager = new RuleFileManager("rules.ser");
-        ruleFileManager.loadRulesFromFile();
+        ruleList=ruleFileManager.loadRulesFromFile();
         executorService = Executors.newFixedThreadPool(10);
     }
 
@@ -80,57 +80,49 @@ public class RuleManager implements Serializable{
         }
     }
 
-    // Check if the rule should be executed based on trigger and activation status
     private boolean shouldExecuteRule(Rule rule) {
-        return rule.getTrigger().checkTrigger() && rule.isActive() && 
-            !(rule.isTriggeredOnce() && rule.isAlreadyTriggered());
+        return rule.getTrigger().checkTrigger() && rule.isActive() && !(rule.isTriggeredOnce() && rule.isAlreadyTriggered());
     }
 
+    /*Executes the specified rule based on its configuration, including periodic execution,
+     one-time execution, and scheduling future executions.*/
     private void executeRule(Rule rule) {
         if (rule.getPeriod() != null) {
-            if (rule.isAlreadyTriggered()) {
-                // Calculate the time elapsed since the last execution
-                long lastExecutionTime = rule.getLastExecutionTime();
-                long currentTime = System.currentTimeMillis();
-                long elapsedTime = currentTime - lastExecutionTime;
+            long elapsedTime = System.currentTimeMillis() - rule.getLastExecutionTime();
 
-                if (elapsedTime >= rule.getPeriod().toMillis()) {
-                    // Time elapsed is greater or equal to the specified period, execute the rule
-                    rule.getAction().execute();
-                    rule.setLastExecutionTime(currentTime);
-                    // Schedule future executions
-                    scheduleRuleExecution(rule);
-                } else {
-                    // Time elapsed is less than the period, schedule the next execution
-                    scheduleRuleExecution(rule, rule.getPeriod().toMillis() - elapsedTime);
-                }
-            } else {
-                // Execute the rule directly and set as already triggered
+            // Check if a periodic rule has already been triggered and if enough time has passed
+            if (rule.isAlreadyTriggered() && elapsedTime >= rule.getPeriod().toMillis()) {
+                // Execute, recalculate last execution time and reschedule execution
+                executorService.submit(() -> rule.getAction().execute());
+                rule.setLastExecutionTime(System.currentTimeMillis());
+                scheduleRuleExecution(rule);
+            } 
+            // Check if a periodic rule has not been triggered yet
+            else if (!rule.isAlreadyTriggered()) {
+                // Executes, labels the rule as already executed and recalculates next execution time
                 executorService.submit(() -> rule.getAction().execute());
                 rule.setAlreadyTriggered(true);
                 rule.setLastExecutionTime(System.currentTimeMillis());
-                // Schedule future executions
                 scheduleRuleExecution(rule);
             }
         } else {
-            // Execute the rule directly without Period
+            // Execute the rule directly if it's not periodic
             executorService.submit(() -> rule.getAction().execute());
             rule.setAlreadyTriggered(true);
         }
     }
 
+    //Schedules the execution of the specified rule based on its periodicity + check
     private void scheduleRuleExecution(Rule rule) {
         scheduler.schedule(() -> {
-            executeRule(rule);
+            // Verifica prima di eseguire l'azione
+            if (shouldExecuteRule(rule)) {
+                executeRule(rule);
+            }
         }, rule.getPeriod().toMillis(), TimeUnit.MILLISECONDS);
     }
+    
 
-    // Schedule the rule for re-evaluation after the specified delay
-    private void scheduleRuleExecution(Rule rule, long delayMillis) {
-        scheduler.schedule(() -> {
-            executeRule(rule);
-        }, delayMillis, TimeUnit.MILLISECONDS);
-    }
 
     //scheduleAtFixedRate schedules the periodic execution of a task
     private void scheduleRuleEvaluation() {

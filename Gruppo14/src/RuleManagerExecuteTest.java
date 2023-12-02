@@ -111,7 +111,9 @@ public class RuleManagerExecuteTest {
         HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
         Action action = new DialogBoxAction("Pippo");
         Rule rule = new Rule("TestRule", trigger, action, 0,0,1);
-
+        simulateTimePassing(8);
+        rule.deactivate();
+        rule.activate();
         //2 message Pippo
         simulateTimePassing(500);
     }

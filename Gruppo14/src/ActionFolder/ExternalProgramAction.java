@@ -9,7 +9,7 @@ public class ExternalProgramAction implements Action{
     private String command;
     private String programPath;
     private String[] commandLineArgs;
-    private ProcessBuilder processBuilder;
+    private transient ProcessBuilder processBuilder; // transient for no serialize
    
 
     public ExternalProgramAction( String command, String programPath, String ... commandLineArgs ){
