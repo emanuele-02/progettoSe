@@ -30,4 +30,17 @@ public class WriteStringOnFileActionTest {
         
         
     }
+
+     @Test
+    void testExecuteNonExistingFile()  {
+        // Define the file path and content to write
+        String targetFilePath = "CiaoNonEsisto.txt";
+        String stringToWrite = "useless";
+
+        // // Ensure that an IllegalArgumentException is thrown 
+        assertThrows(IllegalArgumentException.class,() -> new WriteStringOnFileAction (targetFilePath, stringToWrite));
+       
+        
+        
+    }
 }

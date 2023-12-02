@@ -19,8 +19,8 @@ public class AudioActionTest {
 
     @Test
     void testFileNotExisting(){
-        AudioAction notExistingAudioAction = new AudioAction(NON_EXISTENT_FILE_PATH);
-        assertThrows(IllegalArgumentException.class, notExistingAudioAction::execute);
+     
+        assertThrows(IllegalArgumentException.class,() -> new  AudioAction (NON_EXISTENT_FILE_PATH));
 
     }
 

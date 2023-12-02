@@ -13,7 +13,7 @@ public class DayOfMonthTriggerTest {
     @Test
     void testCheckTrigger() {
         // Test with the current day as the target - 1
-        DayOfMonthTrigger triggerSingleDay = new DayOfMonthTrigger(LocalDate.now().getDayOfMonth() - 1);
+        DayOfMonthTrigger triggerSingleDay = new DayOfMonthTrigger(LocalDate.now().getDayOfMonth() + 1);
         assertFalse(triggerSingleDay.checkTrigger());
     }
 

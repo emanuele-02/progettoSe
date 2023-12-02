@@ -18,19 +18,20 @@ public class AudioAction implements Action {
             }
             else 
                  this.filePath = filePath;
-        
+                 File audioFile = new File(filePath); 
+                  if (!audioFile.exists()) {
+                throw new IllegalArgumentException("Error: Audio file does not exist.");
+            }
     }
 
     // Method to execute the audio playback
     @Override
     public void execute() {
         // Create a File object with the provided file path
-        File audioFile = new File(filePath); 
+       
 
         // If the audio file does not exist, throw an exception
-        if (!audioFile.exists()) {
-                throw new IllegalArgumentException("Error: Audio file does not exist.");
-            }
+             File audioFile = new File(filePath); 
 
         try {
             // Obtain an AudioInputStream from the audio file

@@ -22,15 +22,14 @@ public class MoveCopyFileActionTest {
     @Test
     void testInvalidSourceFile() {
         // Test with invalid source file
-        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "fileNotFound.txt", "DirectoryProvaMove1", "DirectoryProvaMove2");
-        assertThrows(IllegalArgumentException.class, copyAction::execute);
+        assertThrows(IllegalArgumentException.class,() -> new MoveCopyFileAction(OperationFileType.COPY, "fileNotFound.txt", "DirectoryProvaMove1", "DirectoryProvaMove2") );
     }
 
     @Test
     void testInvalidDirectorySourceFile() {
         // Test with invalid source directory
-        MoveCopyFileAction copyAction = new MoveCopyFileAction(OperationFileType.COPY, "ProvaMove.txt", "DirectoryProvaMove3", "DirectoryProvaMove2");
-        assertThrows(IllegalArgumentException.class, copyAction::execute);
+       
+        assertThrows(IllegalArgumentException.class, () ->new MoveCopyFileAction(OperationFileType.COPY, "ProvaMove.txt", "DirectoryProvaMove3", "DirectoryProvaMove2"));
     }
 
 }
