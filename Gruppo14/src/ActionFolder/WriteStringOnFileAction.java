@@ -16,17 +16,19 @@ public class WriteStringOnFileAction implements Action {
        
     }
     else {
-         this.targetFilePath = targetFilePath;
+        this.targetFilePath = targetFilePath;
         this.stringToWrite = stringToWrite;
+        File file = new File(targetFilePath);
+        if (!file.exists()) 
+        throw new IllegalArgumentException("The file does not exist: ");
     }}
 
     @Override
     public void execute() {
-        File file = new File(targetFilePath);
+        
 
         // Check if the file exists
-        if (!file.exists()) 
-            throw new IllegalArgumentException("The file does not exist: ");
+      
         
         // Write to the file
         try (FileWriter fileWriter = new FileWriter(targetFilePath, true)) {

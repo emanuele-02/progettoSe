@@ -289,11 +289,12 @@ public class App {
         }
 
         while (!validInput && !triggers.containsKey(name)) {
-            System.out.println("Which type of action do you want to create?");
+            System.out.println("Which type of trigger do you want to create?");
             System.out.println("1. HourOfDayTrigger");
             System.out.println("2. DateTrigger");
             System.out.println("3. DayOfMonthTrigger");
             System.out.println("4. DayOfWeekTrigger");
+           
             int choice= scanner.nextInt();
             scanner.nextLine();
             try{
@@ -329,7 +330,7 @@ public class App {
             
                         t = new HourOfDayTrigger(hour, minute);
                         validInput = true;
-
+                        System.out.println("Trigger successfully created");
                         break;
 
                     case 2:
@@ -339,7 +340,7 @@ public class App {
 
                         t= new DateTrigger(date);
                         validInput=true;
-                    
+                        System.out.println("Trigger successfully created");
                         break;
 
                     case 3:
@@ -350,7 +351,7 @@ public class App {
 
                         t= new DayOfMonthTrigger(targetDayOfmonth);
                         validInput=true;
-                    
+                        System.out.println("Trigger successfully created");
                         break;
 
                     case 4:
@@ -360,11 +361,14 @@ public class App {
 
                         t= new DayOfWeekTrigger(targetDayOfWeek);
                         validInput=true;
-                    
+                        System.out.println("Trigger successfully created");
                         break;
 
+                    
+
+
                     default:
-                        System.out.println("Invalid choice, retry");
+                         System.out.println("Invalid choice, retry");
                 }
 
                 if (t != null) {
@@ -406,7 +410,8 @@ public class App {
         System.out.println("1. AudioAction");
         System.out.println("2. DialogBoxAction");
         System.out.println("3. ExternalProgramAction");
-    
+        System.out.println("4. WriteStringOnFileAction");
+        System.out.println("5. MoveCopyFileAction");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Clear the buffer
     
@@ -435,6 +440,7 @@ public class App {
                         String path = scanner.nextLine();
                         createdAction = new AudioAction(path);
                         validInput=true;
+                        System.out.println("Action  successfully created");
                         break;
         
                     case 2:
@@ -442,6 +448,7 @@ public class App {
                         String message = scanner.nextLine();
                         createdAction = new DialogBoxAction(message);
                         validInput=true;
+                        System.out.println("Action  successfully created");
                         break;
                     case 3:
                         System.out.println("Insert the command to do to run the program");
@@ -464,8 +471,42 @@ public class App {
                         }
                         createdAction= new ExternalProgramAction(command, path1, args);
                         validInput=true;
+                        System.out.println("Action  successfully created");
                         break;
-  
+                        
+                        case 4:
+                         System.out.println("Insert the string you want to write");
+                         String stringToWrite = scanner.nextLine();
+                         System.out.println("Insert the path to the file you want the string to be written to");
+                         String targetFilePath = scanner.nextLine();
+                         createdAction = new WriteStringOnFileAction(targetFilePath,stringToWrite);
+                         validInput=true;
+                         System.out.println("Action  successfully created");
+                         break;
+
+                         case 5:
+                       
+                          System.out.println("Insert the operation you want to perform (Move or Copy)");
+                          String operation = scanner.nextLine();
+                          System.out.println("Insert the name of the file on which the operation is to be performed");
+                          String targetFileName = scanner.nextLine();
+                          System.out.println("Insert the path of the source directory");
+                          String targetDirectory = scanner.nextLine();
+                          System.out.println("Insert the path of the destination directory");
+                          String destinationDirectory = scanner.nextLine();
+                      
+                            if (operation.equalsIgnoreCase("MOVE")) {
+                                createdAction = new MoveCopyFileAction(OperationFileType.MOVE, targetFileName, targetDirectory, destinationDirectory);
+                            } else if (operation.equalsIgnoreCase("COPY")) {
+                                createdAction = new MoveCopyFileAction(OperationFileType.COPY, targetFileName, targetDirectory, destinationDirectory);
+                            } else {
+                                throw new IllegalArgumentException("Error: You have to insert Move or Copy");
+                            }
+              
+                    validInput = true;
+                    System.out.println("Action  successfully created");
+                    break;
+
                     default:
                         System.out.println("Invalid choice, retry");
                 }

@@ -18,6 +18,20 @@ public class MoveCopyFileAction implements Action {
         this.targetFileName = targetFileName;
         this.targetDirectory = targetDirectory;
         this.destinationDirectory = destinationDirectory;
+         
+        Path sourcePath = Paths.get(targetDirectory, targetFileName);
+
+        // Various checks to verify the existence of the file and direcotry 
+        if (!Files.exists(sourcePath)) {
+            throw new IllegalArgumentException("Invalid source file: " + sourcePath);
+        }
+
+     
+
+        if (operation != OperationFileType.COPY && operation != OperationFileType.MOVE) {
+        throw new IllegalArgumentException("Invalid operation type: " + operation);
+    }
+
     }
 
     // execute() method implemented from the Action interface
@@ -25,9 +39,6 @@ public class MoveCopyFileAction implements Action {
     public void execute() {
         // Build full paths for the source and destination files
         Path sourcePath = Paths.get(targetDirectory, targetFileName);
-        if (!Files.exists(sourcePath)) {
-            throw new IllegalArgumentException("Invalid source file: " + sourcePath);
-        }
         Path destinationPath = Paths.get(destinationDirectory, targetFileName);
 
         try {
