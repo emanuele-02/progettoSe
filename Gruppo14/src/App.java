@@ -1,4 +1,6 @@
 import ActionFolder.*;
+import RuleFolder.Rule;
+import RuleFolder.RuleManager;
 import TriggerFolder.*;
 import java.util.HashMap;
 import java.util.List;

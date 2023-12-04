@@ -1,6 +1,6 @@
+package RuleFolder;
 import java.io.Serializable;
 import java.time.Duration;
-
 
 import ActionFolder.Action;
 import TriggerFolder.Trigger;

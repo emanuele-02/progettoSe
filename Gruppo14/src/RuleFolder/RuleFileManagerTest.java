@@ -1,3 +1,5 @@
+package RuleFolder;
+
 import org.junit.jupiter.api.Test;
 
 import ActionFolder.Action;

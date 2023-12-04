@@ -1,3 +1,5 @@
+package RuleFolder;
+
 import ActionFolder.Action;
 import ActionFolder.*;
 import TriggerFolder.*;
