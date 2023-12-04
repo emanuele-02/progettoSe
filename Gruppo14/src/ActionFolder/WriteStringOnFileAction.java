@@ -2,11 +2,14 @@ package ActionFolder;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
+import CounterFolder.*;
 
 // WriteStringOnFileAction class
 public class WriteStringOnFileAction implements Action {
     private String targetFilePath;
     private String stringToWrite;
+    
+    
 
     // Constructor
     public WriteStringOnFileAction(String targetFilePath, String stringToWrite) {
@@ -18,6 +21,7 @@ public class WriteStringOnFileAction implements Action {
     else {
         this.targetFilePath = targetFilePath;
         this.stringToWrite = stringToWrite;
+        
         File file = new File(targetFilePath);
         if (!file.exists()) 
         throw new IllegalArgumentException("The file does not exist: ");
@@ -26,13 +30,14 @@ public class WriteStringOnFileAction implements Action {
     @Override
     public void execute() {
         
-
-        // Check if the file exists
+        MapCounter counter = MapCounter.getInstance();
+        String substitutedString = counter.substituteVariables(stringToWrite);
       
         
         // Write to the file
+         
         try (FileWriter fileWriter = new FileWriter(targetFilePath, true)) {
-            fileWriter.write(stringToWrite + " ");
+            fileWriter.write(substitutedString + " ");
         } catch (IOException e) {
             // Handle the IO exception (you can print the stack trace or handle it differently)
             e.printStackTrace();
