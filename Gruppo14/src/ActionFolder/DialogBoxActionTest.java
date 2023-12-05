@@ -1,28 +1,36 @@
 package ActionFolder;
 import org.junit.jupiter.api.Test;
+
+import CounterFolder.MapCounter;
+
 import java.io.ByteArrayOutputStream;
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DialogBoxActionTest {
    
     @Test
     void testValidExecute() {
-        // Captures system output for testing
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        
-        // Execute the action by passing a valid message as parameter
-        DialogBoxAction validDialogBoxAction = new DialogBoxAction("Hello!");
+       
+         MapCounter counter = MapCounter.getInstance();
+        counter.createCounter("name", 42);
+
+        // Execute the action by passing a valid message as parameter 
+        DialogBoxAction validDialogBoxAction = new DialogBoxAction("Hello! $name");
         validDialogBoxAction.execute();
+       
+
+    
+    
 
         }
     
-
+ 
      @Test
     void testStringToLongExecute() {
-        // Captures system output for testing
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
-            
+      
             // Execute the action by passing a message exceeding the maximum length
             String longMessage = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\r\n" + //
                     "";

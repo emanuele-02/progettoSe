@@ -51,4 +51,47 @@ public class ExternalProgramAction implements Action{
 
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((command == null) ? 0 : command.hashCode());
+        result = prime * result + ((programPath == null) ? 0 : programPath.hashCode());
+        result = prime * result + Arrays.hashCode(commandLineArgs);
+        result = prime * result + ((processBuilder == null) ? 0 : processBuilder.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ExternalProgramAction other = (ExternalProgramAction) obj;
+        if (command == null) {
+            if (other.command != null)
+                return false;
+        } else if (!command.equals(other.command))
+            return false;
+        if (programPath == null) {
+            if (other.programPath != null)
+                return false;
+        } else if (!programPath.equals(other.programPath))
+            return false;
+        if (!Arrays.equals(commandLineArgs, other.commandLineArgs))
+            return false;
+        if (processBuilder == null) {
+            if (other.processBuilder != null)
+                return false;
+        } else if (!processBuilder.equals(other.processBuilder))
+            return false;
+        return true;
+    }
+
+
+    
 }

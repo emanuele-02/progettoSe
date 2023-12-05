@@ -59,4 +59,47 @@ public class MoveCopyFileAction implements Action {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((operation == null) ? 0 : operation.hashCode());
+        result = prime * result + ((targetFileName == null) ? 0 : targetFileName.hashCode());
+        result = prime * result + ((targetDirectory == null) ? 0 : targetDirectory.hashCode());
+        result = prime * result + ((destinationDirectory == null) ? 0 : destinationDirectory.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        MoveCopyFileAction other = (MoveCopyFileAction) obj;
+        if (operation != other.operation)
+            return false;
+        if (targetFileName == null) {
+            if (other.targetFileName != null)
+                return false;
+        } else if (!targetFileName.equals(other.targetFileName))
+            return false;
+        if (targetDirectory == null) {
+            if (other.targetDirectory != null)
+                return false;
+        } else if (!targetDirectory.equals(other.targetDirectory))
+            return false;
+        if (destinationDirectory == null) {
+            if (other.destinationDirectory != null)
+                return false;
+        } else if (!destinationDirectory.equals(other.destinationDirectory))
+            return false;
+        return true;
+    }
+
+
+    
 }
