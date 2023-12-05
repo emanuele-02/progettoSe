@@ -8,6 +8,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class App {
 
@@ -139,7 +140,24 @@ public class App {
 
 
         }
+
+        // print of the avaible triggers
+        Set<String> setTriggerKey = triggers.keySet();
+        StringBuilder triggerStringSet = new StringBuilder();
+
         
+        for (String chiave : setTriggerKey) {
+            triggerStringSet.append(chiave).append(", ");
+        }
+
+        // Rimuovere l'ultima virgola e spazio in eccesso
+        if (triggerStringSet.length() > 0) {
+            triggerStringSet.setLength(triggerStringSet.length() - 2);
+        }
+
+        // Stampare le chiavi concatenate
+        System.out.println("Avaible Triggers: " + triggerStringSet.toString());
+    
         System.out.println("Enter the name of the trigger you want to trigger the rule");
         String triggerName = scanner.nextLine();
 
@@ -159,7 +177,20 @@ public class App {
 
         Trigger t = triggers.get(triggerName);
         
+        // print of the avaible action
+          Set<String> setActionKey = actions.keySet();
+          StringBuilder actionStringSet  = new StringBuilder();
 
+        // Iterare sul set delle chiavi e concatenarle nella stringa
+        for (String chiave : setActionKey) {
+            actionStringSet.append(chiave).append(", ");
+        }
+
+        // Rimuovere l'ultima virgola e spazio in eccesso
+        if (actionStringSet.length() > 0) {
+            actionStringSet.setLength(actionStringSet.length() - 2);
+        }
+        System.out.println("Avaible Actions: " + actionStringSet.toString());
         System.out.println("Enter the name of the action you want to be performed");
         String actionName = scanner.nextLine();
 
