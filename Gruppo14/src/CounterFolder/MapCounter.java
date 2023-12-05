@@ -36,6 +36,7 @@ public class MapCounter {
             return counters.get(name);
         } else {
             throw new IllegalArgumentException("Counter with name '" + name + "' does not exist.");
+            
         }
     }
 

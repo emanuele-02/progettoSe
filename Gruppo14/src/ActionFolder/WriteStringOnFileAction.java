@@ -43,5 +43,40 @@ public class WriteStringOnFileAction implements Action {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((targetFilePath == null) ? 0 : targetFilePath.hashCode());
+        result = prime * result + ((stringToWrite == null) ? 0 : stringToWrite.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        WriteStringOnFileAction other = (WriteStringOnFileAction) obj;
+        if (targetFilePath == null) {
+            if (other.targetFilePath != null)
+                return false;
+        } else if (!targetFilePath.equals(other.targetFilePath))
+            return false;
+        if (stringToWrite == null) {
+            if (other.stringToWrite != null)
+                return false;
+        } else if (!stringToWrite.equals(other.stringToWrite))
+            return false;
+        return true;
+    }
+
+
+
+    
 }
 

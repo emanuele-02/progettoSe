@@ -45,4 +45,34 @@ public class DateTrigger implements Trigger {
         // Return true only if the date provided by the user is equal to or before the current date
         return currentDate.isEqual(parsedTargetDate) || currentDate.isAfter(parsedTargetDate);
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((targetDate == null) ? 0 : targetDate.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        DateTrigger other = (DateTrigger) obj;
+        if (targetDate == null) {
+            if (other.targetDate != null)
+                return false;
+        } else if (!targetDate.equals(other.targetDate))
+            return false;
+        return true;
+    }   
+
+
+
+
+
 }

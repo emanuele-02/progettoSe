@@ -62,7 +62,11 @@ public class WriteStringOnFileActionTest {
          WriteStringOnFileAction writeAction = new WriteStringOnFileAction(targetFilePath, substitutedString);
          writeAction.execute();
         // Ensure that the substitution is correct
-       // assertEquals("Hello, 42! :)", substitutedString);
+        assertEquals("Hello, 42! :)", substitutedString);
+        
     }
+
+
+    
 }
 
