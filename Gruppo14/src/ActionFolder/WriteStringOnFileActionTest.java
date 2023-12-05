@@ -1,7 +1,10 @@
 package ActionFolder;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
+
+import CounterFolder.MapCounter;
 
 // WriteStringOnFileActionTest class
 public class WriteStringOnFileActionTest {
@@ -39,8 +42,31 @@ public class WriteStringOnFileActionTest {
 
         // // Ensure that an IllegalArgumentException is thrown 
         assertThrows(IllegalArgumentException.class,() -> new WriteStringOnFileAction (targetFilePath, stringToWrite));
-       
         
         
     }
+
+@Test
+    void testSubstituteVariables() {
+        // Define the file path and content to write
+        String targetFilePath = "testWriteOnFile.txt";
+        String stringToWrite = "Hello, $name! :)";
+
+
+        // Set up a counter and create a counter variable
+        MapCounter counter = MapCounter.getInstance();
+        counter.createCounter("name", 42);
+        String substitutedString = counter.substituteVariables(stringToWrite);
+        // Perform the substitution
+         // Action creation
+         WriteStringOnFileAction writeAction = new WriteStringOnFileAction(targetFilePath, substitutedString);
+         writeAction.execute();
+        // Ensure that the substitution is correct
+        assertEquals("Hello, 42! :)", substitutedString);
+        
+    }
+
+
+    
 }
+

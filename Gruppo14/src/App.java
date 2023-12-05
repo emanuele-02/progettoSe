@@ -1,6 +1,10 @@
 import ActionFolder.*;
+import CounterFolder.*;
+import RuleFolder.Rule;
+import RuleFolder.RuleManager;
 import TriggerFolder.*;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -12,68 +16,92 @@ public class App {
         RuleManager rules= RuleManager.getInstance();
         Map<String,Trigger> triggers= new HashMap<>();
         Map<String,Action> actions= new HashMap<>();
-        
+        MapCounter mapCounter = MapCounter.getInstance(); 
         while (true) {
         
-            System.out.println("1. Create a Rule (remember that you have to create a trigger and an action for this rule before creating it)");
-            System.out.println("2. Create a Periodical Rule (remember that you have to create a trigger and an action for this rule before creating it)");
-            System.out.println("3. Create a Trigger");
-            System.out.println("4. Create an Action");
-            System.out.println("5. View existing rules");
-            System.out.println("6. Remove a Rule");
-            System.out.println("7. Activate Rule");
-            System.out.println("8. Deactivate Rule");
-            System.out.println("9. Save set of Rule");
-            System.out.println("10. Exit");
+            System.out.println("╔══════════════════════════════════════════════════╗");
+            System.out.println("║                Rule Management System            ║");
+            System.out.println("╠══════════════════════════════════════════════════╣");
+            System.out.println("║ 1. Create a Rule                                 ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 2. Create a Periodical Rule                      ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 3. Create a Trigger                              ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 4. Create an Action                              ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 5. View existing rules                           ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 6. Remove a Rule                                 ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 7. Activate Rule                                 ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 8. Deactivate Rule                               ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 9. Save set of Rules to File                     ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 10. Create a Counter                             ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 11. Exit                                         ║");
+            System.out.println("╚══════════════════════════════════════════════════╝");
+            System.out.println("\n╔═════════════════════════════════════════════════════════════════╗");
+            System.out.print("║  Enter the number corresponding to your choice and press Enter  ║");
+            System.out.println("\n╚═════════════════════════════════════════════════════════════════╝");
             
-            int choice = scanner.nextInt();
-            scanner.nextLine();  
+           try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();  // Consumes the newline left in the buffer
 
-            switch (choice) {
-                case 1:
-                    Rule rule = createRule(triggers, actions,rules, scanner);
-                    break;
-                case 2:
-                    Rule rule2 = createPeriodicRule(triggers, actions,rules, scanner);
-                    break;
-                case 3:
-                    createTrigger(triggers, scanner);
-                    break;
+                switch (choice) {
+                    case 1:
+                        Rule rule = createRule(triggers, actions, rules, scanner);
+                        break;
+                    case 2:
+                        Rule rule2 = createPeriodicRule(triggers, actions, rules, scanner);
+                        break;
+                    case 3:
+                        createTrigger(triggers, scanner);
+                        break;
+                    case 4:
+                        createAction(actions, scanner);
+                        break;
+                    case 5:
+                        displayRules(rules);
+                        break;
+                    case 6:
+                        removeRule(rules, scanner);
+                        break;
+                    case 7:
+                        activateRuleByName(rules, scanner);
+                        break;
+                    case 8:
+                        deactivateRuleByName(rules, scanner);
+                        break;
+                    case 9:
+                        rules.saveRulesToFile();
+                        break;
+                    case 10:
 
-                case 4:
-                    createAction(actions, scanner);
-                    break;
-
-                case 5:
-                    displayRules(rules);
-                    break;
-
-                case 6:
-                    removeRule(rules, scanner);
-                    break;
-
-                case 7:
-                    activateRuleByName(rules, scanner);
-                    break;
-
-                case 8:
-                    deactivateRuleByName(rules, scanner);
-                    break;
-                case 9:
-                    rules.saveRulesToFile();
-                    break;
-                case 10:
-                    System.out.println("Bye!");
-                    rules.getRuleList().clear();
-                    rules.shutdown();
-                    System.exit(0);
+                    createCounter(scanner, mapCounter);
                     break;
 
-                default:
-                    System.out.println("Invalid choice, retry");
+                    case 11:
+                        System.out.println("Bye!");
+                        rules.getRuleList().clear();
+                        rules.shutdown();
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Invalid choice, please retry");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine();  // Consumes the invalid input to avoid an infinite loop
             }
         }
     }
+
+    
 
     private static Rule createRule(Map<String, Trigger> triggers, Map<String, Action> actions, RuleManager rules, Scanner scanner) {
         
@@ -412,6 +440,7 @@ public class App {
         System.out.println("3. ExternalProgramAction");
         System.out.println("4. WriteStringOnFileAction");
         System.out.println("5. MoveCopyFileAction");
+        System.out.println("6. DeleteFileAction");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Clear the buffer
     
@@ -507,6 +536,17 @@ public class App {
                     System.out.println("Action  successfully created");
                     break;
 
+                        case 6:
+                        System.out.println("Insert the path of the source directory");
+                        String targetDirectoryForDelete = scanner.nextLine();
+                        System.out.println("Insert the name of the file you want to delete");
+                        String targetFileNameToDelete = scanner.nextLine();
+                        createdAction = new DeleteFileAction( targetDirectoryForDelete, targetFileNameToDelete);
+                        
+                        validInput=true;
+                        System.out.println("Action  successfully created");
+                        break;
+                        
                     default:
                         System.out.println("Invalid choice, retry");
                 }
@@ -630,5 +670,42 @@ public class App {
             }
         }
     }
+
+
+    private static void createCounter(Scanner scanner, MapCounter mapCounter) {
+        System.out.println("Insert counter name:");
+        String name = scanner.nextLine();
+         // Validate counter name
+    if (name.trim().isEmpty()) {
+        System.out.println("Error: Counter name cannot be empty. Please retry.");
+        return;
+    }
+
+    // Check if the counter name already exists
+    try {
+        mapCounter.getCounterValue(name);
+        System.out.println("Error: Counter with the name '" + name + "' already exists. Please choose a different name.");
+        return;
+    } catch (IllegalArgumentException e) {
+        // Counter does not exist, continue
+    }
+
+        System.out.println("Insert " + name + " value:");
+
+        // Validate initial value
+        int initialValue;
+        try {
+            initialValue = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Invalid initial value. Please enter a valid integer.");
+            return;
+        }
+    
+        // Chiamata al metodo createCounter della tua istanza di MapCounter
+        mapCounter.createCounter(name, initialValue);
+    
+        System.out.println("Contatore creato con successo.");
+    }
+
 
 }

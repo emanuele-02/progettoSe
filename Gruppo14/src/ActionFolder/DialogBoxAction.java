@@ -1,5 +1,7 @@
 package ActionFolder;
 import javax.swing.JOptionPane;
+import CounterFolder.*;
+
 
 // Implementation of the Action interface to display a dialog box with a message
 public class DialogBoxAction implements Action {
@@ -23,7 +25,9 @@ public class DialogBoxAction implements Action {
     public void execute() {
         // Display a dialog box containing the message
         // Parameters: null (for a default frame), message, title, message type
-        JOptionPane.showMessageDialog(null, message, "Dialog Box", JOptionPane.INFORMATION_MESSAGE);
+        MapCounter counter = MapCounter.getInstance();
+        String substitutedString = counter.substituteVariables(message);
+        JOptionPane.showMessageDialog(null, substitutedString, "Dialog Box", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override

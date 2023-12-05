@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-Hello, World! :) Hello, World! :) Ciao, ti scrivo dal main Hello, World! :) Hello, World! :) 
-=======
-Hello, World! :) Hello, World! :) Hello, World! :) 
->>>>>>> ffe0cf2d6a421e8bbe6642942f67de29f53cfea7
+Hello, 42! :) Hello, World! :) Hello, 42! :) 
