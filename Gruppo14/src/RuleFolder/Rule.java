@@ -116,6 +116,14 @@ public class Rule implements Serializable{
     public void setLastExecutionTime(long lastExecutionTime) {
         this.lastExecutionTime = lastExecutionTime;
     }
+    
+    public void setTrigger(Trigger trigger) {
+        this.trigger = trigger;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
 
     @Override
     public int hashCode() {
