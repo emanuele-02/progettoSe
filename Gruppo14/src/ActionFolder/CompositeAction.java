@@ -30,5 +30,9 @@ public class CompositeAction implements Action{
         }
     }
 
+    public List<Action> getActions() {
+        return new ArrayList<>(actions);
+    }
+    
     
 }
