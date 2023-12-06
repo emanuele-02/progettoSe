@@ -43,7 +43,9 @@ public class App {
             System.out.println("║                                                  ║");
             System.out.println("║ 10. Create a Counter                             ║");
             System.out.println("║                                                  ║");
-            System.out.println("║ 11. Exit                                         ║");
+            System.out.println("║ 11. Create a set of Action                       ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 12. Exit                                         ║");
             System.out.println("╚══════════════════════════════════════════════════╝");
             System.out.println("\n╔═════════════════════════════════════════════════════════════════╗");
             System.out.print("║  Enter the number corresponding to your choice and press Enter  ║");
@@ -87,6 +89,12 @@ public class App {
                     break;
 
                     case 11:
+                        //createSetOfAction( actions, scanner);
+
+
+
+
+                    case 12:
                         System.out.println("Bye!");
                         rules.getRuleList().clear();
                         rules.shutdown();
@@ -432,14 +440,29 @@ public class App {
                         break;
 
                     case 5:
-                            System.out.println("Enter the output value of the expected external program:");
-                            int targetExitValue= scanner.nextInt();
                             System.out.println("Insert the command to do to run the program:");
                             String command = scanner.nextLine();
                             System.out.println("Insert the path of the program that you want to run");
                             String path= scanner.nextLine();
+                             System.out.println("How many command line arguments do you want to pass?");
+                        while(!scanner.hasNextInt()){
+                            scanner.nextLine();
+                            System.out.println("Error: You have to insert a number!");
+                        }
+                        int n= scanner.nextInt();
+                        scanner.nextLine();
 
-
+                        System.out.println("Insert your command line arguments");
+                        String[] args= new String[n];
+                        for(int i=0; i<n; i++){
+                            args[i]=scanner.nextLine();
+                        }
+                        System.out.println("Enter the output value of the expected external program:");
+                            int targetExitValue= scanner.nextInt();
+                        t= new ExternalProgramTrigger(targetExitValue, command, path, args );
+                        validInput= true;
+                        System.out.println("Trigger successfully created");
+                        break;
 
                     default:
                          System.out.println("Invalid choice, retry");
@@ -534,10 +557,11 @@ public class App {
                         System.out.println("Action  successfully created");
                         break;
                     case 3:
-                        System.out.println("Insert the command to do to run the program");
-                        String command= scanner.nextLine();
                         System.out.println("Insert the path of the program that you want to run");
-                        String path1= scanner.nextLine();
+                        String path1= scanner.nextLine();    
+                    System.out.println("Insert the command to do to run the program");
+                        String command= scanner.nextLine();
+                        
 
                         System.out.println("How many command line arguments do you want to pass?");
                         while(!scanner.hasNextInt()){
@@ -621,6 +645,11 @@ public class App {
             }
         }
     }
+
+
+
+
+
 
     private static void displayRules(RuleManager rules) {
 
