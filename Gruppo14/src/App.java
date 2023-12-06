@@ -37,17 +37,15 @@ public class App {
             System.out.println("║                                                  ║");
             System.out.println("║ 6. Remove a Rule                                 ║");
             System.out.println("║                                                  ║");
-            System.out.println("║ 7. Activate Rule                                 ║");
+            System.out.println("║ 7. Modify Rule                                   ║");
             System.out.println("║                                                  ║");
-            System.out.println("║ 8. Deactivate Rule                               ║");
+            System.out.println("║ 8. Save set of Rules to File                     ║");
             System.out.println("║                                                  ║");
-            System.out.println("║ 9. Save set of Rules to File                     ║");
+            System.out.println("║ 9. Create a Counter                              ║");
             System.out.println("║                                                  ║");
-            System.out.println("║ 10. Create a Counter                             ║");
+            System.out.println("║ 10. Work on set of Action                        ║");
             System.out.println("║                                                  ║");
-            System.out.println("║ 11. Work on set of Action                        ║");
-            System.out.println("║                                                  ║");
-            System.out.println("║ 12. Exit                                         ║");
+            System.out.println("║ 11. Exit                                         ║");
             System.out.println("╚══════════════════════════════════════════════════╝");
             System.out.println("\n╔═════════════════════════════════════════════════════════════════╗");
             System.out.print("║  Enter the number corresponding to your choice and press Enter  ║");
@@ -77,26 +75,20 @@ public class App {
                         removeRule(rules, scanner);
                         break;
                     case 7:
-                        activateRuleByName(rules, scanner);
-                        break;
+                        modifyRule(rules,actions, triggers, scanner);
+                        
                     case 8:
-                        deactivateRuleByName(rules, scanner);
-                        break;
-                    case 9:
                         rules.saveRulesToFile();
                         break;
+                    case 9:
+                        createCounter(scanner, mapCounter);
+                        break;
+
                     case 10:
-
-                    createCounter(scanner, mapCounter);
-                    break;
-
-                    case 11:
                         createSetOfAction( actions, scanner);
                         break;
 
-
-
-                    case 12:
+                    case 11:
                         System.out.println("Bye!");
                         rules.getRuleList().clear();
                         rules.shutdown();
@@ -113,6 +105,104 @@ public class App {
     }
 
     
+
+    private static void modifyRule(RuleManager rules, Map<String,Action> actions, Map<String, Trigger> triggers, Scanner scanner) {
+
+
+            System.out.println("\n╔════════════════════════════════════════════════════╗");
+            System.out.println("║                     Modify Rule Menu               ║");
+            System.out.println("╠════════════════════════════════════════════════════╣");
+            System.out.println("║ 1. Activate a rule                                 ║");
+            System.out.println("║ 2. Deactivate a rule                               ║");
+            System.out.println("║ 3. Change the action                               ║");
+            System.out.println("║ 4. Change the trigger                              ║");
+            System.out.println("║ 5. Exit                                            ║");
+            System.out.println("╚════════════════════════════════════════════════════╝");
+            int choice;
+            if(scanner.hasNextInt()){
+
+                choice=scanner.nextInt();
+                scanner.nextLine();
+
+            } 
+            else{
+                System.out.println("Error: invalid input");
+                scanner.nextLine();
+                choice=6;
+            }
+
+            switch(choice){
+                case 1:
+                    activateRuleByName(rules, scanner);
+                    break;
+                case 2:
+                    deactivateRuleByName(rules, scanner);
+                    break;
+                case 3:
+                    displayRules(rules);
+                    boolean isRulePresent=false;
+                    String ruleName;
+                    System.out.println("Which rule do you want to change?");
+                    ruleName=scanner.nextLine();
+                    while(!isRulePresent){
+                        for(Rule r : rules.getRuleList()){
+                            if(ruleName.equals(r.getRuleName()))
+                                isRulePresent=true;
+                        }
+
+                        if(!isRulePresent){
+                            System.out.println("not valid rule name, please insert a different one or press 0 to come back to the modify rule menu");
+                            ruleName=scanner.nextLine();
+
+                            try{
+                                if(Integer.parseInt(ruleName)==0){
+                                    break;
+                                }
+                            }catch(NumberFormatException e){
+
+                            }
+                        }
+                    }
+
+                    displayActions(actions);
+                    boolean isActionPresent=false;
+                    String actionName;
+                    System.out.println("Which action do you want to use for this rule?");
+                    actionName=scanner.nextLine();
+                    while(!isActionPresent){
+                        if(actions.get(actionName)==null){
+                            System.out.println("Not valid action name, please insert a different one or press 0 to come back to the modify rule menu");
+                            actionName=scanner.nextLine();
+                        
+                            try{
+                                if(Integer.parseInt(actionName)==0){
+                                    break;
+                                }
+                            }catch(NumberFormatException e){
+
+                            }
+                        }
+
+                        else
+                            isActionPresent=true;
+
+                    }
+
+                    for(Rule r : rules.getRuleList()){
+
+                        if(ruleName.equals(r.getRuleName()))
+                            r.setAction(actions.get(actionName));
+                    }
+
+                    break;
+                case 4:
+
+                    
+            }
+
+    }
+
+
 
     private static Rule createRule(Map<String, Trigger> triggers, Map<String, Action> actions, RuleManager rules, Scanner scanner) {
         
@@ -738,12 +828,6 @@ public class App {
     }
      
     
- 
-    
-    
-
-
-
     private static void displayRules(RuleManager rules) {
 
         List<Rule> ruleList = rules.getRuleList();
@@ -915,5 +999,19 @@ public class App {
         System.out.println("Contatore creato con successo.");
     }
 
+    private static void displayActions(Map<String, Action> actions){
+
+        Set<String> setActionKey= actions.keySet();
+        StringBuilder actionStringSet  = new StringBuilder();
+        for (String chiave : setActionKey) {
+            actionStringSet.append(chiave).append(", ");
+        }
+
+        // Rimuovere l'ultima virgola e spazio in eccesso
+        if (actionStringSet.length() > 0) {
+            actionStringSet.setLength(actionStringSet.length() - 2);
+        }
+        System.out.println("Avaible Actions: " + actionStringSet.toString());
+    }
 
 }
