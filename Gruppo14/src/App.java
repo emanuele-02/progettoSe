@@ -348,11 +348,19 @@ public class App {
         }
 
         while (!validInput && !triggers.containsKey(name)) {
-            System.out.println("Which type of trigger do you want to create?");
-            System.out.println("1. HourOfDayTrigger");
-            System.out.println("2. DateTrigger");
-            System.out.println("3. DayOfMonthTrigger");
-            System.out.println("4. DayOfWeekTrigger");
+                System.out.println("Which type of trigger do you want to create?");
+                System.out.println(" ");
+                System.out.println("1. HourOfDayTrigger");
+                System.out.println(" ");
+                System.out.println("2. DateTrigger");
+                System.out.println(" ");
+                System.out.println("3. DayOfMonthTrigger");
+                System.out.println(" ");
+                System.out.println("4. DayOfWeekTrigger");
+                System.out.println(" ");
+                System.out.println("5. ExternalProgramTrigger");
+                System.out.println("---------------------------------------");
+                System.out.print("Please enter the number of your choice: ");
            
             int choice= scanner.nextInt();
             scanner.nextLine();
@@ -423,7 +431,14 @@ public class App {
                         System.out.println("Trigger successfully created");
                         break;
 
-                    
+                    case 5:
+                            System.out.println("Enter the output value of the expected external program:");
+                            int targetExitValue= scanner.nextInt();
+                            System.out.println("Insert the command to do to run the program:");
+                            String command = scanner.nextLine();
+                            System.out.println("Insert the path of the program that you want to run");
+                            String path= scanner.nextLine();
+
 
 
                     default:
@@ -466,12 +481,20 @@ public class App {
         }
     
         System.out.println("Which type of action do you want to create?");
+        System.out.println(" ");
         System.out.println("1. AudioAction");
+        System.out.println(" ");
         System.out.println("2. DialogBoxAction");
+        System.out.println(" ");
         System.out.println("3. ExternalProgramAction");
+        System.out.println(" ");
         System.out.println("4. WriteStringOnFileAction");
+        System.out.println(" ");
         System.out.println("5. MoveCopyFileAction");
+        System.out.println(" ");
         System.out.println("6. DeleteFileAction");
+        System.out.println("---------------------------------------");
+        System.out.print("Please enter the number of your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Clear the buffer
     
