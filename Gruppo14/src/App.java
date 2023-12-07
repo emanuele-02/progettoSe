@@ -1096,15 +1096,15 @@ public class App {
                 System.out.println("║ 1. Create an \"or\" trigger                          ║");
                 System.out.println("║ 2. Create an \"and\" trigger                         ║");
                 System.out.println("║ 3. Create a \"not\" trigger                          ║");
-                System.out.println("║ 4. Exit                                            ║");
+                System.out.println("║ 4. Save and exit                                     ║");
                 System.out.println("╚════════════════════════════════════════════════════╝");
                 
                 boolean isTrigger1Present=false;
                 boolean isTrigger2Present=false;
                 String triggerName1;
-                Trigger trigger1;
+                Trigger trigger1=null;
                 String triggerName2;
-                Trigger trigger2;
+                Trigger trigger2=null;
                 int choice = scanner.nextInt();
                 scanner.nextLine();  // Consumes the newline left in the buffer
     
@@ -1230,5 +1230,6 @@ public class App {
                 System.out.println("Invalid input. Please enter a valid number.");
                 scanner.nextLine();  // Consumes the invalid input to avoid an infinite loop
             }
+        }
     }
 }
