@@ -996,7 +996,7 @@ public class App {
         // Chiamata al metodo createCounter della tua istanza di MapCounter
         mapCounter.createCounter(name, initialValue);
     
-        System.out.println("Contatore creato con successo.");
+        System.out.println("Counter created successfully.");
     }
 
     private static void displayActions(Map<String, Action> actions){
