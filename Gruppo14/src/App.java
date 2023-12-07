@@ -522,6 +522,10 @@ public class App {
                 System.out.println("4. DayOfWeekTrigger");
                 System.out.println(" ");
                 System.out.println("5. ExternalProgramTrigger");
+                System.out.println(" ");
+                System.out.println("6. FileSizeTrigger");
+                System.out.println(" ");
+                System.out.println("7. FileDirecotryTrigger");
                 System.out.println("---------------------------------------");
                 System.out.print("Please enter the number of your choice: ");
            
@@ -618,6 +622,26 @@ public class App {
                         validInput= true;
                         System.out.println("Trigger successfully created");
                         break;
+
+                        case 6:
+                            System.out.println("Insert the file path for size control:");
+                            String filePath = scanner.nextLine();
+                            System.out.println("Insert the target size in KB of the fike:");
+                            int targetSiize = scanner.nextInt();
+                            t = new FileSizeTrigger(filePath, targetSiize);
+                            validInput=true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                            case 7: 
+                            System.out.println("Insert the file name to check if it exists in a direcotry:");
+                            String fileName = scanner.nextLine();
+                            System.out.println("Insert the path of the directory:");
+                            String targetDirectory = scanner.nextLine();
+                            t = new FileDirectoryTrigger(fileName, targetDirectory);
+                            validInput=true;
+                            System.out.println("Trigger successfully created");
+                            break;
 
                     default:
                          System.out.println("Invalid choice, retry");
