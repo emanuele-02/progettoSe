@@ -110,7 +110,6 @@ public class App {
         }
     }
 
-    
 
     private static void modifyRule(RuleManager rules, Map<String,Action> actions, Map<String, Trigger> triggers, Scanner scanner) {
 
@@ -1232,4 +1231,6 @@ public class App {
             }
         }
     }
+
+
 }
