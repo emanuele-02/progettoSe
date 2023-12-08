@@ -45,7 +45,9 @@ public class App {
             System.out.println("║                                                  ║");
             System.out.println("║ 10. Work on set of Action                        ║");
             System.out.println("║                                                  ║");
-            System.out.println("║ 11. Exit                                         ║");
+            System.out.println("║ 11. Create logical triggers                      ║");
+            System.out.println("║                                                  ║");
+            System.out.println("║ 12. Exit                                         ║");
             System.out.println("╚══════════════════════════════════════════════════╝");
             System.out.println("\n╔═════════════════════════════════════════════════════════════════╗");
             System.out.print("║  Enter the number corresponding to your choice and press Enter  ║");
@@ -75,7 +77,7 @@ public class App {
                         removeRule(rules, scanner);
                         break;
                     case 7:
-                        modifyRule(rules,actions, triggers, scanner);
+                        modifyRule(rules,actions,triggers, scanner);
                         
                     case 8:
                         rules.saveRulesToFile();
@@ -85,10 +87,14 @@ public class App {
                         break;
 
                     case 10:
-                        createSetOfAction( actions, scanner);
+                        createSetOfAction(actions, scanner);
                         break;
 
                     case 11:
+                        createLogicalTrigger(triggers, scanner);
+                        break;
+
+                    case 12:
                         System.out.println("Bye!");
                         rules.getRuleList().clear();
                         rules.shutdown();
@@ -104,104 +110,160 @@ public class App {
         }
     }
 
-    
 
     private static void modifyRule(RuleManager rules, Map<String,Action> actions, Map<String, Trigger> triggers, Scanner scanner) {
 
+            boolean isRulePresent=false;
+            String ruleName;
+            while(true){
+                System.out.println("\n╔════════════════════════════════════════════════════╗");
+                System.out.println("║                     Modify Rule Menu               ║");
+                System.out.println("╠════════════════════════════════════════════════════╣");
+                System.out.println("║ 1. Activate a rule                                 ║");
+                System.out.println("║ 2. Deactivate a rule                               ║");
+                System.out.println("║ 3. Change the action                               ║");
+                System.out.println("║ 4. Change the trigger                              ║");
+                System.out.println("║ 5. Exit                                            ║");
+                System.out.println("╚════════════════════════════════════════════════════╝");
+                int choice;
+                if(scanner.hasNextInt()){
 
-            System.out.println("\n╔════════════════════════════════════════════════════╗");
-            System.out.println("║                     Modify Rule Menu               ║");
-            System.out.println("╠════════════════════════════════════════════════════╣");
-            System.out.println("║ 1. Activate a rule                                 ║");
-            System.out.println("║ 2. Deactivate a rule                               ║");
-            System.out.println("║ 3. Change the action                               ║");
-            System.out.println("║ 4. Change the trigger                              ║");
-            System.out.println("║ 5. Exit                                            ║");
-            System.out.println("╚════════════════════════════════════════════════════╝");
-            int choice;
-            if(scanner.hasNextInt()){
+                    choice=scanner.nextInt();
+                    scanner.nextLine();
 
-                choice=scanner.nextInt();
-                scanner.nextLine();
+                } 
+                else{
+                    System.out.println("Error: invalid input");
+                    scanner.nextLine();
+                    choice=6;
+                }
 
-            } 
-            else{
-                System.out.println("Error: invalid input");
-                scanner.nextLine();
-                choice=6;
-            }
+                switch(choice){
+                    case 1:
+                        activateRuleByName(rules, scanner);
+                        break;
+                    case 2:
+                        deactivateRuleByName(rules, scanner);
+                        break;
+                    case 3:
+                        displayRules(rules);
+                        System.out.println("Which rule do you want to change?");
+                        ruleName=scanner.nextLine();
+                        while(!isRulePresent){
+                            for(Rule r : rules.getRuleList()){
+                                if(ruleName.equals(r.getRuleName()))
+                                    isRulePresent=true;
+                            }
 
-            switch(choice){
-                case 1:
-                    activateRuleByName(rules, scanner);
-                    break;
-                case 2:
-                    deactivateRuleByName(rules, scanner);
-                    break;
-                case 3:
-                    displayRules(rules);
-                    boolean isRulePresent=false;
-                    String ruleName;
-                    System.out.println("Which rule do you want to change?");
-                    ruleName=scanner.nextLine();
-                    while(!isRulePresent){
+                            if(!isRulePresent){
+                                System.out.println("not valid rule name, please insert a different one or press 0 to come back to the modify rule menu");
+                                ruleName=scanner.nextLine();
+
+                                try{
+                                    if(Integer.parseInt(ruleName)==0){
+                                        break;
+                                    }
+                                }catch(NumberFormatException e){
+
+                                }
+                            }
+                        }
+
+                        displayActions(actions);
+                        boolean isActionPresent=false;
+                        String actionName;
+                        System.out.println("Which action do you want to use for this rule?");
+                        actionName=scanner.nextLine();
+                        while(!isActionPresent){
+                            if(actions.get(actionName)==null){
+                                System.out.println("Not valid action name, please insert a different one or press 0 to come back to the modify rule menu");
+                                actionName=scanner.nextLine();
+                            
+                                try{
+                                    if(Integer.parseInt(actionName)==0){
+                                        break;
+                                    }
+                                }catch(NumberFormatException e){
+
+                                }
+                            }
+
+                            else
+                                isActionPresent=true;
+
+                        }
+
                         for(Rule r : rules.getRuleList()){
+
                             if(ruleName.equals(r.getRuleName()))
-                                isRulePresent=true;
+                                r.setAction(actions.get(actionName));
                         }
 
-                        if(!isRulePresent){
-                            System.out.println("not valid rule name, please insert a different one or press 0 to come back to the modify rule menu");
-                            ruleName=scanner.nextLine();
-
-                            try{
-                                if(Integer.parseInt(ruleName)==0){
-                                    break;
-                                }
-                            }catch(NumberFormatException e){
-
+                        break;
+                    case 4:
+                        displayRules(rules);
+                        System.out.println("Which rule do you want to change?");
+                        ruleName=scanner.nextLine();
+                        while(!isRulePresent){
+                            for(Rule r : rules.getRuleList()){
+                                if(ruleName.equals(r.getRuleName()))
+                                    isRulePresent=true;
                             }
-                        }
-                    }
 
-                    displayActions(actions);
-                    boolean isActionPresent=false;
-                    String actionName;
-                    System.out.println("Which action do you want to use for this rule?");
-                    actionName=scanner.nextLine();
-                    while(!isActionPresent){
-                        if(actions.get(actionName)==null){
-                            System.out.println("Not valid action name, please insert a different one or press 0 to come back to the modify rule menu");
-                            actionName=scanner.nextLine();
-                        
-                            try{
-                                if(Integer.parseInt(actionName)==0){
-                                    break;
+                            if(!isRulePresent){
+                                System.out.println("not valid rule name, please insert a different one or press 0 to come back to the modify rule menu");
+                                ruleName=scanner.nextLine();
+
+                                try{
+                                    if(Integer.parseInt(ruleName)==0){
+                                        break;
+                                    }
+                                }catch(NumberFormatException e){
+
                                 }
-                            }catch(NumberFormatException e){
-
                             }
                         }
 
-                        else
-                            isActionPresent=true;
+                        displayTriggers(triggers);
+                        boolean isTriggerPresent=false;
+                        String triggerName;
+                        System.out.println("Which trigger do you want to use for this rule?");
+                        triggerName=scanner.nextLine();
+                        while(!isTriggerPresent){
+                            if(triggers.get(triggerName)==null){
+                                System.out.println("Not valid trigger name, please insert a different one or press 0 to come back to the modify rule menu");
+                                triggerName=scanner.nextLine();
+                            
+                                try{
+                                    if(Integer.parseInt(triggerName)==0){
+                                        break;
+                                    }
+                                }catch(NumberFormatException e){
 
-                    }
+                                }
+                            }
 
-                    for(Rule r : rules.getRuleList()){
+                            else
+                                isTriggerPresent=true;
 
-                        if(ruleName.equals(r.getRuleName()))
-                            r.setAction(actions.get(actionName));
-                    }
+                        }
 
-                    break;
-                case 4:
+                        for(Rule r : rules.getRuleList()){
 
-                    
+                            if(ruleName.equals(r.getRuleName()))
+                                r.setTrigger(triggers.get(triggerName));
+                        }
+                        break;
+
+                    case 5:
+                        return;
+
+                    default:
+                        System.out.println("Invalid choice, please retry");
+
+                }
             }
-
     }
-
 
 
     private static Rule createRule(Map<String, Trigger> triggers, Map<String, Action> actions, RuleManager rules, Scanner scanner) {
@@ -324,6 +386,7 @@ public class App {
         return r;
     }
 
+    
     private static Rule createPeriodicRule(Map<String, Trigger> triggers, Map<String, Action> actions, RuleManager rules, Scanner scanner) {
         System.out.println("Enter rule's name");
         String ruleName = scanner.nextLine();
@@ -459,6 +522,10 @@ public class App {
                 System.out.println("4. DayOfWeekTrigger");
                 System.out.println(" ");
                 System.out.println("5. ExternalProgramTrigger");
+                System.out.println(" ");
+                System.out.println("6. FileSizeTrigger");
+                System.out.println(" ");
+                System.out.println("7. FileDirecotryTrigger");
                 System.out.println("---------------------------------------");
                 System.out.print("Please enter the number of your choice: ");
            
@@ -555,6 +622,26 @@ public class App {
                         validInput= true;
                         System.out.println("Trigger successfully created");
                         break;
+
+                        case 6:
+                            System.out.println("Insert the file path for size control:");
+                            String filePath = scanner.nextLine();
+                            System.out.println("Insert the target size in KB of the fike:");
+                            int targetSiize = scanner.nextInt();
+                            t = new FileSizeTrigger(filePath, targetSiize);
+                            validInput=true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                            case 7: 
+                            System.out.println("Insert the file name to check if it exists in a direcotry:");
+                            String fileName = scanner.nextLine();
+                            System.out.println("Insert the path of the directory:");
+                            String targetDirectory = scanner.nextLine();
+                            t = new FileDirectoryTrigger(fileName, targetDirectory);
+                            validInput=true;
+                            System.out.println("Trigger successfully created");
+                            break;
 
                     default:
                          System.out.println("Invalid choice, retry");
@@ -739,7 +826,7 @@ public class App {
     }
 
 
-    private static CompositeAction createSetOfAction(Map<String, Action> actions, Scanner scanner) {
+    private static void createSetOfAction(Map<String, Action> actions, Scanner scanner) {
         System.out.println("Enter the name for the Composite Action:");
         String compositeActionName = scanner.nextLine();
         CompositeAction compositeAction = (CompositeAction) actions.get(compositeActionName);
@@ -758,7 +845,7 @@ public class App {
                 System.out.println("║              Create a Set of Actions               ║");
                 System.out.println("╠════════════════════════════════════════════════════╣");
                 System.out.println("║ 1. Add Action to Set                               ║");
-                System.out.println("║ 2. Finish and Save Set to Actions Map              ║");
+                System.out.println("║ 2. Finish and Save                                 ║");
                 System.out.println("║ 3. Exit                                            ║");
                 System.out.println("╚════════════════════════════════════════════════════╝");
     
@@ -771,19 +858,7 @@ public class App {
                     System.out.println("How many actions do you want to add to the set?");
                     int numActionsToAdd = scanner.nextInt();
                     scanner.nextLine();  // Consumes the newline left in the buffer
-                    Set<String> setActionKey = actions.keySet();
-                    StringBuilder actionStringSet  = new StringBuilder();
-
-        // Iterare sul set delle chiavi e concatenarle nella stringa
-                    for (String chiave : setActionKey) {
-                        actionStringSet.append(chiave).append(", ");
-                    }
-
-        // Rimuovere l'ultima virgola e spazio in eccesso
-                    if (actionStringSet.length() > 0) {
-                        actionStringSet.setLength(actionStringSet.length() - 2);
-                    }
-                    System.out.println("Avaible Actions: " + actionStringSet.toString());
+                    displayActions(actions);
                     // Add the specified number of actions
                     for (int i = 0; i < numActionsToAdd; i++) {
                         System.out.println("Enter the name of the existing action to add to the set:");
@@ -823,8 +898,6 @@ public class App {
                 scanner.nextLine();  // Consumes the invalid input to avoid an infinite loop
             }
         }
-    
-        return compositeAction;
     }
      
     
@@ -842,9 +915,9 @@ public class App {
             }
             System.out.println(ruleNames);
         }
-        
     }
 
+    
     private static void removeRule(RuleManager rules, Scanner scanner){
         displayRules(rules);
         System.out.println("Enter the name of the rule you wish to delete");
@@ -876,6 +949,7 @@ public class App {
     
     }
 
+    
     private static void activateRuleByName(RuleManager rules, Scanner scanner) {
         List<Rule> ruleList = rules.getRuleList();
 
@@ -921,6 +995,7 @@ public class App {
         
     }
 
+    
     private static void deactivateRuleByName(RuleManager rules, Scanner scanner) {
           List<Rule> ruleList = rules.getRuleList();
 
@@ -999,6 +1074,7 @@ public class App {
         System.out.println("Counter created successfully.");
     }
 
+    
     private static void displayActions(Map<String, Action> actions){
 
         Set<String> setActionKey= actions.keySet();
@@ -1013,5 +1089,172 @@ public class App {
         }
         System.out.println("Avaible Actions: " + actionStringSet.toString());
     }
+    
+    
+    private static void displayTriggers(Map<String, Trigger> triggers){
+
+        Set<String> setTriggerKey= triggers.keySet();
+        StringBuilder triggerStringSet  = new StringBuilder();
+        for (String chiave : setTriggerKey) {
+            triggerStringSet.append(chiave).append(", ");
+        }
+
+        // Rimuovere l'ultima virgola e spazio in eccesso
+        if (triggerStringSet.length() > 0) {
+            triggerStringSet.setLength(triggerStringSet.length() - 2);
+        }
+        System.out.println("Avaible Triggers: " + triggerStringSet.toString());
+    }
+    
+
+    private static void createLogicalTrigger(Map<String, Trigger> triggers, Scanner scanner){
+        System.out.println("Enter the name for the Logical Trigger:");
+        String compositeTriggerName = scanner.nextLine();
+      
+        while (true) {
+            try {
+                System.out.println("\n╔════════════════════════════════════════════════════╗");
+                System.out.println("║              Create a Logical Trigger              ║");
+                System.out.println("╠════════════════════════════════════════════════════╣");
+                System.out.println("║ 1. Create an \"or\" trigger                          ║");
+                System.out.println("║ 2. Create an \"and\" trigger                         ║");
+                System.out.println("║ 3. Create a \"not\" trigger                          ║");
+                System.out.println("║ 4. Save and exit                                     ║");
+                System.out.println("╚════════════════════════════════════════════════════╝");
+                
+                boolean isTrigger1Present=false;
+                boolean isTrigger2Present=false;
+                String triggerName1;
+                Trigger trigger1=null;
+                String triggerName2;
+                Trigger trigger2=null;
+                int choice = scanner.nextInt();
+                scanner.nextLine();  // Consumes the newline left in the buffer
+    
+                switch (choice) {
+                    case 1:
+                    displayTriggers(triggers);
+                    
+                    while(!isTrigger1Present && !isTrigger2Present){
+                        System.out.println("Insert the first trigger name");
+                        triggerName1=scanner.nextLine();
+                        trigger1=triggers.get(triggerName1);
+
+                        if(trigger1==null){
+                            while(trigger1==null){
+                                System.out.println("Invalid trigger name, please retry or press 0 to come back to the menu");
+                                triggerName1=scanner.nextLine();
+                                trigger1=triggers.get(triggerName1);
+                                
+                                try{
+                                    if(Integer.parseInt(triggerName1)==0){
+                                        break;
+                                    }
+                                }catch(NumberFormatException e){
+
+                                }
+                            }
+                        }
+                        else{
+                            System.out.println("Insert the second trigger name");
+                            triggerName2=scanner.nextLine();
+                            trigger2=triggers.get(triggerName2);
+                            while(trigger2==null){
+                                System.out.println("Invalid trigger name, please retry or press 0 to come back to the menu");
+                                triggerName2=scanner.nextLine();
+                                try{
+                                    if(Integer.parseInt(triggerName2)==0){
+                                        break;
+                                    }
+                                }catch(NumberFormatException e){
+    
+                                }
+                            }
+                        }
+                    }
+
+                    triggers.putIfAbsent(compositeTriggerName,new CompositeTrigger(trigger1, trigger2, LogicalOperation.valueOf("OR")));
+                    break;
+                
+                    case 2:
+                        displayTriggers(triggers);
+                        
+                        while(!isTrigger1Present && !isTrigger2Present){
+                            System.out.println("Insert the first trigger name");
+                            triggerName1=scanner.nextLine();
+                            trigger1=triggers.get(triggerName1);
+
+                            if(trigger1==null){
+                                while(trigger1==null){
+                                    System.out.println("Invalid trigger name, please retry or press 0 to come back to the menu");
+                                    triggerName1=scanner.nextLine();
+                                    trigger1=triggers.get(triggerName1);
+                                    
+                                    try{
+                                        if(Integer.parseInt(triggerName1)==0){
+                                            break;
+                                        }
+                                    }catch(NumberFormatException e){
+
+                                    }
+                                }
+                            }
+                            else{
+                                System.out.println("Insert the second trigger name");
+                                triggerName2=scanner.nextLine();
+                                trigger2=triggers.get(triggerName2);
+                                while(trigger2==null){
+                                    System.out.println("Invalid trigger name, please retry or press 0 to come back to the menu");
+                                    triggerName2=scanner.nextLine();
+                                    try{
+                                        if(Integer.parseInt(triggerName2)==0){
+                                            break;
+                                        }
+                                    }catch(NumberFormatException e){
+        
+                                    }
+                                }
+                            }
+                        }
+
+                        triggers.putIfAbsent(compositeTriggerName,new CompositeTrigger(trigger1, trigger2, LogicalOperation.valueOf("AND")));
+                        break;
+                        
+
+                    case 3:
+
+                        displayTriggers(triggers);
+                        System.out.println("On which of these triggers do you want to create the not trigger?");
+                        triggerName1=scanner.nextLine();
+                        trigger1=triggers.get(triggerName1);
+
+                        while(trigger1==null){
+                            System.out.println("Invalid trigger name, please retry or press 0 to come back to the menu");
+                            triggerName1=scanner.nextLine();
+                            trigger1=triggers.get(triggerName1);
+                            
+                            try{
+                                if(Integer.parseInt(triggerName1)==0){
+                                    break;
+                                }
+                            }catch(NumberFormatException e){
+
+                            }
+
+                        }
+                        
+                        triggers.putIfAbsent(compositeTriggerName,new CompositeTrigger(trigger1,LogicalOperation.valueOf("NOT")));
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice, please retry");
+                }
+            }catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                scanner.nextLine();  // Consumes the invalid input to avoid an infinite loop
+            }
+        }
+    }
+
 
 }
