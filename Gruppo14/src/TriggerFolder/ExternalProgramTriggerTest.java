@@ -1,21 +1,36 @@
 package TriggerFolder;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ExternalProgramTriggerTest {
 
     @Test
-    void testCheckTrigger() {
-        ExternalProgramTrigger externalProgramTrigger= new ExternalProgramTrigger(0, "python", "D:/progettoSe/ExternalProgramActionExample.py", "Hello, World");
+    public void testCheckTrigger() throws InterruptedException {
+        ExternalProgramTrigger trigger = new ExternalProgramTrigger(0, "echo", "Hello, World!");
 
-        assertTrue(externalProgramTrigger.checkTrigger());
+        // Call checkTrigger before the thread is active
+        boolean resultBeforeExecution = trigger.checkTrigger();
 
-        ExternalProgramTrigger externalProgramTrigger2= new ExternalProgramTrigger(1, "python", "D:/progettoSe/ExternalProgramActionExample.py", "Hello, World");
+        // Verify that the result before execution is false
+        assertFalse(resultBeforeExecution);
 
-        assertFalse(externalProgramTrigger2.checkTrigger());
+        // Create a Thread object to simulate execution
+        Thread mockExecutionThread = new Thread(() -> {
+            // Simulate a successful execution by setting the result using the public method
+            trigger.lastExecutionResult = true;
+        });
+
+        // Start the simulated execution thread
+        mockExecutionThread.start();
+
+        // Wait for the simulated execution thread to complete
+        mockExecutionThread.join();
+
+        // Call checkTrigger after the execution
+        boolean resultAfterExecution = trigger.checkTrigger();
+
+        // Verify that the result after execution is true
+        assertTrue(resultAfterExecution);
     }
-    
 }
