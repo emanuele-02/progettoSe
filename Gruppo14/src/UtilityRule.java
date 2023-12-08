@@ -1,0 +1,370 @@
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.StringJoiner;
+
+import ActionFolder.*;
+import CounterFolder.MapCounter;
+import RuleFolder.*;
+import TriggerFolder.*;
+
+public class UtilityRule {
+
+    // Create a rule with check for correct argument
+    public static Rule createRule(Map<String, Trigger> triggers, Map<String, Action> actions, RuleManager rules,
+            Scanner scanner) {
+        displayRules(rules);
+        System.out.println("Enter rule's name");
+        String ruleName = scanner.nextLine();
+
+        while (ruleName.trim().isEmpty()) {
+            System.out.println(
+                    "You didn't insert a rule name. Please insert a correct one or press 0 to come back to the main menu ");
+            ruleName = scanner.nextLine();
+
+            try {
+                if (Integer.parseInt(ruleName) == 0)
+                    return null;
+            } catch (NumberFormatException e) {
+
+            }
+
+        }
+
+        for (Rule r : rules.getRuleList()) {
+
+            while (r.getRuleName().equals(ruleName)) {
+                System.out.println(
+                        "This rulename already exists, insert a different one or press 0 to come back to the main menu");
+                ruleName = scanner.nextLine();
+
+                try {
+                    if (Integer.parseInt(ruleName) == 0)
+                        return null;
+                } catch (NumberFormatException e) {
+
+                }
+            }
+
+        }
+
+        // print of the avaible triggers
+        UtilityTrigger.displayTriggers(triggers);
+
+        System.out.println("Enter the name of the trigger you want to trigger the rule");
+        String triggerName = scanner.nextLine();
+
+        triggerName = UtilityTrigger.checkTriggerPresent(triggers, scanner, triggerName);
+        if (triggerName == null)
+            return null;
+        Trigger t = triggers.get(triggerName);
+
+        // print of the avaible action
+        UtilityAction.displayActions(actions);
+        System.out.println("Enter the name of the action you want to be performed");
+        String actionName = scanner.nextLine();
+        actionName = UtilityAction.checkActionPresent(actions, scanner, actionName);
+        if (actionName == null)
+            return null;
+
+        Action a = actions.get(actionName);
+
+        System.out.println("Should the rule be executed only once? (y/n)");
+        String response = scanner.nextLine().toLowerCase();
+        boolean triggeredOnce = response.equals("y") || response.equals("yes");
+
+        Rule r = null;
+        try {
+            r = new Rule(ruleName, t, a, triggeredOnce);
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "Please insert again");
+            scanner.nextLine(); // Clear the buffer
+        }
+        return r;
+    }
+
+    // Create a periodic rule with check for correct argument
+    public static Rule createPeriodicRule(Map<String, Trigger> triggers, Map<String, Action> actions, RuleManager rules,
+            Scanner scanner) {
+        displayRules(rules);
+        System.out.println("Enter rule's name");
+        String ruleName = scanner.nextLine();
+
+        while (ruleName.trim().isEmpty()) {
+
+            System.out.println(
+                    "You didn't insert a correct rule name. Please insert a correct one or press 0 to come back to the main menu ");
+            ruleName = scanner.nextLine();
+
+            try {
+                if (Integer.parseInt(ruleName) == 0)
+                    return null;
+            } catch (NumberFormatException e) {
+
+            }
+
+        }
+
+        for (Rule r : rules.getRuleList()) {
+
+            while (r.getRuleName().equals(ruleName)) {
+
+                System.out.println(
+                        "This rulename already exists, insert a different one or press 0 to come back to the main menu");
+                ruleName = scanner.nextLine();
+
+                try {
+                    if (Integer.parseInt(ruleName) == 0)
+                        return null;
+                } catch (NumberFormatException e) {
+
+                }
+            }
+        }
+        UtilityTrigger.displayTriggers(triggers);
+        System.out.println("Enter the name of the trigger you want to trigger the rule");
+        String triggerName = scanner.nextLine();
+
+        triggerName = UtilityTrigger.checkTriggerPresent(triggers, scanner, triggerName);
+        if (triggerName == null)
+            return null;
+        Trigger t = triggers.get(triggerName);
+
+        UtilityAction.displayActions(actions);
+        System.out.println("Enter the name of the action you want to be performed");
+        String actionName = scanner.nextLine();
+        actionName = UtilityAction.checkActionPresent(actions, scanner, actionName);
+        if (actionName == null)
+            return null;
+        Action a = actions.get(actionName);
+
+        System.out.println("Enter the delay in days:");
+        int days = scanner.nextInt();
+
+        System.out.println("Enter the delay in hours:");
+        int hours = scanner.nextInt();
+
+        System.out.println("Enter the delay in minutes:");
+        int minutes = scanner.nextInt();
+
+        Rule r = null;
+        try {
+            r = new Rule(ruleName, t, a, days, hours, minutes);
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " Please insert again");
+            scanner.nextLine(); // Clear the buffer
+        }
+        return r;
+    }
+
+    // Modify rule action or trigger , activate/deactivate rule
+    public static void modifyRule(RuleManager rules, Map<String, Action> actions, Map<String, Trigger> triggers,
+            Scanner scanner) {
+
+        String ruleName;
+        while (true) {
+            System.out.println("\n╔════════════════════════════════════════════════════╗");
+            System.out.println("║                     Modify Rule Menu               ║");
+            System.out.println("╠════════════════════════════════════════════════════╣");
+            System.out.println("║ 1. Activate a rule                                 ║");
+            System.out.println("║ 2. Deactivate a rule                               ║");
+            System.out.println("║ 3. Change the action                               ║");
+            System.out.println("║ 4. Change the trigger                              ║");
+            System.out.println("║ 5. Exit                                            ║");
+            System.out.println("╚════════════════════════════════════════════════════╝");
+            int choice;
+            if (scanner.hasNextInt()) {
+
+                choice = scanner.nextInt();
+                scanner.nextLine();
+
+            } else {
+                System.out.println("Error: invalid input");
+                scanner.nextLine();
+                choice = 6;
+            }
+
+            switch (choice) {
+                case 1:
+                    activateRuleByName(rules, scanner);
+                    break;
+                case 2:
+                    deactivateRuleByName(rules, scanner);
+                    break;
+                case 3:
+                    displayRules(rules);
+                    System.out.println("Which rule do you want to change?");
+                    ruleName = scanner.nextLine();
+                    checkRulePresent(rules, scanner, ruleName);
+
+                    UtilityAction.displayActions(actions);
+                    String actionName;
+                    System.out.println("Which action do you want to use for this rule?");
+                    actionName = scanner.nextLine();
+                    UtilityAction.checkActionPresent(actions, scanner, actionName);
+
+                    for (Rule r : rules.getRuleList()) {
+                        if (ruleName.equals(r.getRuleName()))
+                            r.setAction(actions.get(actionName));
+                    }
+
+                    break;
+                case 4:
+                    displayRules(rules);
+                    System.out.println("Which rule do you want to change?");
+                    ruleName = scanner.nextLine();
+                    checkRulePresent(rules, scanner, ruleName);
+
+                    UtilityTrigger.displayTriggers(triggers);
+                    String triggerName;
+                    System.out.println("Which trigger do you want to use for this rule?");
+                    triggerName = scanner.nextLine();
+                    UtilityTrigger.checkTriggerPresent(triggers, scanner, triggerName);
+                    for (Rule r : rules.getRuleList()) {
+                        if (ruleName.equals(r.getRuleName()))
+                            r.setTrigger(triggers.get(triggerName));
+                    }
+                    break;
+
+                case 5:
+                    return;
+
+                default:
+                    System.out.println("Invalid choice, please retry");
+
+            }
+        }
+    }
+
+    // Print the set of rule
+    public static void displayRules(RuleManager rules) {
+
+        List<Rule> ruleList = rules.getRuleList();
+
+        if (ruleList.isEmpty()) {
+            System.out.println("No rule present");
+        } else {
+            System.out.print("Existing rules:");
+            StringJoiner ruleNames = new StringJoiner(", ");
+            for (Rule rule : ruleList) {
+                ruleNames.add(rule.getRuleName());
+            }
+            System.out.println(ruleNames);
+        }
+    }
+
+    // Remove rule with specified name
+    public static void removeRule(RuleManager rules, Scanner scanner) {
+        displayRules(rules);
+        System.out.println("Enter the name of the rule you wish to delete");
+        String name = scanner.nextLine();
+        checkRulePresent(rules, scanner, name);
+
+    }
+
+    // Activate rule with specified name + print inactive rules
+    private static void activateRuleByName(RuleManager rules, Scanner scanner) {
+        List<Rule> ruleList = rules.getRuleList();
+
+        if (ruleList.isEmpty()) {
+            System.out.println("No rule present");
+        } else {
+            System.out.print("Rules Inactive: ");
+            StringJoiner ruleNames = new StringJoiner(", ");
+            for (Rule rule : ruleList) {
+                if (!rule.isActive())
+                    ruleNames.add(rule.getRuleName());
+            }
+            System.out.println(ruleNames);
+        }
+
+        System.out.println("Enter the name of the rule you want to activate:");
+        String name = scanner.nextLine();
+        checkRulePresent(rules, scanner, name);
+
+    }
+
+    // Deactivate rule with specifide name + print active rules
+    private static void deactivateRuleByName(RuleManager rules, Scanner scanner) {
+        List<Rule> ruleList = rules.getRuleList();
+
+        if (ruleList.isEmpty()) {
+            System.out.println("No rule present");
+        } else {
+            System.out.print("Rules Active: ");
+            StringJoiner ruleNames = new StringJoiner(", ");
+            for (Rule rule : ruleList) {
+                if (rule.isActive())
+                    ruleNames.add(rule.getRuleName());
+            }
+            System.out.println(ruleNames);
+        }
+
+        System.out.println("Enter the name of the rule you want to deactivate:");
+        String name = scanner.nextLine();
+        checkRulePresent(rules, scanner, name);
+    }
+
+    // create a counter + check input
+    public static void createCounter(Scanner scanner, MapCounter mapCounter) {
+        System.out.println("Insert counter name:");
+        String name = scanner.nextLine();
+        // Validate counter name
+        if (name.trim().isEmpty()) {
+            System.out.println("Error: Counter name cannot be empty. Please retry.");
+            return;
+        }
+
+        // check if the counter name already exists
+        try {
+            mapCounter.getCounterValue(name);
+            System.out.println(
+                    "Error: Counter with the name '" + name + "' already exists. Please choose a different name.");
+            return;
+        } catch (IllegalArgumentException e) {
+            // Counter does not exist, continue
+        }
+
+        System.out.println("Insert " + name + " value:");
+
+        // Validate initial value
+        int initialValue;
+        try {
+            initialValue = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Invalid initial value. Please enter a valid integer.");
+            return;
+        }
+
+        // Chiamata al metodo createCounter della tua istanza di MapCounter
+        mapCounter.createCounter(name, initialValue);
+
+        System.out.println("Counter created successfully.");
+    }
+
+    // check if the rule is present
+    public static void checkRulePresent(RuleManager rules, Scanner scanner, String ruleName) {
+
+        boolean isRulePresent = false;
+        while (!isRulePresent) {
+            for (Rule r : rules.getRuleList()) {
+                if (ruleName.equals(r.getRuleName()))
+                    isRulePresent = true;
+            }
+
+            if (!isRulePresent) {
+                System.out.println(
+                        "Not valid rule name, please insert a different one or press 0 to come back to the modify rule menu");
+                ruleName = scanner.nextLine();
+
+                try {
+                    if (Integer.parseInt(ruleName) == 0) {
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+
+                }
+            }
+        }
+    }
+}

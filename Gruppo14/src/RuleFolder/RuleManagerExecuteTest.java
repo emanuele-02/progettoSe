@@ -7,11 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import java.time.LocalTime;
 import java.util.concurrent.TimeUnit;
-
-
 
 public class RuleManagerExecuteTest {
 
@@ -44,13 +41,13 @@ public class RuleManagerExecuteTest {
         int currentHour = currentTime.getHour();
         int currentMinute = currentTime.getMinute();
 
-        //rule creation that is always activated
+        // rule creation that is always activated
         HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
         Action action = new DialogBoxAction("Pippo");
         HourOfDayTrigger trigger2 = new HourOfDayTrigger(currentHour, currentMinute);
         Action action2 = new AudioAction("TestAudioAction.wav");
-        Rule rule = new Rule("TestRule", trigger, action,false);
-        Rule rule2 = new Rule("TestRule2", trigger2, action2,false);
+        Rule rule = new Rule("TestRule", trigger, action, false);
+        Rule rule2 = new Rule("TestRule2", trigger2, action2, false);
         // Simulate the passage of time to allow scheduled evaluation
         simulateTimePassing(20);
 
@@ -58,7 +55,7 @@ public class RuleManagerExecuteTest {
 
     // Test for deactivation
 
-     @Test
+    @Test
     public void testScheduledRuleEvaluationActivationDeactivation() {
         // Create a rule with a trigger and action
         LocalTime currentTime = LocalTime.now();
@@ -67,23 +64,22 @@ public class RuleManagerExecuteTest {
         int currentHour = currentTime.getHour();
         int currentMinute = currentTime.getMinute();
 
-        //rule creation that is always activated
+        // rule creation that is always activated
         HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
         Action action = new DialogBoxAction("Pippo");
         Rule rule = new Rule("TestRule", trigger, action, false);
-        //2 message Pippo
+        // 2 message Pippo
         simulateTimePassing(10);
-        //no message for 10 seconds
+        // no message for 10 seconds
         rule.deactivate();
         simulateTimePassing(10);
-        //2 message pippo and finish test
+        // 2 message pippo and finish test
         rule.activate();
         simulateTimePassing(10);
     }
 
-
     @Test
-    public void testTriggerOnce(){
+    public void testTriggerOnce() {
 
         LocalTime currentTime = LocalTime.now();
 
@@ -103,7 +99,7 @@ public class RuleManagerExecuteTest {
     }
 
     @Test
-    public void testTriggerPeriod(){
+    public void testTriggerPeriod() {
 
         LocalTime currentTime = LocalTime.now();
 
@@ -112,11 +108,11 @@ public class RuleManagerExecuteTest {
 
         HourOfDayTrigger trigger = new HourOfDayTrigger(currentHour, currentMinute);
         Action action = new DialogBoxAction("Pippo");
-        Rule rule = new Rule("TestRule", trigger, action, 0,0,1);
+        Rule rule = new Rule("TestRule", trigger, action, 0, 0, 1);
         simulateTimePassing(8);
         rule.deactivate();
         rule.activate();
-        //2 message Pippo
+        // 2 message Pippo
         simulateTimePassing(500);
     }
 

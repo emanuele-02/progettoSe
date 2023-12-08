@@ -8,30 +8,28 @@ import TriggerFolder.*;
 
 public class RuleTest {
 
-    private Trigger t= new HourOfDayTrigger(3, 4);
-    private Action a= new DialogBoxAction("Hello, World");
-    private Rule r= new Rule("Prova", t, a,false);
-
+    private Trigger t = new HourOfDayTrigger(3, 4);
+    private Action a = new DialogBoxAction("Hello, World");
+    private Rule r = new Rule("Prova", t, a, false);
 
     @Test
     void testActivate() {
 
-        r.deactivate();;
+        r.deactivate();
+        ;
         r.activate();
 
         assertTrue(r.isActive());
 
     }
+
     @Test
     void testDeactivate() {
 
         r.activate();
         r.deactivate();
         assertFalse(r.isActive());
-        
+
     }
-    
 
-
-    
 }
