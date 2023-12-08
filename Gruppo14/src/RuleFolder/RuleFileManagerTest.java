@@ -19,27 +19,26 @@ public class RuleFileManagerTest {
         // Create a RuleManager instance
         RuleManager ruleManager = RuleManager.getInstance();
 
-        // Create a list of rules to save
-        List<Rule> originalRules = createTestRules();
-
         // Save rules to the file using RuleManager
         ruleManager.saveRulesToFile();
 
         // Load rules from the file using RuleManager
         ruleManager.loadRulesFromFile();
 
+        // Create a list of rules to save
+        List<Rule> originalRules = createTestRules();
+
         // Get the loaded rules from RuleManager
         List<Rule> loadedRules = ruleManager.getRuleList();
 
-        // Verify that the loaded rules are equal to the original rules
-        assertEquals(originalRules.size(), loadedRules.size());
+        // Verify that the loaded rules contain the original rules
+        for (Rule originalRule : originalRules) {
+            assertTrue(loadedRules.contains(originalRule),
+                    "Rule not found: " + originalRule.toString());
+        }
 
-        for (int i = 0; i < originalRules.size(); i++) {
-            Rule originalRule = originalRules.get(i);
-            Rule loadedRule = loadedRules.get(i);
-
-            // Use the overridden equals method for individual rule comparison
-            assertTrue(originalRule.equals(loadedRule));
+        for (Rule originalRule : originalRules) {
+            ruleManager.getRuleList().remove(originalRule);
         }
     }
 

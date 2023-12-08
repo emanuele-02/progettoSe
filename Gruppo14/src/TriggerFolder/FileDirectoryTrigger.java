@@ -1,4 +1,5 @@
 package TriggerFolder;
+
 import java.io.File;
 
 public class FileDirectoryTrigger implements Trigger {
@@ -30,5 +31,5 @@ public class FileDirectoryTrigger implements Trigger {
     }
 
     // Override execute method from the Trigger interface
-  
+
 }

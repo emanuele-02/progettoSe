@@ -2,10 +2,8 @@ package TriggerFolder;
 
 import java.time.LocalTime;
 
-
 public class HourOfDayTrigger implements Trigger {
     private LocalTime targetTime;
-
 
     public HourOfDayTrigger(int hour, int minute) {
         if (hour >= 0 && hour <= 23 && minute >= 0 && minute <= 59) {
@@ -15,13 +13,11 @@ public class HourOfDayTrigger implements Trigger {
         }
     }
 
-
     @Override
     public boolean checkTrigger() {
         LocalTime currentTime = LocalTime.now();
         return currentTime.isAfter(targetTime) || currentTime.equals(targetTime);
     }
-
 
     @Override
     public int hashCode() {
@@ -30,7 +26,6 @@ public class HourOfDayTrigger implements Trigger {
         result = prime * result + ((targetTime == null) ? 0 : targetTime.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -48,5 +43,5 @@ public class HourOfDayTrigger implements Trigger {
             return false;
         return true;
     }
-    
+
 }

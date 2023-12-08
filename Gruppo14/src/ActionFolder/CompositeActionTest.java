@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class CompositeActionTest {
 
     private CompositeAction actions;
-    private DialogBoxAction a,a1;
+    private DialogBoxAction a, a1;
 
     @BeforeEach
     public void setUp() {
@@ -18,7 +18,7 @@ public class CompositeActionTest {
     }
 
     @Test
-    void addExecuteMultipleTest(){
+    void addExecuteMultipleTest() {
         // Expected messagge pippo,pluto
         actions.addAction(a);
         actions.addAction(a1);

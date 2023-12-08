@@ -13,34 +13,34 @@ import org.junit.jupiter.api.Test;
 public class DayOfWeekTriggerTest {
 
     @Test
-void testCheckTriggerWithSameDay() {
-    // Define the desired format for "day month year"
-    
-    // Get the current date in the specified format
-    String currentDayFormatted = LocalDateTime.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase();
+    void testCheckTriggerWithSameDay() {
+        // Define the desired format for "day month year"
 
-    // Pass the formatted date as an argument to the DayOfWeekTrigger constructor
-    DayOfWeekTrigger triggerSameDay = new DayOfWeekTrigger(currentDayFormatted);
+        // Get the current date in the specified format
+        String currentDayFormatted = LocalDateTime.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+                .toLowerCase();
 
-    // Perform the assertion
-    assertTrue(triggerSameDay.checkTrigger());
-}
+        // Pass the formatted date as an argument to the DayOfWeekTrigger constructor
+        DayOfWeekTrigger triggerSameDay = new DayOfWeekTrigger(currentDayFormatted);
 
-@Test
-void testCheckTriggerWithDifferentDay() {
-    // Define the desired format for "day month year"
-    
-    // Get the current date minus one day in the specified format
-    String currentDayFormatted = LocalDateTime.now().minusDays(1).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase();
+        // Perform the assertion
+        assertTrue(triggerSameDay.checkTrigger());
+    }
 
-    // Pass the formatted date as an argument to the DayOfWeekTrigger constructor
-    DayOfWeekTrigger triggerDifferentDay = new DayOfWeekTrigger(currentDayFormatted);
+    @Test
+    void testCheckTriggerWithDifferentDay() {
+        // Define the desired format for "day month year"
 
-    // Perform the assertion
-    assertFalse(triggerDifferentDay.checkTrigger());
-}
+        // Get the current date minus one day in the specified format
+        String currentDayFormatted = LocalDateTime.now().minusDays(1).getDayOfWeek()
+                .getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase();
 
+        // Pass the formatted date as an argument to the DayOfWeekTrigger constructor
+        DayOfWeekTrigger triggerDifferentDay = new DayOfWeekTrigger(currentDayFormatted);
 
+        // Perform the assertion
+        assertFalse(triggerDifferentDay.checkTrigger());
+    }
 
     @Test
     void testCheckTriggerWithInvalidDay() {
@@ -50,7 +50,7 @@ void testCheckTriggerWithDifferentDay() {
         });
     }
 
-       @Test
+    @Test
     void testCheckTriggerWithInvalidDay2() {
         // Test with an invalid day of the week
         assertThrows(IllegalArgumentException.class, () -> {
@@ -58,9 +58,4 @@ void testCheckTriggerWithDifferentDay() {
         });
     }
 
-  
-
-   
 }
-
-

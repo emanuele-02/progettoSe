@@ -27,7 +27,8 @@ public class DayOfWeekTrigger implements Trigger {
     @Override
     public boolean checkTrigger() {
         // Get the current day as a string (in lowercase)
-        String currentDayOfWeek = LocalDateTime.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase();
+        String currentDayOfWeek = LocalDateTime.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+                .toLowerCase();
 
         // Compare the current day with the target day
         return currentDayOfWeek.equals(targetDayOfWeek);
@@ -57,5 +58,5 @@ public class DayOfWeekTrigger implements Trigger {
             return false;
         return true;
     }
-    
+
 }

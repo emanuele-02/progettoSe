@@ -258,8 +258,13 @@ public class UtilityRule {
         displayRules(rules);
         System.out.println("Enter the name of the rule you wish to delete");
         String name = scanner.nextLine();
-        checkRulePresent(rules, scanner, name);
-
+        Rule rule = checkRulePresent(rules, scanner, name);
+        if (rule == null) {
+            return;
+        } else {
+            rules.removeRule(rule, scanner);
+            ;
+        }
     }
 
     // Activate rule with specified name + print inactive rules
@@ -280,8 +285,12 @@ public class UtilityRule {
 
         System.out.println("Enter the name of the rule you want to activate:");
         String name = scanner.nextLine();
-        checkRulePresent(rules, scanner, name);
-
+        Rule rule = checkRulePresent(rules, scanner, name);
+        if (rule == null) {
+            return;
+        } else {
+            rule.activate();
+        }
     }
 
     // Deactivate rule with specifide name + print active rules
@@ -302,7 +311,12 @@ public class UtilityRule {
 
         System.out.println("Enter the name of the rule you want to deactivate:");
         String name = scanner.nextLine();
-        checkRulePresent(rules, scanner, name);
+        Rule rule = checkRulePresent(rules, scanner, name);
+        if (rule == null) {
+            return;
+        } else {
+            rule.deactivate();
+        }
     }
 
     // create a counter + check input
@@ -343,28 +357,27 @@ public class UtilityRule {
     }
 
     // check if the rule is present
-    public static void checkRulePresent(RuleManager rules, Scanner scanner, String ruleName) {
+    public static Rule checkRulePresent(RuleManager rules, Scanner scanner, String ruleName) {
+        Rule foundRule = null;
 
-        boolean isRulePresent = false;
-        while (!isRulePresent) {
+        while (foundRule == null) {
             for (Rule r : rules.getRuleList()) {
-                if (ruleName.equals(r.getRuleName()))
-                    isRulePresent = true;
-            }
-
-            if (!isRulePresent) {
-                System.out.println(
-                        "Not valid rule name, please insert a different one or press 0 to come back to the modify rule menu");
-                ruleName = scanner.nextLine();
-
-                try {
-                    if (Integer.parseInt(ruleName) == 0) {
-                        break;
-                    }
-                } catch (NumberFormatException e) {
-
+                if (ruleName.equals(r.getRuleName())) {
+                    foundRule = r;
+                    break;
                 }
             }
+
+            if (foundRule == null) {
+                System.out.println(
+                        "Not a valid rule name. Please insert a different one or press 0 to go back to the modify rule menu");
+                ruleName = scanner.nextLine();
+
+                return null;
+            }
         }
+
+        return foundRule;
     }
+
 }

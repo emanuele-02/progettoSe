@@ -64,5 +64,4 @@ public class FileSizeTrigger implements Trigger {
         return true;
     }
 
-    
 }

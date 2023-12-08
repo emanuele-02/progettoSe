@@ -1,7 +1,7 @@
 package ActionFolder;
+
 import javax.swing.JOptionPane;
 import CounterFolder.*;
-
 
 // Implementation of the Action interface to display a dialog box with a message
 public class DialogBoxAction implements Action {
@@ -15,7 +15,8 @@ public class DialogBoxAction implements Action {
     public DialogBoxAction(String message) {
         // Check if the message length exceeds the maximum limit
         if (message.length() > MAX_MESSAGE_LENGTH) {
-            throw new IllegalArgumentException("Message length exceeds the maximum limit of " + MAX_MESSAGE_LENGTH + " characters.");
+            throw new IllegalArgumentException(
+                    "Message length exceeds the maximum limit of " + MAX_MESSAGE_LENGTH + " characters.");
         }
         this.message = message;
     }
@@ -54,6 +55,5 @@ public class DialogBoxAction implements Action {
             return false;
         return true;
     }
-    
-}
 
+}

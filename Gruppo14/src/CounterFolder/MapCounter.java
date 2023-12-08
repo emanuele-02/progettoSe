@@ -1,7 +1,5 @@
 package CounterFolder;
 
-
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -36,7 +34,7 @@ public class MapCounter {
             return counters.get(name);
         } else {
             throw new IllegalArgumentException("Counter with name '" + name + "' does not exist.");
-            
+
         }
     }
 
@@ -67,7 +65,8 @@ public class MapCounter {
         return result.toString();
     }
 
-    // Private method to get the value of a counter variable based on the specified name
+    // Private method to get the value of a counter variable based on the specified
+    // name
     private String getVariableReplacement(String name) {
         // Get the current value of the counter with the specified name
         if (counters.containsKey(name)) {

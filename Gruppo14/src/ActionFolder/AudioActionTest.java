@@ -1,4 +1,5 @@
 package ActionFolder;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,15 +19,15 @@ public class AudioActionTest {
     }
 
     @Test
-    void testFileNotExisting(){
-     
-        assertThrows(IllegalArgumentException.class,() -> new  AudioAction (NON_EXISTENT_FILE_PATH));
+    void testFileNotExisting() {
+
+        assertThrows(IllegalArgumentException.class, () -> new AudioAction(NON_EXISTENT_FILE_PATH));
 
     }
 
     @Test
     void testInvalidFormatExecute() {
-        assertThrows(IllegalArgumentException.class,() -> new AudioAction (INVALID_FORMAT_FILE_PATH));
+        assertThrows(IllegalArgumentException.class, () -> new AudioAction(INVALID_FORMAT_FILE_PATH));
     }
 
     @Test
@@ -34,5 +35,4 @@ public class AudioActionTest {
         assertThrows(IllegalArgumentException.class, () -> new AudioAction(EMPTY_FILE_PATH));
     }
 
-    
 }

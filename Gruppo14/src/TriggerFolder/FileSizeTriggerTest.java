@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 public class FileSizeTriggerTest {
-   @Test
+    @Test
     void testCheckTrigger() {
         // Specify the path to a valid file for testing
         String validFilePath = "SPRINT1_Review_Retrospective.docx";
@@ -18,11 +18,12 @@ public class FileSizeTriggerTest {
         // Perform the test
         boolean isTriggered = trigger.checkTrigger();
 
-        // Assert that the trigger condition is met (you may adjust this based on your specific use case)
+        // Assert that the trigger condition is met (you may adjust this based on your
+        // specific use case)
         assertTrue(isTriggered, "Trigger condition should be met for a valid file with size > 70 KB");
     }
 
-        @Test
+    @Test
     void testInvalidFilePath() {
         // Specify the path to an invalid file for testing
         String invalidFilePath = "fileNotExisting.txt";
