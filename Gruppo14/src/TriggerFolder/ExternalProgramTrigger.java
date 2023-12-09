@@ -32,8 +32,8 @@ public class ExternalProgramTrigger implements Trigger{
         
         try {
             Process process= processBuilder.start();
-
-            int exitCode = process.waitFor();
+            process.wait(2000);
+            int exitCode = process.exitValue();
 
             if(this.targetExitValue== exitCode)
                 return true;
