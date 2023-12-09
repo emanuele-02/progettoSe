@@ -10,6 +10,7 @@ public class DialogBoxAction implements Action {
 
     // The message to be displayed in the dialog box
     private String message;
+    private static String lastDisplayedMessage;
 
     // Constructor with a check for message length
     public DialogBoxAction(String message) {
@@ -24,11 +25,18 @@ public class DialogBoxAction implements Action {
     // Implementation of the execute method from the Action interface
     @Override
     public void execute() {
+        
         // Display a dialog box containing the message
-        // Parameters: null (for a default frame), message, title, message type
         MapCounter counter = MapCounter.getInstance();
         String substitutedString = counter.substituteVariables(message);
+        lastDisplayedMessage = substitutedString;
         JOptionPane.showMessageDialog(null, substitutedString, "Dialog Box", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
+    // Method to test if the message displayed is correct
+    public static String getLastDisplayedMessage() {
+        return lastDisplayedMessage;
     }
 
     @Override
