@@ -1,11 +1,12 @@
 package RuleFolder;
+
 import java.io.Serializable;
 import java.time.Duration;
 
 import ActionFolder.Action;
 import TriggerFolder.Trigger;
 
-public class Rule implements Serializable{
+public class Rule implements Serializable {
 
     private String ruleName;
     private Trigger trigger;
@@ -13,15 +14,12 @@ public class Rule implements Serializable{
     private boolean isActive;
     private boolean triggeredOnce;
     private boolean alreadyTriggered;
-    
-
 
     private int days;
     private int hours;
     private int minutes;
     private Duration period;
     private long lastExecutionTime;
-   
 
     public Rule(String ruleName, Trigger trigger, Action action, Boolean triggeredOnce) {
         this.ruleName = ruleName;
@@ -41,12 +39,12 @@ public class Rule implements Serializable{
         this.hours = hours;
         this.minutes = minutes;
         updatePeriod();
-        this.lastExecutionTime=0;
+        this.lastExecutionTime = 0;
         RuleManager ruleManager = RuleManager.getInstance();
         ruleManager.addRule(this);
     }
 
-    public boolean isActive(){
+    public boolean isActive() {
         return this.isActive;
     }
 
@@ -95,12 +93,11 @@ public class Rule implements Serializable{
         long totalminutes = days * 24 * 60 + hours * 60 + minutes;
         this.period = Duration.ofMinutes(totalminutes);
     }
-    
 
     public Duration getPeriod() {
         return period;
     }
-    
+
     // Set new period time
     public void setPeriod(int newDays, int newHours, int newMinutes) {
         this.days = newDays;
@@ -116,7 +113,7 @@ public class Rule implements Serializable{
     public void setLastExecutionTime(long lastExecutionTime) {
         this.lastExecutionTime = lastExecutionTime;
     }
-    
+
     public void setTrigger(Trigger trigger) {
         this.trigger = trigger;
     }

@@ -13,24 +13,23 @@ public class MoveCopyFileAction implements Action {
     private String destinationDirectory;
 
     // Constructor
-    public MoveCopyFileAction(OperationFileType operation, String targetFileName, String targetDirectory, String destinationDirectory) {
+    public MoveCopyFileAction(OperationFileType operation, String targetFileName, String targetDirectory,
+            String destinationDirectory) {
         this.operation = operation;
         this.targetFileName = targetFileName;
         this.targetDirectory = targetDirectory;
         this.destinationDirectory = destinationDirectory;
-         
+
         Path sourcePath = Paths.get(targetDirectory, targetFileName);
 
-        // Various checks to verify the existence of the file and direcotry 
+        // Various checks to verify the existence of the file and direcotry
         if (!Files.exists(sourcePath)) {
             throw new IllegalArgumentException("Invalid source file: " + sourcePath);
         }
 
-     
-
         if (operation != OperationFileType.COPY && operation != OperationFileType.MOVE) {
-        throw new IllegalArgumentException("Invalid operation type: " + operation);
-    }
+            throw new IllegalArgumentException("Invalid operation type: " + operation);
+        }
 
     }
 
@@ -100,6 +99,4 @@ public class MoveCopyFileAction implements Action {
         return true;
     }
 
-
-    
 }

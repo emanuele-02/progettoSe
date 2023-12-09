@@ -1,4 +1,5 @@
 package RuleFolder;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class RuleFileManager {
 
     public List<Rule> loadRulesFromFile() {
         List<Rule> loadedRules = new ArrayList<>();
-      
+
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(ruleFilePath))) {
             loadedRules = (List<Rule>) in.readObject();
             System.out.println("Rules successfully loaded.");

@@ -2,38 +2,34 @@ package ActionFolder;
 
 import java.io.File;
 
-public class DeleteFileAction implements Action{
+public class DeleteFileAction implements Action {
 
     private File file;
 
-    public DeleteFileAction(String targetDirectory, String targetFileName){
+    public DeleteFileAction(String targetDirectory, String targetFileName) {
 
-        file= new File(targetDirectory, targetFileName);
+        file = new File(targetDirectory, targetFileName);
 
-        if(!file.exists())
+        if (!file.exists())
             throw new IllegalArgumentException(" This path doesn't match any file");
-        
-    }
 
+    }
 
     @Override
     public void execute() {
 
-        if(!file.delete()) 
+        if (!file.delete())
             throw new RuntimeException("Impossible to delete the file, check permissions or other constraints");
-        
-    }
 
+    }
 
     public File getFile() {
         return file;
     }
 
-
     public void setFile(File file) {
         this.file = file;
     }
-
 
     @Override
     public int hashCode() {
@@ -42,7 +38,6 @@ public class DeleteFileAction implements Action{
         result = prime * result + ((file == null) ? 0 : file.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -61,6 +56,4 @@ public class DeleteFileAction implements Action{
         return true;
     }
 
-
-    
 }

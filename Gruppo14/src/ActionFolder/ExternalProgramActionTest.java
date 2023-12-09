@@ -15,7 +15,8 @@ public class ExternalProgramActionTest {
         ByteArrayOutputStream outputStreamCatched = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStreamCatched));
 
-        ExternalProgramAction externalProgramAction = new ExternalProgramAction("python", "ExternalProgramActionExample.py", "Hello, World");
+        ExternalProgramAction externalProgramAction = new ExternalProgramAction("python",
+                "ExternalProgramActionExample.py", "Hello, World");
         externalProgramAction.execute();
 
         System.setOut(System.out);

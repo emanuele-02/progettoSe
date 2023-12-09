@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RuleManager implements Serializable{
+public class RuleManager implements Serializable {
     private static RuleManager instance;
     private List<Rule> ruleList;
     private ScheduledExecutorService scheduler;
@@ -22,7 +22,7 @@ public class RuleManager implements Serializable{
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduleRuleEvaluation();
         ruleFileManager = new RuleFileManager("rules.ser");
-        ruleList=ruleFileManager.loadRulesFromFile();
+        ruleList = ruleFileManager.loadRulesFromFile();
         executorService = Executors.newFixedThreadPool(10);
     }
 
@@ -32,7 +32,6 @@ public class RuleManager implements Serializable{
         }
         return instance;
     }
-
 
     protected void addRule(Rule rule) {
         if (rule == null) {
@@ -60,17 +59,16 @@ public class RuleManager implements Serializable{
     }
 
     private boolean confirmRemoval(Scanner scanner) {
-        
+
         System.out.print("Are you sure you want to remove the rule? (Yes/No): ");
         String response = scanner.nextLine().trim().toLowerCase();
         return response.equals("yes") || response.equals("y");
-        
+
     }
 
     public List<Rule> getRuleList() {
         return new ArrayList<>(ruleList);
     }
-
 
     // Logic for evaluating and executing rules
     private void evaluateRules() {
@@ -83,25 +81,31 @@ public class RuleManager implements Serializable{
     }
 
     private boolean shouldExecuteRule(Rule rule) {
-        return rule.getTrigger().checkTrigger() && rule.isActive() && !(rule.isTriggeredOnce() && rule.isAlreadyTriggered());
+        return rule.getTrigger().checkTrigger() && rule.isActive()
+                && !(rule.isTriggeredOnce() && rule.isAlreadyTriggered());
     }
 
-    /*Executes the specified rule based on its configuration, including periodic execution,
-     one-time execution, and scheduling future executions.*/
+    /*
+     * Executes the specified rule based on its configuration, including periodic
+     * execution,
+     * one-time execution, and scheduling future executions.
+     */
     private void executeRule(Rule rule) {
         if (rule.getPeriod() != null) {
             long elapsedTime = System.currentTimeMillis() - rule.getLastExecutionTime();
 
-            // Check if a periodic rule has already been triggered and if enough time has passed
+            // Check if a periodic rule has already been triggered and if enough time has
+            // passed
             if (rule.isAlreadyTriggered() && elapsedTime >= rule.getPeriod().toMillis()) {
                 // Execute, recalculate last execution time and reschedule execution
                 executorService.submit(() -> rule.getAction().execute());
                 rule.setLastExecutionTime(System.currentTimeMillis());
                 scheduleRuleExecution(rule);
-            } 
+            }
             // Check if a periodic rule has not been triggered yet
             else if (!rule.isAlreadyTriggered()) {
-                // Executes, labels the rule as already executed and recalculates next execution time
+                // Executes, labels the rule as already executed and recalculates next execution
+                // time
                 executorService.submit(() -> rule.getAction().execute());
                 rule.setAlreadyTriggered(true);
                 rule.setLastExecutionTime(System.currentTimeMillis());
@@ -114,7 +118,8 @@ public class RuleManager implements Serializable{
         }
     }
 
-    //Schedules the execution of the specified rule based on its periodicity + check
+    // Schedules the execution of the specified rule based on its periodicity +
+    // check
     private void scheduleRuleExecution(Rule rule) {
         scheduler.schedule(() -> {
             // Verifica prima di eseguire l'azione
@@ -123,17 +128,16 @@ public class RuleManager implements Serializable{
             }
         }, rule.getPeriod().toMillis(), TimeUnit.MILLISECONDS);
     }
-    
 
-
-    //scheduleAtFixedRate schedules the periodic execution of a task
+    // scheduleAtFixedRate schedules the periodic execution of a task
     private void scheduleRuleEvaluation() {
-        //this::evaluateRules is a lambda expression representing the task to be executed
-        //param 0: initial Period time param 1: time interval between executions
+        // this::evaluateRules is a lambda expression representing the task to be
+        // executed
+        // param 0: initial Period time param 1: time interval between executions
         scheduler.scheduleAtFixedRate(this::evaluateRules, 0, 5, TimeUnit.SECONDS);
     }
 
-    //close scheduler
+    // close scheduler
     public void shutdown() {
         scheduler.shutdown();
     }

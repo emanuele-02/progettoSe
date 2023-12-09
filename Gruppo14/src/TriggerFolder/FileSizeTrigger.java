@@ -35,4 +35,33 @@ public class FileSizeTrigger implements Trigger {
             return false;
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((targetFilePath == null) ? 0 : targetFilePath.hashCode());
+        result = prime * result + (int) (targetSize ^ (targetSize >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        FileSizeTrigger other = (FileSizeTrigger) obj;
+        if (targetFilePath == null) {
+            if (other.targetFilePath != null)
+                return false;
+        } else if (!targetFilePath.equals(other.targetFilePath))
+            return false;
+        if (targetSize != other.targetSize)
+            return false;
+        return true;
+    }
+
 }

@@ -90,7 +90,8 @@ public class RuleManagerTest {
         simulatedUserInput("yes");
         ruleManager.removeRule(rule, scannerYes);
 
-        // Try to remove again (remove a rule from a list that does not contain such a rule)
+        // Try to remove again (remove a rule from a list that does not contain such a
+        // rule)
         ruleManager.removeRule(rule, scannerYes);
     }
 

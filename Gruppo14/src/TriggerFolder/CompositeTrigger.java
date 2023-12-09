@@ -33,4 +33,39 @@ public class CompositeTrigger implements Trigger {
             return !trigger1.checkTrigger();
         } 
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((trigger1 == null) ? 0 : trigger1.hashCode());
+        result = prime * result + ((trigger2 == null) ? 0 : trigger2.hashCode());
+        result = prime * result + ((operationType == null) ? 0 : operationType.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        CompositeTrigger other = (CompositeTrigger) obj;
+        if (trigger1 == null) {
+            if (other.trigger1 != null)
+                return false;
+        } else if (!trigger1.equals(other.trigger1))
+            return false;
+        if (trigger2 == null) {
+            if (other.trigger2 != null)
+                return false;
+        } else if (!trigger2.equals(other.trigger2))
+            return false;
+        if (operationType != other.operationType)
+            return false;
+        return true;
+    }
+    
 }

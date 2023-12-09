@@ -1,37 +1,38 @@
 package ActionFolder;
+
 import javax.sound.sampled.*;
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
+
 public class AudioAction implements Action {
     private String filePath;
 
-    // Constructor to initialize the AudioAction with a check for an empty string and invalid format, if is true, then throw an exception
-    public AudioAction(String filePath)   {
+    // Constructor to initialize the AudioAction with a check for an empty string
+    // and invalid format, if is true, then throw an exception
+    public AudioAction(String filePath) {
 
-             // If the filepath is null, throw an exception
-            if (filePath == null || filePath.trim().isEmpty()) {
-                throw new IllegalArgumentException("Error: File path cannot be empty or null.");
-            }
-            // If the filepath does not have a .wav extension, throw an exception
-            else if (!filePath.toLowerCase().endsWith(".wav")) {
-                throw new IllegalArgumentException("Error: Unsupported audio file format. Please provide a .wav file.");
-            }
-            else 
-                 this.filePath = filePath;
-                 File audioFile = new File(filePath); 
-                  if (!audioFile.exists()) {
-                throw new IllegalArgumentException("Error: Audio file does not exist.");
-            }
+        // If the filepath is null, throw an exception
+        if (filePath == null || filePath.trim().isEmpty()) {
+            throw new IllegalArgumentException("Error: File path cannot be empty or null.");
+        }
+        // If the filepath does not have a .wav extension, throw an exception
+        else if (!filePath.toLowerCase().endsWith(".wav")) {
+            throw new IllegalArgumentException("Error: Unsupported audio file format. Please provide a .wav file.");
+        } else
+            this.filePath = filePath;
+        File audioFile = new File(filePath);
+        if (!audioFile.exists()) {
+            throw new IllegalArgumentException("Error: Audio file does not exist.");
+        }
     }
 
     // Method to execute the audio playback
     @Override
     public void execute() {
         // Create a File object with the provided file path
-       
 
         // If the audio file does not exist, throw an exception
-             File audioFile = new File(filePath); 
+        File audioFile = new File(filePath);
 
         try {
             // Obtain an AudioInputStream from the audio file
@@ -49,7 +50,7 @@ public class AudioAction implements Action {
             // Add a LineListener to the Clip to detect when the audio playback stops
             clip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
-                    //System.out.println("Audio playback stopped.");
+                    // System.out.println("Audio playback stopped.");
                     // Count down the latch when the playback stops
                     latch.countDown();
                 }
@@ -58,20 +59,21 @@ public class AudioAction implements Action {
             // Start the audio playback
             clip.start();
 
-            // Wait until the latch is counted down to 0, indicating the playback has stopped
+            // Wait until the latch is counted down to 0, indicating the playback has
+            // stopped
             latch.await();
 
             // Close the Clip and AudioInputStream to release resources
             clip.close();
             audioInputStream.close();
-           
+
         } catch (Exception e) {
             // Handle the exception (e.g., log it, print a message, etc.)
 
             e.printStackTrace(); // Replace this with your desired exception handling logic
-            
+
         }
-        
+
     }
 
     @Override

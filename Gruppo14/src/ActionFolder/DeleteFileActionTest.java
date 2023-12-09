@@ -25,7 +25,7 @@ public class DeleteFileActionTest {
     }
 
     @Test
-    void testNoExistingFile(){
+    void testNoExistingFile() {
 
         assertThrows(RuntimeException.class, () -> new DeleteFileAction("D:/progettoSe/", "testDelete2.txt"));
 
@@ -40,7 +40,7 @@ public class DeleteFileActionTest {
         Path filePath = deleteFileAction.getFile().toPath();
 
         try {
-            //Create a set of permissions without a modify permission
+            // Create a set of permissions without a modify permission
             Set<PosixFilePermission> permissions = new HashSet<>();
             permissions.add(PosixFilePermission.OWNER_READ);
             permissions.add(PosixFilePermission.OWNER_WRITE);
@@ -48,10 +48,10 @@ public class DeleteFileActionTest {
             // Set new File permission
             Files.setPosixFilePermissions(filePath, permissions);
 
-        
             assertThrows(RuntimeException.class, () -> deleteFileAction.execute());
         } catch (UnsupportedOperationException e) {
-            // If the os doesn't support PosixFilePermission, jump the operation or try a different one
+            // If the os doesn't support PosixFilePermission, jump the operation or try a
+            // different one
             System.out.println("OS doesn't support POSIX");
         } catch (Exception e) {
             // Gestisci altre eccezioni qui
@@ -70,6 +70,5 @@ public class DeleteFileActionTest {
             }
         }
     }
-
 
 }
