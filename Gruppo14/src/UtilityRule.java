@@ -139,13 +139,43 @@ public class UtilityRule {
         Action a = actions.get(actionName);
 
         System.out.println("Enter the delay in days:");
+
+        while (!scanner.hasNextInt()) {
+            if (!scanner.hasNext())
+                System.out.println("You didn't insert anything. Please insert a valid delay");
+
+            else
+                System.out.println(scanner.nextLine() + " is an incorrect delay format. Please retry");
+        }
+
         int days = scanner.nextInt();
+        scanner.nextLine();
 
         System.out.println("Enter the delay in hours:");
+
+        while (!scanner.hasNextInt()) {
+            if (!scanner.hasNext())
+                System.out.println("You didn't insert anything. Please insert a valid delay");
+
+            else
+                System.out.println(scanner.nextLine() + " is an incorrect delay format. Please retry");
+        }
+
         int hours = scanner.nextInt();
+        scanner.nextLine();
 
         System.out.println("Enter the delay in minutes:");
+
+        while (!scanner.hasNextInt()) {
+            if (!scanner.hasNext())
+                System.out.println("You didn't insert anything. Please insert a valid delay");
+
+            else
+                System.out.println(scanner.nextLine() + " is an incorrect delay format. Please retry");
+        }
+
         int minutes = scanner.nextInt();
+        scanner.nextLine();
 
         Rule r = null;
         try {
