@@ -3,6 +3,7 @@ package RuleFolder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import ActionFolder.Action;
 import ActionFolder.DialogBoxAction;
 import TriggerFolder.HourOfDayTrigger;
@@ -58,10 +59,11 @@ public class RuleManagerTest {
 
     @Test
     public void testRemoveRuleWithConfirmationYes() {
+
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
 
-        Rule rule = new Rule("Pippo", trigger, action, false);
+        Rule rule = new Rule("Pippo2", trigger, action, false);
 
         ruleManager.removeRule(rule, scannerYes);
 
@@ -85,7 +87,7 @@ public class RuleManagerTest {
         Trigger trigger = new HourOfDayTrigger(2, 3);
         Action action = new DialogBoxAction("paperino");
 
-        Rule rule = new Rule("Pippo", trigger, action, false);
+        Rule rule = new Rule("Pippo3", trigger, action, false);
 
         simulatedUserInput("yes");
         ruleManager.removeRule(rule, scannerYes);
