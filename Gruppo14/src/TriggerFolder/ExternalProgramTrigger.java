@@ -1,18 +1,19 @@
 package TriggerFolder;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
-
 
 public class ExternalProgramTrigger implements Trigger {
 
     private int targetExitValue;
     private String command;
     private String[] commandLineArgs;
-    private transient ProcessBuilder processBuilder;  // Used to build and start external processes
-    protected boolean lastExecutionResult;  // Stores the result of the last execution
-    private transient Thread executionThread;  // Thread responsible for executing the external program
-    private boolean isRunning;  // Flag to track whether the external program is currently running
+    private transient ProcessBuilder processBuilder; // Used to build and start external processes
+    protected boolean lastExecutionResult; // Stores the result of the last execution
+    private transient Thread executionThread; // Thread responsible for executing the external program
+    private boolean isRunning; // Flag to track whether the external program is currently running
 
     public ExternalProgramTrigger(int targetExitValue, String command, String programPath, String... commandLineArgs) {
         this.targetExitValue = targetExitValue;
@@ -23,6 +24,11 @@ public class ExternalProgramTrigger implements Trigger {
 
         this.processBuilder.redirectErrorStream(true);
         this.isRunning = false;
+
+        java.nio.file.Path path = Paths.get(programPath);
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException("The " + programPath + " program does not exist. ");
+        }
     }
 
     @Override
@@ -37,7 +43,7 @@ public class ExternalProgramTrigger implements Trigger {
         try {
             // Create a new ProcessRunner object and thread only if the thread is not active
             ProcessRunner processRunner = new ProcessRunner();
-            
+
             // Limit the number of threads to 5
             if (Thread.activeCount() <= 15) {
                 executionThread = new Thread(processRunner);
@@ -70,7 +76,8 @@ public class ExternalProgramTrigger implements Trigger {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
-                // Reset the interruption flag and propagate the exception as an unchecked RuntimeException
+                // Reset the interruption flag and propagate the exception as an unchecked
+                // RuntimeException
                 Thread.currentThread().interrupt();
                 throw new RuntimeException(e);
             } finally {
@@ -79,7 +86,5 @@ public class ExternalProgramTrigger implements Trigger {
             }
         }
     }
-
-
 
 }

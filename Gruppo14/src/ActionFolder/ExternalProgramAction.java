@@ -3,6 +3,8 @@ package ActionFolder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class ExternalProgramAction implements Action {
@@ -25,6 +27,11 @@ public class ExternalProgramAction implements Action {
 
         // Redirect the errorStream to the stdout
         this.processBuilder.redirectErrorStream(true);
+
+        java.nio.file.Path path = Paths.get(programPath);
+        if (!Files.exists(path)) {
+            throw new IllegalArgumentException("The " + programPath + " program does not exist. ");
+        }
 
     }
 

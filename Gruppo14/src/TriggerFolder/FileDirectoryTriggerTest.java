@@ -9,8 +9,8 @@ class FileDirectoryTriggerTest {
     @Test
     void testCheckTriggerFileExists() {
         // Specify the file name and directory for testing
-        String fileName = "ProvaMove.txt";
-        String directory = "DirectoryProvaMove1";
+        String fileName = "ExistingFile.txt";
+        String directory = "DirectoryProvaExistsFile";
 
         FileDirectoryTrigger trigger = new FileDirectoryTrigger(fileName, directory);
 
@@ -23,7 +23,7 @@ class FileDirectoryTriggerTest {
     void testCheckTriggerFileDoesNotExist() {
         // Specify a non-existent file name and directory for testing
         String nonExistentFileName = "nonexistentfile.txt";
-        String directory = "DirectoryProvaMove1";
+        String directory = "DirectoryProvaExistsFile";
 
         FileDirectoryTrigger trigger = new FileDirectoryTrigger(nonExistentFileName, directory);
 
