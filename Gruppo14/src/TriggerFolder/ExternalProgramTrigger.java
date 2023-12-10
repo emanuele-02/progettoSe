@@ -1,7 +1,11 @@
 package TriggerFolder;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
+
 
 public class ExternalProgramTrigger implements Trigger {
 
@@ -19,7 +23,10 @@ public class ExternalProgramTrigger implements Trigger {
         this.command = command;
         this.programPath = programPath;
         this.commandLineArgs = Arrays.copyOf(commandLineArgs, commandLineArgs.length);
-
+           Path programFilePath = Paths.get(programPath);
+        if (!Files.exists(programFilePath) || !Files.isRegularFile(programFilePath)) {
+            throw new IllegalArgumentException("Error: Program file does not exist or is not a regular file.");
+        }
         this.processBuilder = new ProcessBuilder(command, programPath);
         this.processBuilder.command().addAll(Arrays.asList(commandLineArgs));
 

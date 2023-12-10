@@ -62,12 +62,14 @@ public class UtilityTrigger {
             System.out.println("7. FileDirecotryTrigger");
             System.out.println(" ");
             System.out.println("8. TriggerCounter");
+            System.out.println(" ");
+            System.out.println("9. Return to menu");
             System.out.println("---------------------------------------");
             System.out.print("Please enter the number of your choice: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
-            while (!validInput && !triggers.containsKey(name) && choice <= 8 && choice > 0) {
+            while (!validInput && !triggers.containsKey(name) && choice <= 9 && choice > 0) {
                 try {
                     switch (choice) {
 
@@ -136,6 +138,7 @@ public class UtilityTrigger {
                             break;
 
                         case 5:
+                            
                             System.out.println("Insert the command to do to run the program:");
                             String command = scanner.nextLine();
                             System.out.println("Insert the path of the program that you want to run");
@@ -155,10 +158,16 @@ public class UtilityTrigger {
                                 args[i] = scanner.nextLine();
                             }
                             System.out.println("Enter the output value of the expected external program:");
+                              while (!scanner.hasNextInt()) {
+                                scanner.nextLine();
+                                System.out.println("Error: You have to insert a number!");
+                            }
                             int targetExitValue = scanner.nextInt();
+                             scanner.nextLine();
                             t = new ExternalProgramTrigger(targetExitValue, command, path, args);
                             validInput = true;
                             System.out.println("Trigger successfully created");
+                            
                             break;
 
                         case 6:
@@ -187,6 +196,9 @@ public class UtilityTrigger {
                             validInput = true; // Add this line
                             break;
 
+                        case 9:
+                            validInput = true;
+                            return;
                         default:
                             System.out.println("Invalid choice, retry");
 
@@ -206,6 +218,7 @@ public class UtilityTrigger {
 
                     }
                 }
+
             }
         }
     }
@@ -249,7 +262,7 @@ public class UtilityTrigger {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
-                // scanner.nextLine(); // Consumes the invalid input to avoid an infinite loop
+                scanner.nextLine(); // Consumes the invalid input to avoid an infinite loop
 
             }
         }

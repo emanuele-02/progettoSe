@@ -237,7 +237,7 @@ public class UtilityRule {
                         if (ruleName.equals(r.getRuleName()))
                             r.setAction(actions.get(actionName));
                     }
-
+                    System.out.println("Rule successfully modified");
                     break;
                 case 4:
                     displayRules(rules);
@@ -254,6 +254,7 @@ public class UtilityRule {
                         if (ruleName.equals(r.getRuleName()))
                             r.setTrigger(triggers.get(triggerName));
                     }
+                     System.out.println("Rule successfully modified");
                     break;
 
                 case 5:
@@ -354,40 +355,46 @@ public class UtilityRule {
 
     // create a counter + check input
     public static void createCounter(Scanner scanner, MapCounter mapCounter) {
-        System.out.println("Insert counter name:");
-        String name = scanner.nextLine();
-        // Validate counter name
-        if (name.trim().isEmpty()) {
-            System.out.println("Error: Counter name cannot be empty. Please retry.");
-            return;
+        UtilityTrigger.displayCounters();
+        while (true) {
+            System.out.println("Insert counter name:");
+            String name = scanner.nextLine().trim();
+    
+            // Validate counter name
+            if (name.isEmpty()) {
+                System.out.println("Error: Counter name cannot be empty. Please retry.");
+                continue;
+            }
+    
+            // Check if the counter name already exists
+            try {
+                mapCounter.getCounterValue(name);
+                System.out.println(
+                        "Error: Counter with the name '" + name + "' already exists. Please choose a different name.");
+                continue;
+            } catch (IllegalArgumentException e) {
+                // Counter does not exist, continue
+            }
+    
+            System.out.println("Insert " + name + " value:");
+    
+            // Validate initial value
+            int initialValue;
+            try {
+                initialValue = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Invalid initial value. Please enter a valid integer.");
+                continue;
+            }
+    
+            // Chiamata al metodo createCounter della tua istanza di MapCounter
+            mapCounter.createCounter(name, initialValue);
+    
+            System.out.println("Counter created successfully.");
+            break;  // Break out of the loop if everything is successful
         }
-
-        // check if the counter name already exists
-        try {
-            mapCounter.getCounterValue(name);
-            System.out.println(
-                    "Error: Counter with the name '" + name + "' already exists. Please choose a different name.");
-            return;
-        } catch (IllegalArgumentException e) {
-            // Counter does not exist, continue
-        }
-
-        System.out.println("Insert " + name + " value:");
-
-        // Validate initial value
-        int initialValue;
-        try {
-            initialValue = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Error: Invalid initial value. Please enter a valid integer.");
-            return;
-        }
-
-        // Chiamata al metodo createCounter della tua istanza di MapCounter
-        mapCounter.createCounter(name, initialValue);
-
-        System.out.println("Counter created successfully.");
     }
+    
 
     // check if the rule is present
     public static Rule checkRulePresent(RuleManager rules, Scanner scanner, String ruleName) {
@@ -408,5 +415,6 @@ public class UtilityRule {
             ruleName = scanner.nextLine();
         }
     }
+
 
 }

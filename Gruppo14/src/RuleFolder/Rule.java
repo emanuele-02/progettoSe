@@ -40,8 +40,7 @@ public class Rule implements Serializable {
         this.minutes = minutes;
         updatePeriod();
         this.lastExecutionTime = 0;
-        RuleManager ruleManager = RuleManager.getInstance();
-        ruleManager.addRule(this);
+       
     }
 
     public boolean isActive() {
