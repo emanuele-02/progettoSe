@@ -1,6 +1,7 @@
 package TriggerFolder;
 
 import java.io.File;
+import java.io.IOException;
 
 public class FileDirectoryTrigger implements Trigger {
 
@@ -11,6 +12,9 @@ public class FileDirectoryTrigger implements Trigger {
     public FileDirectoryTrigger(String targetFileName, String targetDirectory) {
         this.targetFileName = targetFileName;
         this.targetDirectory = targetDirectory;
+        if (!directoryExists(targetDirectory)) {
+            throw new IllegalArgumentException("Target directory does not exist: " + targetDirectory);
+        }
     }
 
     // Method to check the trigger condition
@@ -24,12 +28,15 @@ public class FileDirectoryTrigger implements Trigger {
             File file = new File(fullPath);
             return file.exists() && file.isFile();
         } catch (Exception e) {
-            // Handle exceptions
+            // Handle the exception or propagate it if needed
             e.printStackTrace();
             return false;
         }
     }
 
-    // Override execute method from the Trigger interface
-
+    // Helper method to check if a directory exists
+    private boolean directoryExists(String directoryPath) {
+        File directory = new File(directoryPath);
+        return directory.exists() && directory.isDirectory();
+    }
 }

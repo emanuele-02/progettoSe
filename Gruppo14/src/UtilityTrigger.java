@@ -215,7 +215,9 @@ public class UtilityTrigger {
         System.out.println("Enter the name for the Logical Trigger:");
         String compositeTriggerName = scanner.nextLine();
 
-        while (true) {
+        boolean validInput = false;
+
+        while (!validInput) {
             try {
                 System.out.println("╔════════════════════════════════════════════════════╗");
                 System.out.println("║              Create a Logical Trigger              ║");
@@ -240,6 +242,7 @@ public class UtilityTrigger {
                         createNotTrigger(triggers, compositeTriggerName, scanner);
                         break;
                     case 4:
+                        validInput = true;
                         return;
                     default:
                         System.out.println("Invalid choice, retry");

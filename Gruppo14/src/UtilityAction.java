@@ -244,14 +244,23 @@ public class UtilityAction {
                 switch (choice) {
                     case 1:
                         // Ask how many actions to add
+                        // Ask how many actions to add
                         System.out.println("How many actions do you want to add to the set?");
                         int numActionsToAdd = scanner.nextInt();
                         scanner.nextLine(); // Consumes the newline left in the buffer
                         displayActions(actions);
+
                         // Add the specified number of actions
                         for (int i = 0; i < numActionsToAdd; i++) {
-                            System.out.println("Enter the name of the existing action to add to the set:");
+                            System.out.println(
+                                    "Enter the name of the existing action to add to the set (enter 0 to go back to the previous menu):");
                             String existingActionName = scanner.nextLine();
+
+                            if (existingActionName.equals("0")) {
+                                // User wants to go back to the previous menu
+                                System.out.println("Returning to the previous menu.");
+                                break;
+                            }
 
                             Action existingAction = actions.get(existingActionName);
 
@@ -266,6 +275,7 @@ public class UtilityAction {
                                 i--; // Decrement i so that the same index is processed again
                             }
                         }
+
                         break;
 
                     case 2:
