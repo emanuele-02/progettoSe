@@ -1,9 +1,6 @@
 package TriggerFolder;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 
@@ -11,7 +8,6 @@ public class ExternalProgramTrigger implements Trigger {
 
     private int targetExitValue;
     private String command;
-    private String programPath;
     private String[] commandLineArgs;
     private transient ProcessBuilder processBuilder;  // Used to build and start external processes
     protected boolean lastExecutionResult;  // Stores the result of the last execution
@@ -21,12 +17,7 @@ public class ExternalProgramTrigger implements Trigger {
     public ExternalProgramTrigger(int targetExitValue, String command, String programPath, String... commandLineArgs) {
         this.targetExitValue = targetExitValue;
         this.command = command;
-        this.programPath = programPath;
         this.commandLineArgs = Arrays.copyOf(commandLineArgs, commandLineArgs.length);
-           Path programFilePath = Paths.get(programPath);
-        if (!Files.exists(programFilePath) || !Files.isRegularFile(programFilePath)) {
-            throw new IllegalArgumentException("Error: Program file does not exist or is not a regular file.");
-        }
         this.processBuilder = new ProcessBuilder(command, programPath);
         this.processBuilder.command().addAll(Arrays.asList(commandLineArgs));
 

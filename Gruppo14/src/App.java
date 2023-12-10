@@ -57,9 +57,17 @@ public class App {
 
                 switch (choice) {
                     case 1:
+                        if(triggers.isEmpty() || actions.isEmpty()){
+                            System.out.println("There are no trigger or action, impossible to create a Rule");
+                            break;
+                        }
                         Rule rule = UtilityRule.createRule(triggers, actions, rules, scanner);
                         break;
                     case 2:
+                        if(triggers.isEmpty() || actions.isEmpty()){
+                            System.out.println("There are no trigger or action, impossible to create PeriodicRule");
+                            break;
+                        }
                         Rule rule2 = UtilityRule.createPeriodicRule(triggers, actions, rules, scanner);
                         break;
                     case 3:
@@ -72,11 +80,19 @@ public class App {
                         UtilityRule.displayRules(rules);
                         break;
                     case 6:
+                        if(rules.getRuleList().isEmpty()){
+                            System.out.println("There are no rules, impossible to do this.");
+                            break;
+                        }
                         UtilityRule.removeRule(rules, scanner);
                         break;
                     case 7:
+                        if(rules.getRuleList().isEmpty()){
+                            System.out.println("There are no rules, impossible to do this.");
+                            break;
+                        }
                         UtilityRule.modifyRule(rules, actions, triggers, scanner);
-
+                        break;
                     case 8:
                         rules.saveRulesToFile();
                         break;
@@ -85,10 +101,18 @@ public class App {
                         break;
 
                     case 10:
+                        if(actions.isEmpty()){
+                            System.out.println("There are no actions, impossible to do this.");
+                            break;
+                        }
                         UtilityAction.createSetOfAction(actions, scanner);
                         break;
 
                     case 11:
+                        if(triggers.isEmpty()){
+                            System.out.println("There are no triggers, impossible to do this.");
+                            break;
+                        }
                         UtilityTrigger.createLogicalTrigger(triggers, scanner);
                         break;
 
