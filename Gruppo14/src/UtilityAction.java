@@ -165,8 +165,9 @@ public class UtilityAction {
                         switch (counterChoice) {
                             case 1:
 
-                                System.out.println("Insert the names of the two counters");
+                                System.out.println("Insert the names of the first counter:");
                                 String counterName1 = scanner.nextLine();
+                                System.out.println("Insert the names of the second counter:");
                                 String counterName2 = scanner.nextLine();
 
                                 createdAction = new CounterAction(counterName1, counterName2);

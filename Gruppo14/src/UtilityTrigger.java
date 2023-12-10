@@ -282,9 +282,13 @@ public class UtilityTrigger {
     // Method to create Counter Trigger
     private static void createTriggerCounter(Map<String, Trigger> triggers, String name, Scanner scanner) {
         System.out.println("Choose the operation for TriggerCounter:");
-        System.out.println("1. EQUALTO");
-        System.out.println("2. LESSTHAN");
-        System.out.println("3. GREATERTHAN");
+        System.out.println("");
+        System.out.println("1. EQUAL TO");
+        System.out.println("");
+        System.out.println("2. LESS THAN");
+        System.out.println("");
+        System.out.println("3. GREATE RTHAN");
+        System.out.println("-----------------------------------------");
         System.out.print("Please enter the number of your choice: ");
 
         int operationChoice = scanner.nextInt();
@@ -320,7 +324,7 @@ public class UtilityTrigger {
 
         TriggerCounter triggerCounter;
 
-        if (compareOption.equals("yes")) {
+        if (compareOption.equals("yes") || compareOption.equals("y")) {
             System.out.println("Enter the name of the second counter: ");
             String counterName2 = scanner.nextLine();
             triggerCounter = new TriggerCounter(operation, counterName1, counterName2);
