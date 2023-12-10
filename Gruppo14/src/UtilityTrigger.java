@@ -67,142 +67,146 @@ public class UtilityTrigger {
 
             int choice = scanner.nextInt();
             scanner.nextLine();
-            try {
-                switch (choice) {
-
-                    case 1:
-                        System.out.println("Insert trigger's hour");
-                        while (!scanner.hasNextInt()) {
-
-                            if (!scanner.hasNext())
-                                System.out.println("You didn't insert anything. Please insert a valid hour");
-
-                            else
-                                System.out.println(scanner.nextLine() + " is an incorrect hour format. Please retry");
-                        }
-
-                        int hour = scanner.nextInt();
-                        scanner.nextLine();
-
-                        System.out.println("Insert trigger's minute");
-                        while (!scanner.hasNextInt()) {
-                            if (!scanner.hasNext())
-                                System.out.println("You didn't insert anything. Please insert a valid minute");
-
-                            else
-                                System.out.println(scanner.nextLine() + " is an incorrect minute format. Please retry");
-                        }
-
-                        int minute = scanner.nextInt();
-                        scanner.nextLine();
-
-                        t = new HourOfDayTrigger(hour, minute);
-                        validInput = true;
-                        System.out.println("Trigger successfully created");
-                        break;
-
-                    case 2:
-
-                        System.out.println("Insert a date in the format dd-mm-yyyy");
-                        String date = scanner.nextLine();
-
-                        t = new DateTrigger(date);
-                        validInput = true;
-                        System.out.println("Trigger successfully created");
-                        break;
-
-                    case 3:
-
-                        System.out.println("Insert a day of month");
-                        int targetDayOfmonth = scanner.nextInt();
-                        scanner.nextLine();
-
-                        t = new DayOfMonthTrigger(targetDayOfmonth);
-                        validInput = true;
-                        System.out.println("Trigger successfully created");
-                        break;
-
-                    case 4:
-
-                        System.out.println("Insert a day of week");
-                        String targetDayOfWeek = scanner.nextLine();
-
-                        t = new DayOfWeekTrigger(targetDayOfWeek);
-                        validInput = true;
-                        System.out.println("Trigger successfully created");
-                        break;
-
-                    case 5:
-                        System.out.println("Insert the command to do to run the program:");
-                        String command = scanner.nextLine();
-                        System.out.println("Insert the path of the program that you want to run");
-                        String path = scanner.nextLine();
-                        System.out.println("How many command line arguments do you want to pass?");
-                        while (!scanner.hasNextInt()) {
-                            scanner.nextLine();
-                            System.out.println("Error: You have to insert a number!");
-                        }
-                        int n = scanner.nextInt();
-                        scanner.nextLine();
-                        if (n != 0) {
-                            System.out.println("Insert your command line arguments");
-                        }
-                        String[] args = new String[n];
-                        for (int i = 0; i < n; i++) {
-                            args[i] = scanner.nextLine();
-                        }
-                        System.out.println("Enter the output value of the expected external program:");
-                        int targetExitValue = scanner.nextInt();
-                        t = new ExternalProgramTrigger(targetExitValue, command, path, args);
-                        validInput = true;
-                        System.out.println("Trigger successfully created");
-                        break;
-
-                    case 6:
-                        System.out.println("Insert the file path for size control:");
-                        String filePath = scanner.nextLine();
-                        System.out.println("Insert the target size in KB of the fike:");
-                        int targetSiize = scanner.nextInt();
-                        t = new FileSizeTrigger(filePath, targetSiize);
-                        validInput = true;
-                        System.out.println("Trigger successfully created");
-                        break;
-
-                    case 7:
-                        System.out.println("Insert the file name to check if it exists in a direcotry:");
-                        String fileName = scanner.nextLine();
-                        System.out.println("Insert the path of the directory:");
-                        String targetDirectory = scanner.nextLine();
-                        t = new FileDirectoryTrigger(fileName, targetDirectory);
-                        validInput = true;
-                        System.out.println("Trigger successfully created");
-                        break;
-
-                    case 8:
-                        createTriggerCounter(triggers, name, scanner); // Add this line
-                        System.out.println("TriggerCounter successfully created"); // Add this line
-                        validInput = true; // Add this line
-                        break;
-
-                    default:
-                        System.out.println("Invalid choice, retry");
-                }
-
-                if (t != null) {
-                    triggers.putIfAbsent(name, t);
-                }
-            } catch (Exception e) {
-                System.out.println("Error creating trigger: " + e.getMessage()
-                        + " Press enter to try again or 0 to come back to the main menu");
-                String s = scanner.nextLine();
+            while (!validInput && !triggers.containsKey(name) && choice <= 8 && choice > 0) {
                 try {
-                    if (Integer.parseInt(s) == 0)
-                        return;
-                } catch (NumberFormatException exc) {
+                    switch (choice) {
 
+                        case 1:
+                            System.out.println("Insert trigger's hour");
+                            while (!scanner.hasNextInt()) {
+
+                                if (!scanner.hasNext())
+                                    System.out.println("You didn't insert anything. Please insert a valid hour");
+
+                                else
+                                    System.out
+                                            .println(scanner.nextLine() + " is an incorrect hour format. Please retry");
+                            }
+
+                            int hour = scanner.nextInt();
+                            scanner.nextLine();
+
+                            System.out.println("Insert trigger's minute");
+                            while (!scanner.hasNextInt()) {
+                                if (!scanner.hasNext())
+                                    System.out.println("You didn't insert anything. Please insert a valid minute");
+
+                                else
+                                    System.out.println(
+                                            scanner.nextLine() + " is an incorrect minute format. Please retry");
+                            }
+
+                            int minute = scanner.nextInt();
+                            scanner.nextLine();
+
+                            t = new HourOfDayTrigger(hour, minute);
+                            validInput = true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                        case 2:
+
+                            System.out.println("Insert a date in the format dd-mm-yyyy");
+                            String date = scanner.nextLine();
+
+                            t = new DateTrigger(date);
+                            validInput = true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                        case 3:
+
+                            System.out.println("Insert a day of month");
+                            int targetDayOfmonth = scanner.nextInt();
+                            scanner.nextLine();
+
+                            t = new DayOfMonthTrigger(targetDayOfmonth);
+                            validInput = true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                        case 4:
+
+                            System.out.println("Insert a day of week");
+                            String targetDayOfWeek = scanner.nextLine();
+
+                            t = new DayOfWeekTrigger(targetDayOfWeek);
+                            validInput = true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                        case 5:
+                            System.out.println("Insert the command to do to run the program:");
+                            String command = scanner.nextLine();
+                            System.out.println("Insert the path of the program that you want to run");
+                            String path = scanner.nextLine();
+                            System.out.println("How many command line arguments do you want to pass?");
+                            while (!scanner.hasNextInt()) {
+                                scanner.nextLine();
+                                System.out.println("Error: You have to insert a number!");
+                            }
+                            int n = scanner.nextInt();
+                            scanner.nextLine();
+                            if (n != 0) {
+                                System.out.println("Insert your command line arguments");
+                            }
+                            String[] args = new String[n];
+                            for (int i = 0; i < n; i++) {
+                                args[i] = scanner.nextLine();
+                            }
+                            System.out.println("Enter the output value of the expected external program:");
+                            int targetExitValue = scanner.nextInt();
+                            t = new ExternalProgramTrigger(targetExitValue, command, path, args);
+                            validInput = true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                        case 6:
+                            System.out.println("Insert the file path for size control:");
+                            String filePath = scanner.nextLine();
+                            System.out.println("Insert the target size in KB of the fike:");
+                            int targetSiize = scanner.nextInt();
+                            t = new FileSizeTrigger(filePath, targetSiize);
+                            validInput = true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                        case 7:
+                            System.out.println("Insert the file name to check if it exists in a direcotry:");
+                            String fileName = scanner.nextLine();
+                            System.out.println("Insert the path of the directory:");
+                            String targetDirectory = scanner.nextLine();
+                            t = new FileDirectoryTrigger(fileName, targetDirectory);
+                            validInput = true;
+                            System.out.println("Trigger successfully created");
+                            break;
+
+                        case 8:
+                            createTriggerCounter(triggers, name, scanner); // Add this line
+                            System.out.println("TriggerCounter successfully created"); // Add this line
+                            validInput = true; // Add this line
+                            break;
+
+                        default:
+                            System.out.println("Invalid choice, retry");
+
+                    }
+
+                    if (t != null) {
+                        triggers.putIfAbsent(name, t);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error creating trigger: " + e.getMessage()
+                            + " Press enter to try again or 0 to come back to the main menu");
+                    String s = scanner.nextLine();
+                    try {
+                        if (Integer.parseInt(s) == 0)
+                            return;
+                    } catch (NumberFormatException exc) {
+
+                    }
                 }
             }
-
         }
     }
 
@@ -242,7 +246,8 @@ public class UtilityTrigger {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
-                scanner.nextLine(); // Consumes the invalid input to avoid an infinite loop
+                // scanner.nextLine(); // Consumes the invalid input to avoid an infinite loop
+
             }
         }
     }

@@ -285,15 +285,18 @@ public class UtilityRule {
 
     // Remove rule with specified name
     public static void removeRule(RuleManager rules, Scanner scanner) {
-        displayRules(rules);
-        System.out.println("Enter the name of the rule you wish to delete");
-        String name = scanner.nextLine();
-        Rule rule = checkRulePresent(rules, scanner, name);
-        if (rule == null) {
-            return;
-        } else {
-            rules.removeRule(rule, scanner);
-            ;
+        while (true) {
+            displayRules(rules);
+            System.out.println("Enter the name of the rule you wish to delete (enter 0 to return to the menu):");
+            String name = scanner.nextLine();
+
+            Rule rule = checkRulePresent(rules, scanner, name);
+            if (rule == null) {
+                return; // User wants to go back to the menu
+            } else {
+                rules.removeRule(rule, scanner);
+                return;
+            }
         }
     }
 
@@ -388,26 +391,22 @@ public class UtilityRule {
 
     // check if the rule is present
     public static Rule checkRulePresent(RuleManager rules, Scanner scanner, String ruleName) {
-        Rule foundRule = null;
+        while (true) {
+            if (ruleName.equals("0")) {
+                System.out.println("Returning to the menu...");
+                return null; // User wants to go back to the modify rule menu
+            }
 
-        while (foundRule == null) {
             for (Rule r : rules.getRuleList()) {
                 if (ruleName.equals(r.getRuleName())) {
-                    foundRule = r;
-                    break;
+                    return r; // Rule found, return it
                 }
             }
 
-            if (foundRule == null) {
-                System.out.println(
-                        "Not a valid rule name. Please insert a different one or press 0 to go back to the modify rule menu");
-                ruleName = scanner.nextLine();
-
-                return null;
-            }
+            System.out.println(
+                    "Not a valid rule name. Please insert a different one or press 0 to go back to the modify rule menu");
+            ruleName = scanner.nextLine();
         }
-
-        return foundRule;
     }
 
 }

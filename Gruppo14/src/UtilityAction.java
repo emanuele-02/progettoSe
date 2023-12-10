@@ -27,26 +27,6 @@ public class UtilityAction {
 
         }
 
-        System.out.println("Which type of action do you want to create?");
-        System.out.println(" ");
-        System.out.println("1. AudioAction");
-        System.out.println(" ");
-        System.out.println("2. DialogBoxAction");
-        System.out.println(" ");
-        System.out.println("3. ExternalProgramAction");
-        System.out.println(" ");
-        System.out.println("4. WriteStringOnFileAction");
-        System.out.println(" ");
-        System.out.println("5. MoveCopyFileAction");
-        System.out.println(" ");
-        System.out.println("6. DeleteFileAction");
-        System.out.println(" ");
-        System.out.println("7. CounterAction");
-        System.out.println("---------------------------------------");
-        System.out.print("Please enter the number of your choice: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // Clear the buffer
-
         Action createdAction = null;
         boolean validInput = false;
 
@@ -66,147 +46,169 @@ public class UtilityAction {
         }
 
         while (!validInput && !actions.containsKey(name)) {
-            try {
-                switch (choice) {
-                    case 1:
-                        System.out.println("Insert the audio's path");
-                        String path = scanner.nextLine();
-                        createdAction = new AudioAction(path);
-                        validInput = true;
-                        System.out.println("Action  successfully created");
-                        break;
+            System.out.println("Which type of action do you want to create?");
+            System.out.println(" ");
+            System.out.println("1. AudioAction");
+            System.out.println(" ");
+            System.out.println("2. DialogBoxAction");
+            System.out.println(" ");
+            System.out.println("3. ExternalProgramAction");
+            System.out.println(" ");
+            System.out.println("4. WriteStringOnFileAction");
+            System.out.println(" ");
+            System.out.println("5. MoveCopyFileAction");
+            System.out.println(" ");
+            System.out.println("6. DeleteFileAction");
+            System.out.println(" ");
+            System.out.println("7. CounterAction");
+            System.out.println("---------------------------------------");
+            System.out.print("Please enter the number of your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Clear the buffer
 
-                    case 2:
-                        System.out.println("Insert the message");
-                        String message = scanner.nextLine();
-                        createdAction = new DialogBoxAction(message);
-                        validInput = true;
-                        System.out.println("Action  successfully created");
-                        break;
-                    case 3:
-                        System.out.println("Insert the path of the program that you want to run");
-                        String path1 = scanner.nextLine();
-                        System.out.println("Insert the command to do to run the program");
-                        String command = scanner.nextLine();
-
-                        System.out.println("How many command line arguments do you want to pass?");
-                        while (!scanner.hasNextInt()) {
-                            scanner.nextLine();
-                            System.out.println("Error: You have to insert a number!");
-                        }
-                        int n = scanner.nextInt();
-                        scanner.nextLine();
-                        if (n != 0)
-                            System.out.println("Insert your command line arguments");
-                        String[] args = new String[n];
-                        for (int i = 0; i < n; i++) {
-                            args[i] = scanner.nextLine();
-                        }
-                        createdAction = new ExternalProgramAction(command, path1, args);
-                        validInput = true;
-                        System.out.println("Action  successfully created");
-                        break;
-
-                    case 4:
-                        System.out.println("Insert the string you want to write");
-                        String stringToWrite = scanner.nextLine();
-                        System.out.println("Insert the path to the file you want the string to be written to");
-                        String targetFilePath = scanner.nextLine();
-                        createdAction = new WriteStringOnFileAction(targetFilePath, stringToWrite);
-                        validInput = true;
-                        System.out.println("Action  successfully created");
-                        break;
-
-                    case 5:
-
-                        System.out.println("Insert the operation you want to perform (Move or Copy)");
-                        String operation = scanner.nextLine();
-                        System.out.println("Insert the name of the file on which the operation is to be performed");
-                        String targetFileName = scanner.nextLine();
-                        System.out.println("Insert the path of the source directory");
-                        String targetDirectory = scanner.nextLine();
-                        System.out.println("Insert the path of the destination directory");
-                        String destinationDirectory = scanner.nextLine();
-
-                        if (operation.equalsIgnoreCase("MOVE")) {
-                            createdAction = new MoveCopyFileAction(OperationFileType.MOVE, targetFileName,
-                                    targetDirectory, destinationDirectory);
-                        } else if (operation.equalsIgnoreCase("COPY")) {
-                            createdAction = new MoveCopyFileAction(OperationFileType.COPY, targetFileName,
-                                    targetDirectory, destinationDirectory);
-                        } else {
-                            throw new IllegalArgumentException("Error: You have to insert Move or Copy");
-                        }
-
-                        validInput = true;
-                        System.out.println("Action  successfully created");
-                        break;
-
-                    case 6:
-                        System.out.println("Insert the path of the source directory");
-                        String targetDirectoryForDelete = scanner.nextLine();
-                        System.out.println("Insert the name of the file you want to delete");
-                        String targetFileNameToDelete = scanner.nextLine();
-                        createdAction = new DeleteFileAction(targetDirectoryForDelete, targetFileNameToDelete);
-
-                        validInput = true;
-                        System.out.println("Action  successfully created");
-                        break;
-
-                    case 7:
-                        displayCounters();
-                        System.out.println(
-                                "Do you want to create an action with two counters or a counter and an integer?");
-                        System.out.println("1. Two Counters");
-                        System.out.println("2. Counter and Integer");
-                        int counterChoice = scanner.nextInt();
-                        scanner.nextLine();
-
-                        switch (counterChoice) {
-                            case 1:
-
-                                System.out.println("Insert the names of the first counter:");
-                                String counterName1 = scanner.nextLine();
-                                System.out.println("Insert the names of the second counter:");
-                                String counterName2 = scanner.nextLine();
-
-                                createdAction = new CounterAction(counterName1, counterName2);
-                                break;
-
-                            case 2:
-                                System.out.println("Insert the name of the counter");
-                                String counterName = scanner.nextLine();
-                                System.out.println("Insert the integer value");
-                                int intValue = scanner.nextInt();
-                                scanner.nextLine();
-                                createdAction = new CounterAction(CounterActionType.ADD, counterName, intValue);
-                                break;
-
-                            default:
-                                System.out.println("Invalid choice, retry");
-                                return;
-                        }
-
-                        validInput = true;
-                        System.out.println("CounterAction successfully created");
-                        break;
-
-                    default:
-                        System.out.println("Invalid choice, retry");
-                }
-
-                if (createdAction != null) {
-                    actions.putIfAbsent(name, createdAction);
-                }
-            } catch (Exception e) {
-                System.out.println(e.getMessage() + "Press enter to try again or 0 to come back to the main menu");
-                String s = scanner.nextLine();
-
+            while (!validInput && !actions.containsKey(name) && choice <= 7 && choice > 0) {
                 try {
-                    if (Integer.parseInt(s) == 0)
-                        return;
-                } catch (NumberFormatException exc) {
+                    switch (choice) {
+                        case 1:
+                            System.out.println("Insert the audio's path");
+                            String path = scanner.nextLine();
+                            createdAction = new AudioAction(path);
+                            validInput = true;
+                            System.out.println("Action  successfully created");
+                            break;
 
+                        case 2:
+                            System.out.println("Insert the message");
+                            String message = scanner.nextLine();
+                            createdAction = new DialogBoxAction(message);
+                            validInput = true;
+                            System.out.println("Action  successfully created");
+                            break;
+                        case 3:
+                            System.out.println("Insert the path of the program that you want to run");
+                            String path1 = scanner.nextLine();
+                            System.out.println("Insert the command to do to run the program");
+                            String command = scanner.nextLine();
+
+                            System.out.println("How many command line arguments do you want to pass?");
+                            while (!scanner.hasNextInt()) {
+                                scanner.nextLine();
+                                System.out.println("Error: You have to insert a number!");
+                            }
+                            int n = scanner.nextInt();
+                            scanner.nextLine();
+                            if (n != 0)
+                                System.out.println("Insert your command line arguments");
+                            String[] args = new String[n];
+                            for (int i = 0; i < n; i++) {
+                                args[i] = scanner.nextLine();
+                            }
+                            createdAction = new ExternalProgramAction(command, path1, args);
+                            validInput = true;
+                            System.out.println("Action  successfully created");
+                            break;
+
+                        case 4:
+                            System.out.println("Insert the string you want to write");
+                            String stringToWrite = scanner.nextLine();
+                            System.out.println("Insert the path to the file you want the string to be written to");
+                            String targetFilePath = scanner.nextLine();
+                            createdAction = new WriteStringOnFileAction(targetFilePath, stringToWrite);
+                            validInput = true;
+                            System.out.println("Action  successfully created");
+                            break;
+
+                        case 5:
+
+                            System.out.println("Insert the operation you want to perform (Move or Copy)");
+                            String operation = scanner.nextLine();
+                            System.out.println("Insert the name of the file on which the operation is to be performed");
+                            String targetFileName = scanner.nextLine();
+                            System.out.println("Insert the path of the source directory");
+                            String targetDirectory = scanner.nextLine();
+                            System.out.println("Insert the path of the destination directory");
+                            String destinationDirectory = scanner.nextLine();
+
+                            if (operation.equalsIgnoreCase("MOVE")) {
+                                createdAction = new MoveCopyFileAction(OperationFileType.MOVE, targetFileName,
+                                        targetDirectory, destinationDirectory);
+                            } else if (operation.equalsIgnoreCase("COPY")) {
+                                createdAction = new MoveCopyFileAction(OperationFileType.COPY, targetFileName,
+                                        targetDirectory, destinationDirectory);
+                            } else {
+                                throw new IllegalArgumentException("Error: You have to insert Move or Copy");
+                            }
+
+                            validInput = true;
+                            System.out.println("Action  successfully created");
+                            break;
+
+                        case 6:
+                            System.out.println("Insert the path of the source directory");
+                            String targetDirectoryForDelete = scanner.nextLine();
+                            System.out.println("Insert the name of the file you want to delete");
+                            String targetFileNameToDelete = scanner.nextLine();
+                            createdAction = new DeleteFileAction(targetDirectoryForDelete, targetFileNameToDelete);
+
+                            validInput = true;
+                            System.out.println("Action  successfully created");
+                            break;
+
+                        case 7:
+                            displayCounters();
+                            System.out.println(
+                                    "Do you want to create an action with two counters or a counter and an integer?");
+                            System.out.println("1. Two Counters");
+                            System.out.println("2. Counter and Integer");
+                            int counterChoice = scanner.nextInt();
+                            scanner.nextLine();
+
+                            switch (counterChoice) {
+                                case 1:
+
+                                    System.out.println("Insert the names of the first counter:");
+                                    String counterName1 = scanner.nextLine();
+                                    System.out.println("Insert the names of the second counter:");
+                                    String counterName2 = scanner.nextLine();
+
+                                    createdAction = new CounterAction(counterName1, counterName2);
+                                    break;
+
+                                case 2:
+                                    System.out.println("Insert the name of the counter");
+                                    String counterName = scanner.nextLine();
+                                    System.out.println("Insert the integer value");
+                                    int intValue = scanner.nextInt();
+                                    scanner.nextLine();
+                                    createdAction = new CounterAction(CounterActionType.ADD, counterName, intValue);
+                                    break;
+
+                                default:
+                                    System.out.println("Invalid choice, retry");
+                                    return;
+                            }
+
+                            validInput = true;
+                            System.out.println("CounterAction successfully created");
+                            break;
+
+                        default:
+                            System.out.println("Invalid choice, retry");
+                    }
+
+                    if (createdAction != null) {
+                        actions.putIfAbsent(name, createdAction);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage() + "Press enter to try again or 0 to come back to the main menu");
+                    String s = scanner.nextLine();
+
+                    try {
+                        if (Integer.parseInt(s) == 0)
+                            return;
+                    } catch (NumberFormatException exc) {
+
+                    }
                 }
             }
         }
