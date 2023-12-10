@@ -3,6 +3,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import CounterFolder.MapCounter;
 import TriggerFolder.*;
 
 public class UtilityTrigger {
@@ -59,6 +60,8 @@ public class UtilityTrigger {
             System.out.println("6. FileSizeTrigger");
             System.out.println(" ");
             System.out.println("7. FileDirecotryTrigger");
+            System.out.println(" ");
+            System.out.println("8. TriggerCounter");
             System.out.println("---------------------------------------");
             System.out.print("Please enter the number of your choice: ");
 
@@ -175,6 +178,12 @@ public class UtilityTrigger {
                         System.out.println("Trigger successfully created");
                         break;
 
+                    case 8:
+                        createTriggerCounter(triggers, name, scanner); // Add this line
+                        System.out.println("TriggerCounter successfully created"); // Add this line
+                        validInput = true; // Add this line
+                        break;
+
                     default:
                         System.out.println("Invalid choice, retry");
                 }
@@ -270,6 +279,67 @@ public class UtilityTrigger {
         System.out.println("Logical Trigger successfully created");
     }
 
+    // Method to create Counter Trigger
+    private static void createTriggerCounter(Map<String, Trigger> triggers, String name, Scanner scanner) {
+        System.out.println("Choose the operation for TriggerCounter:");
+        System.out.println("1. EQUALTO");
+        System.out.println("2. LESSTHAN");
+        System.out.println("3. GREATERTHAN");
+        System.out.print("Please enter the number of your choice: ");
+
+        int operationChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        OperationType operation = null;
+        switch (operationChoice) {
+            case 1:
+                operation = OperationType.EQUALTO;
+                break;
+            case 2:
+                operation = OperationType.LESSTHAN;
+                break;
+            case 3:
+                operation = OperationType.GREATERTHAN;
+                break;
+            default:
+                System.out.println("Invalid choice for operation. TriggerCounter creation failed.");
+                return;
+        }
+        displayCounters();
+        System.out.println("Enter the name of the first counter: ");
+        String counterName1 = scanner.nextLine();
+
+        System.out.println("Do you want to compare with another counter? (yes/no): ");
+        String compareOption = scanner.nextLine().toLowerCase();
+
+        while (!compareOption.equals("yes") && !compareOption.equals("no") && !compareOption.equals("y")
+                && !compareOption.equals("n")) {
+            System.out.println("Invalid choice. Please enter 'yes' or 'no': ");
+            compareOption = scanner.nextLine().toLowerCase();
+        }
+
+        TriggerCounter triggerCounter;
+
+        if (compareOption.equals("yes")) {
+            System.out.println("Enter the name of the second counter: ");
+            String counterName2 = scanner.nextLine();
+            triggerCounter = new TriggerCounter(operation, counterName1, counterName2);
+        } else {
+            System.out.println("Enter the value to compare with: ");
+            int valueNumber;
+            while (!scanner.hasNextInt()) {
+                System.out.println("You didn't insert a valid number. Please insert a valid number for the value.");
+                scanner.nextLine();
+            }
+            valueNumber = scanner.nextInt();
+            scanner.nextLine();
+            triggerCounter = new TriggerCounter(operation, counterName1, valueNumber);
+        }
+
+        triggers.put(name, triggerCounter);
+        return;
+    }
+
     // check if the trigger is valid ( present in the triggers Map)
     private static Trigger getValidTrigger(Map<String, Trigger> triggers, String triggerName, Scanner scanner) {
         Trigger trigger = triggers.get(triggerName);
@@ -333,5 +403,23 @@ public class UtilityTrigger {
             System.out.println("No existing Triggers");
         else
             System.out.println("Existing Triggers: " + triggerStringSet.toString());
+    }
+
+    public static void displayCounters() {
+        MapCounter counters = MapCounter.getInstance();
+        // Printing the counters in the map
+        System.out.println("Existing Counters:");
+        StringBuilder result = new StringBuilder();
+        for (String counterName : counters.keySet()) {
+            int counterValue = counters.getCounterValue(counterName);
+            result.append(counterName).append(": ").append(counterValue).append(", ");
+        }
+
+        // Removing the trailing comma and space
+        if (result.length() > 0) {
+            result.setLength(result.length() - 2);
+        }
+
+        System.out.println(result.toString());
     }
 }

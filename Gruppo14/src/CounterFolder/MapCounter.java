@@ -1,7 +1,9 @@
 package CounterFolder;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -76,4 +78,21 @@ public class MapCounter {
             throw new IllegalArgumentException("Counter with name '" + name + "' does not exist.");
         }
     }
+
+    public boolean containsCounter(String name) {
+        // Check if the counter with the specified name is present in the map
+        return counters.containsKey(name);
+    }
+
+    public Set<String> keySet() {
+        // Implement custom keySet by manually adding each key to a new set
+        Set<String> keySet = new HashSet<>();
+
+        for (String counterName : counters.keySet()) {
+            keySet.add(counterName);
+        }
+
+        return keySet;
+    }
+
 }

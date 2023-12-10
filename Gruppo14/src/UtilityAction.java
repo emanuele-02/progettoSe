@@ -2,8 +2,8 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-
 import ActionFolder.*;
+import CounterFolder.MapCounter;
 
 public class UtilityAction {
 
@@ -40,6 +40,8 @@ public class UtilityAction {
         System.out.println("5. MoveCopyFileAction");
         System.out.println(" ");
         System.out.println("6. DeleteFileAction");
+        System.out.println(" ");
+        System.out.println("7. CounterAction");
         System.out.println("---------------------------------------");
         System.out.print("Please enter the number of your choice: ");
         int choice = scanner.nextInt();
@@ -149,6 +151,43 @@ public class UtilityAction {
 
                         validInput = true;
                         System.out.println("Action  successfully created");
+                        break;
+
+                    case 7:
+                        displayCounters();
+                        System.out.println(
+                                "Do you want to create an action with two counters or a counter and an integer?");
+                        System.out.println("1. Two Counters");
+                        System.out.println("2. Counter and Integer");
+                        int counterChoice = scanner.nextInt();
+                        scanner.nextLine();
+
+                        switch (counterChoice) {
+                            case 1:
+
+                                System.out.println("Insert the names of the two counters");
+                                String counterName1 = scanner.nextLine();
+                                String counterName2 = scanner.nextLine();
+
+                                createdAction = new CounterAction(counterName1, counterName2);
+                                break;
+
+                            case 2:
+                                System.out.println("Insert the name of the counter");
+                                String counterName = scanner.nextLine();
+                                System.out.println("Insert the integer value");
+                                int intValue = scanner.nextInt();
+                                scanner.nextLine();
+                                createdAction = new CounterAction(CounterActionType.ADD, counterName, intValue);
+                                break;
+
+                            default:
+                                System.out.println("Invalid choice, retry");
+                                return;
+                        }
+
+                        validInput = true;
+                        System.out.println("CounterAction successfully created");
                         break;
 
                     default:
@@ -288,5 +327,23 @@ public class UtilityAction {
             System.out.println("No existing Actions");
         else
             System.out.println("Existing Actions: " + actionStringSet.toString());
+    }
+
+    public static void displayCounters() {
+        MapCounter counters = MapCounter.getInstance();
+        // Printing the counters in the map
+        System.out.println("Existing Counters:");
+        StringBuilder result = new StringBuilder();
+        for (String counterName : counters.keySet()) {
+            int counterValue = counters.getCounterValue(counterName);
+            result.append(counterName).append(": ").append(counterValue).append(", ");
+        }
+
+        // Removing the trailing comma and space
+        if (result.length() > 0) {
+            result.setLength(result.length() - 2);
+        }
+
+        System.out.println(result.toString());
     }
 }

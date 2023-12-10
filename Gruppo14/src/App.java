@@ -66,7 +66,7 @@ public class App {
                         UtilityTrigger.createTrigger(triggers, scanner);
                         break;
                     case 4:
-                        UtilityAction.createAction(actions, scanner);
+                        UtilityAction.createAction(actions,scanner);
                         break;
                     case 5:
                         UtilityRule.displayRules(rules);
